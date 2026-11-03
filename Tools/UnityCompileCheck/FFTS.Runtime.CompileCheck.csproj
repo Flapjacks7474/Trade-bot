@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Static compile check of the Unity runtime layer WITHOUT the Unity editor.
+    Pass the folder containing UnityEngine*.dll reference assemblies:
+      dotnet build -p:UnityManagedDir=/path/to/Editor/Data/Managed/UnityEngine
+    The UnityEngine.Modules NuGet package (2021.3) works as a stand-in; APIs newer than that version will
+    show up as errors here even if they are valid in Unity 6.3, and Input System code (ENABLE_INPUT_SYSTEM)
+    and Editor scripts are NOT covered. This does not replace an editor compile.
+  -->
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>disable</Nullable>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <AssemblyName>FFTS.Runtime.CompileCheck</AssemblyName>
+    <UnityManagedDir Condition="'$(UnityManagedDir)' == ''">$(MSBuildThisFileDirectory)unity-ref</UnityManagedDir>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../Assets/_Project/Scripts/Runtime/**/*.cs" />
+    <ProjectReference Include="../../Tests/DotNet/Simulation/FFTS.Simulation.csproj" />
+    <Reference Include="$(UnityManagedDir)/*.dll" Private="false" />
+  </ItemGroup>
+</Project>

@@ -177,6 +177,19 @@ namespace FFTS.Missions
             return count;
         }
 
+        /// <summary>True if any live mission has an unfinished objective completed by this trigger.</summary>
+        public bool WantsTrigger(string trigger)
+        {
+            foreach (var d in _ordered)
+            {
+                var p = _progress[d.Id];
+                if (!IsLive(p)) continue;
+                foreach (var o in d.Objectives)
+                    if (o.Trigger == trigger && !p.CompletedObjectives.Contains(o.Id) && (o.Branch == null || o.Branch == p.ChosenBranch)) return true;
+            }
+            return false;
+        }
+
         public MissionActionResult CompleteObjective(string missionId, string objectiveId)
         {
             if (!_progress.TryGetValue(missionId, out var p)) return MissionActionResult.UnknownMission;

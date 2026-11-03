@@ -29,3 +29,7 @@ crashlytics-build.properties
 /Tests/DotNet/**/bin/
 /Tests/DotNet/**/obj/
 /Tests/DotNet/TestResults/
+/Tools/UnityCompileCheck/bin/
+/Tools/UnityCompileCheck/obj/
+/Tools/UnityCompileCheck/unity-ref/
+!/Tools/UnityCompileCheck/*.csproj

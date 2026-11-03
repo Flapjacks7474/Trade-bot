@@ -8,7 +8,7 @@ namespace FFTS.Input
     {
         Move, Look,
         LightAttack, HeavyAttack, Kick, Grapple, Block, Dodge, Counter, Finisher, Taunt,
-        Interact, Phone, Map, Pause,
+        Interact, Phone, Map, Pause, QuickSave, QuickLoad, Help,
         Accelerate, Brake, Steer, Handbrake, Nitrous
     }
 
@@ -19,7 +19,8 @@ namespace FFTS.Input
         LightAttack = 1 << 0, HeavyAttack = 1 << 1, Kick = 1 << 2, Grapple = 1 << 3,
         Block = 1 << 4, Dodge = 1 << 5, Counter = 1 << 6, Finisher = 1 << 7, Taunt = 1 << 8,
         Interact = 1 << 9, Phone = 1 << 10, Map = 1 << 11, Pause = 1 << 12,
-        Accelerate = 1 << 13, Brake = 1 << 14, Handbrake = 1 << 15, Nitrous = 1 << 16
+        Accelerate = 1 << 13, Brake = 1 << 14, Handbrake = 1 << 15, Nitrous = 1 << 16,
+        QuickSave = 1 << 17, QuickLoad = 1 << 18, Help = 1 << 19
     }
 
     /// <summary>One sampled frame of input. Produced by keyboard, gamepad or touch adapters alike.</summary>
@@ -88,6 +89,7 @@ namespace FFTS.Input
             m.Add(GameAction.Phone, "<Keyboard>/tab"); m.Add(GameAction.Phone, "<Gamepad>/select");
             m.Add(GameAction.Map, "<Keyboard>/m"); m.Add(GameAction.Map, "<Gamepad>/dpad/down");
             m.Add(GameAction.Pause, "<Keyboard>/escape"); m.Add(GameAction.Pause, "<Gamepad>/start");
+            m.Add(GameAction.QuickSave, "<Keyboard>/f5"); m.Add(GameAction.QuickLoad, "<Keyboard>/f9"); m.Add(GameAction.Help, "<Keyboard>/f1");
             m.Add(GameAction.Accelerate, "<Keyboard>/w"); m.Add(GameAction.Accelerate, "<Gamepad>/rightTrigger");
             m.Add(GameAction.Brake, "<Keyboard>/s"); m.Add(GameAction.Brake, "<Gamepad>/leftTrigger");
             m.Add(GameAction.Handbrake, "<Keyboard>/space"); m.Add(GameAction.Handbrake, "<Gamepad>/buttonSouth");
@@ -118,6 +120,24 @@ namespace FFTS.Input
                 else seen[b.Path] = b.Action;
             }
             return conflicts;
+        }
+
+        /// <summary>Maps a button action to its mask bit; Move/Look/Steer return None.</summary>
+        public static ButtonMask MaskFor(GameAction a)
+        {
+            switch (a)
+            {
+                case GameAction.LightAttack: return ButtonMask.LightAttack; case GameAction.HeavyAttack: return ButtonMask.HeavyAttack;
+                case GameAction.Kick: return ButtonMask.Kick; case GameAction.Grapple: return ButtonMask.Grapple;
+                case GameAction.Block: return ButtonMask.Block; case GameAction.Dodge: return ButtonMask.Dodge;
+                case GameAction.Counter: return ButtonMask.Counter; case GameAction.Finisher: return ButtonMask.Finisher;
+                case GameAction.Taunt: return ButtonMask.Taunt; case GameAction.Interact: return ButtonMask.Interact;
+                case GameAction.Phone: return ButtonMask.Phone; case GameAction.Map: return ButtonMask.Map; case GameAction.Pause: return ButtonMask.Pause;
+                case GameAction.QuickSave: return ButtonMask.QuickSave; case GameAction.QuickLoad: return ButtonMask.QuickLoad; case GameAction.Help: return ButtonMask.Help;
+                case GameAction.Accelerate: return ButtonMask.Accelerate; case GameAction.Brake: return ButtonMask.Brake;
+                case GameAction.Handbrake: return ButtonMask.Handbrake; case GameAction.Nitrous: return ButtonMask.Nitrous;
+                default: return ButtonMask.None;
+            }
         }
 
         public static bool IsDrivingAction(GameAction a) =>

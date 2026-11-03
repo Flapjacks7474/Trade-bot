@@ -67,3 +67,31 @@ namespace FFTS.Tests
         }
     }
 }
+
+namespace FFTS.Tests
+{
+    public class MissionQueryTests
+    {
+        [Test]
+        public void WantsTriggerOnlyForUnfinishedLiveObjectives()
+        {
+            var s = TestContent.NewSession();
+            Assert.IsTrue(s.Missions.WantsTrigger("location.southside.grandma_house"));
+            Assert.IsFalse(s.Missions.WantsTrigger("interact.corner_store.prescription"), "errand not started yet");
+            s.ReportTrigger("location.southside.grandma_house");
+            Assert.IsFalse(s.Missions.WantsTrigger("location.southside.grandma_house"));
+            TestContent.Talk(s, "dialogue.grandma.welcome", "respect", "leave");
+            Assert.IsTrue(s.Missions.WantsTrigger("interact.corner_store.prescription"));
+        }
+
+        [Test]
+        public void EveryButtonActionHasAMask()
+        {
+            foreach (FFTS.Input.GameAction a in System.Enum.GetValues(typeof(FFTS.Input.GameAction)))
+            {
+                bool axis = a == FFTS.Input.GameAction.Move || a == FFTS.Input.GameAction.Look || a == FFTS.Input.GameAction.Steer;
+                Assert.AreEqual(axis, FFTS.Input.InputBindingMap.MaskFor(a) == FFTS.Input.ButtonMask.None, a.ToString());
+            }
+        }
+    }
+}
