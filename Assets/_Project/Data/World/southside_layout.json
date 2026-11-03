@@ -1,0 +1,364 @@
+{
+  "DistrictId": "district.southside",
+  "SizeX": 400,
+  "SizeZ": 400,
+  "SpawnX": -60,
+  "SpawnZ": 10,
+  "Roads": [
+    {
+      "Id": "road.southside.blvd",
+      "X1": -190,
+      "Z1": 0,
+      "X2": 190,
+      "Z2": 0,
+      "Width": 14
+    },
+    {
+      "Id": "road.southside.magnolia",
+      "X1": -190,
+      "Z1": 20,
+      "X2": 190,
+      "Z2": 20,
+      "Width": 8
+    },
+    {
+      "Id": "road.southside.pecan",
+      "X1": 0,
+      "Z1": -190,
+      "X2": 0,
+      "Z2": 190,
+      "Width": 10
+    },
+    {
+      "Id": "road.southside.industrial",
+      "X1": 100,
+      "Z1": -190,
+      "X2": 100,
+      "Z2": 60,
+      "Width": 10
+    },
+    {
+      "Id": "road.southside.west",
+      "X1": -80,
+      "Z1": -190,
+      "X2": -80,
+      "Z2": 80,
+      "Width": 8
+    }
+  ],
+  "Locations": [
+    {
+      "Id": "location.southside.grandma_house",
+      "DisplayName": "Grandma's House",
+      "Type": "residence",
+      "X": -60,
+      "Z": 40,
+      "Width": 12,
+      "Depth": 10,
+      "Height": 6,
+      "Color": "#c9a66b",
+      "EnterTrigger": "location.southside.grandma_house",
+      "Interactions": [
+        {
+          "Id": "ia.grandma_house.photo",
+          "Verb": "look",
+          "Prompt": "Look at the old photo",
+          "Trigger": "interact.grandma_house.photo",
+          "DialogueId": null,
+          "FighterId": null,
+          "VenueType": null,
+          "OffsetX": 2,
+          "OffsetZ": -6,
+          "Priority": 1
+        },
+        {
+          "Id": "ia.grandma_house.deliver",
+          "Verb": "use",
+          "Prompt": "Give Grandma her prescription",
+          "Trigger": "interact.grandma_house.deliver",
+          "DialogueId": null,
+          "FighterId": null,
+          "VenueType": null,
+          "OffsetX": -2,
+          "OffsetZ": -6,
+          "Priority": 0
+        },
+        {
+          "Id": "ia.grandma_house.rest",
+          "Verb": "rest",
+          "Prompt": "Sleep until morning",
+          "Trigger": "interact.grandma_house.rest",
+          "DialogueId": null,
+          "FighterId": null,
+          "VenueType": null,
+          "OffsetX": 4,
+          "OffsetZ": -6,
+          "Priority": 0
+        }
+      ]
+    },
+    {
+      "Id": "location.southside.apartments",
+      "DisplayName": "Pecan Court Apartments",
+      "Type": "residence",
+      "X": -110,
+      "Z": 40,
+      "Width": 30,
+      "Depth": 18,
+      "Height": 14,
+      "Color": "#8d8d8d",
+      "EnterTrigger": null,
+      "Interactions": []
+    },
+    {
+      "Id": "location.southside.corner_store",
+      "DisplayName": "Corner Store",
+      "Type": "shop",
+      "X": -20,
+      "Z": -25,
+      "Width": 10,
+      "Depth": 8,
+      "Height": 5,
+      "Color": "#3a7d44",
+      "EnterTrigger": "location.southside.corner_store",
+      "Interactions": [
+        {
+          "Id": "ia.corner_store.prescription",
+          "Verb": "use",
+          "Prompt": "Pick up Grandma's prescription",
+          "Trigger": "interact.corner_store.prescription",
+          "DialogueId": null,
+          "FighterId": null,
+          "VenueType": null,
+          "OffsetX": 0,
+          "OffsetZ": 5,
+          "Priority": 0
+        }
+      ]
+    },
+    {
+      "Id": "location.southside.barbershop",
+      "DisplayName": "Lou's Barbershop",
+      "Type": "shop",
+      "X": 15,
+      "Z": -25,
+      "Width": 10,
+      "Depth": 8,
+      "Height": 5,
+      "Color": "#2b5f9e",
+      "EnterTrigger": "location.southside.barbershop",
+      "Interactions": []
+    },
+    {
+      "Id": "location.southside.clothing_store",
+      "DisplayName": "Southside Threads",
+      "Type": "shop",
+      "X": 45,
+      "Z": -25,
+      "Width": 12,
+      "Depth": 8,
+      "Height": 5,
+      "Color": "#9e2b6d",
+      "EnterTrigger": "location.southside.clothing_store",
+      "Interactions": []
+    },
+    {
+      "Id": "location.southside.tone_studio",
+      "DisplayName": "Tone's Studio",
+      "Type": "studio",
+      "X": 80,
+      "Z": 40,
+      "Width": 14,
+      "Depth": 12,
+      "Height": 7,
+      "Color": "#5a3a8c",
+      "EnterTrigger": "location.southside.tone_studio",
+      "Interactions": []
+    },
+    {
+      "Id": "location.southside.community_gym",
+      "DisplayName": "Southside Community Gym",
+      "Type": "gym",
+      "X": -60,
+      "Z": -70,
+      "Width": 20,
+      "Depth": 16,
+      "Height": 8,
+      "Color": "#b04a2f",
+      "EnterTrigger": "location.southside.community_gym",
+      "Interactions": []
+    },
+    {
+      "Id": "location.southside.basketball_courts",
+      "DisplayName": "Magnolia Courts",
+      "Type": "court",
+      "X": -100,
+      "Z": -30,
+      "Width": 26,
+      "Depth": 16,
+      "Height": 0.5,
+      "Color": "#4f6d7a",
+      "EnterTrigger": "location.southside.basketball_courts",
+      "Interactions": []
+    },
+    {
+      "Id": "location.southside.underground_venue",
+      "DisplayName": "Cold Storage (Underground Venue)",
+      "Type": "venue",
+      "X": 110,
+      "Z": -80,
+      "Width": 24,
+      "Depth": 20,
+      "Height": 9,
+      "Color": "#3b0d0d",
+      "EnterTrigger": "location.southside.underground_venue",
+      "Interactions": []
+    },
+    {
+      "Id": "location.southside.used_cars",
+      "DisplayName": "Southside Motors",
+      "Type": "garage",
+      "X": 130,
+      "Z": 40,
+      "Width": 22,
+      "Depth": 16,
+      "Height": 6,
+      "Color": "#a0522d",
+      "EnterTrigger": "location.southside.used_cars",
+      "Interactions": []
+    },
+    {
+      "Id": "location.southside.restaurant",
+      "DisplayName": "Mama Dot's Kitchen",
+      "Type": "restaurant",
+      "X": 45,
+      "Z": 40,
+      "Width": 12,
+      "Depth": 10,
+      "Height": 5,
+      "Color": "#d4a017",
+      "EnterTrigger": "location.southside.restaurant",
+      "Interactions": []
+    },
+    {
+      "Id": "location.southside.the_yard",
+      "DisplayName": "The Yard",
+      "Type": "hq",
+      "X": 150,
+      "Z": -150,
+      "Width": 30,
+      "Depth": 24,
+      "Height": 10,
+      "Color": "#8b0000",
+      "EnterTrigger": "location.southside.the_yard",
+      "Interactions": []
+    },
+    {
+      "Id": "location.southside.race_start",
+      "DisplayName": "Pecan Street Lot",
+      "Type": "street",
+      "X": -150,
+      "Z": -120,
+      "Width": 30,
+      "Depth": 20,
+      "Height": 0.3,
+      "Color": "#555555",
+      "EnterTrigger": "location.southside.race_start",
+      "Interactions": []
+    }
+  ],
+  "Npcs": [
+    {
+      "NpcId": "npc.grandma",
+      "DisplayName": "Grandma Ruth",
+      "LocationId": "location.southside.grandma_house",
+      "OffsetX": 0,
+      "OffsetZ": -7,
+      "Color": "#e8d5b7",
+      "PlacementId": "placement.grandma"
+    },
+    {
+      "NpcId": "npc.lou",
+      "DisplayName": "Lou",
+      "LocationId": "location.southside.barbershop",
+      "OffsetX": 0,
+      "OffsetZ": 6,
+      "Color": "#f0f0f0",
+      "PlacementId": "placement.lou"
+    },
+    {
+      "NpcId": "npc.dre",
+      "DisplayName": "Dre",
+      "LocationId": "location.southside.basketball_courts",
+      "OffsetX": 0,
+      "OffsetZ": 0,
+      "Color": "#ff9f1c",
+      "PlacementId": "placement.dre",
+      "HideAfterObjective": "mission.ch1.old_friends/meet_dre"
+    },
+    {
+      "NpcId": "npc.dre",
+      "DisplayName": "Dre",
+      "LocationId": "location.southside.community_gym",
+      "OffsetX": 3,
+      "OffsetZ": -10,
+      "Color": "#ff9f1c",
+      "PlacementId": "placement.dre_gym",
+      "ShowAfterObjective": "mission.ch1.old_friends/meet_dre"
+    },
+    {
+      "NpcId": "npc.tone",
+      "DisplayName": "Tone",
+      "LocationId": "location.southside.tone_studio",
+      "OffsetX": -3,
+      "OffsetZ": -8,
+      "Color": "#b388eb",
+      "PlacementId": "placement.tone"
+    },
+    {
+      "NpcId": "npc.rell",
+      "DisplayName": "Rell",
+      "LocationId": "location.southside.tone_studio",
+      "OffsetX": 3,
+      "OffsetZ": -8,
+      "Color": "#2ec4b6",
+      "PlacementId": "placement.rell"
+    },
+    {
+      "NpcId": "npc.big_reece",
+      "DisplayName": "Big Reece",
+      "LocationId": "location.southside.underground_venue",
+      "OffsetX": -4,
+      "OffsetZ": 12,
+      "Color": "#e71d36",
+      "PlacementId": "placement.big_reece"
+    },
+    {
+      "NpcId": "npc.brick",
+      "DisplayName": "Brick Hollis",
+      "LocationId": "location.southside.underground_venue",
+      "OffsetX": 4,
+      "OffsetZ": 12,
+      "Color": "#6c757d",
+      "PlacementId": "placement.brick"
+    },
+    {
+      "NpcId": "npc.nia",
+      "DisplayName": "Nia",
+      "LocationId": "location.southside.corner_store",
+      "OffsetX": 6,
+      "OffsetZ": 6,
+      "Color": "#ffd166",
+      "PlacementId": "placement.nia"
+    },
+    {
+      "NpcId": "npc.marlo",
+      "DisplayName": "Marlo",
+      "LocationId": "location.southside.used_cars",
+      "OffsetX": 0,
+      "OffsetZ": -10,
+      "Color": "#06d6a0",
+      "PlacementId": "placement.marlo"
+    }
+  ]
+}

@@ -1,0 +1,596 @@
+{
+  "Dialogues": [
+    {
+      "Id": "dialogue.grandma.welcome",
+      "NpcId": "npc.grandma",
+      "StartNode": "start",
+      "EndTrigger": "dialogue.grandma.welcome.done",
+      "Nodes": [
+        {
+          "Id": "start",
+          "Speaker": "Grandma",
+          "Text": "Look at you. Taller than my doorframe now. Come here and let me see your face.",
+          "Options": [
+            {
+              "Id": "respect",
+              "Text": "It's good to be home, Grandma.",
+              "Tone": "Respectful",
+              "Next": "house",
+              "Effects": [
+                {
+                  "Type": "Relationship",
+                  "Target": "npc.grandma",
+                  "Relationship": {
+                    "Trust": 5,
+                    "Affection": 5
+                  }
+                }
+              ]
+            },
+            {
+              "Id": "joke",
+              "Text": "Doorframe got shorter while I was gone.",
+              "Tone": "Joke",
+              "Next": "house",
+              "Effects": [
+                {
+                  "Type": "Relationship",
+                  "Target": "npc.grandma",
+                  "Relationship": {
+                    "Affection": 3,
+                    "Friendship": 2
+                  }
+                }
+              ]
+            }
+          ],
+          "Variants": []
+        },
+        {
+          "Id": "house",
+          "Speaker": "Grandma",
+          "Text": "Your room's how you left it. Mostly. Dre's been by here twice asking for you.",
+          "Options": [
+            {
+              "Id": "photo",
+              "Text": "Who's in this picture on the mantel?",
+              "Tone": "Truth",
+              "Next": "photo",
+              "Effects": [
+                {
+                  "Type": "Flag",
+                  "Target": "clue.photo.first_seen",
+                  "Value": 1
+                }
+              ],
+              "Trigger": "interact.grandma_house.photo",
+              "When": {
+                "ForbidFlags": [
+                  "clue.photo.first_seen"
+                ]
+              }
+            },
+            {
+              "Id": "leave",
+              "Text": "I'll go find Dre.",
+              "Tone": "Neutral",
+              "Next": null,
+              "Effects": []
+            }
+          ],
+          "Variants": []
+        },
+        {
+          "Id": "photo",
+          "Speaker": "Grandma",
+          "Text": "That's family. Old family. That porch was on Pecan Street before they tore it down.",
+          "Options": [
+            {
+              "Id": "press",
+              "Text": "Who's the bigger kid? His face is all worn off.",
+              "Tone": "Truth",
+              "Next": "deflect",
+              "Effects": [
+                {
+                  "Type": "Relationship",
+                  "Target": "npc.grandma",
+                  "Relationship": {
+                    "Trust": -1
+                  }
+                }
+              ]
+            },
+            {
+              "Id": "ok",
+              "Text": "Alright.",
+              "Tone": "Respectful",
+              "Next": null,
+              "Effects": []
+            }
+          ],
+          "Variants": []
+        },
+        {
+          "Id": "deflect",
+          "Speaker": "Grandma",
+          "Text": "Somebody who loved you something fierce. Now go on and wash up before you go running the streets.",
+          "Options": [
+            {
+              "Id": "leave",
+              "Text": "Yes ma'am.",
+              "Tone": "Respectful",
+              "Next": null,
+              "Effects": []
+            }
+          ],
+          "Variants": []
+        }
+      ]
+    },
+    {
+      "Id": "dialogue.lou.barbershop",
+      "NpcId": "npc.lou",
+      "StartNode": "start",
+      "EndTrigger": "dialogue.lou.gossip_heard",
+      "Nodes": [
+        {
+          "Id": "start",
+          "Speaker": "Lou",
+          "Text": "Sit down, youngblood. Lineup's on the house for Miss Ruth's grandbaby.",
+          "Options": [
+            {
+              "Id": "ask",
+              "Text": "What'd I miss around here?",
+              "Tone": "Respectful",
+              "Next": "crews",
+              "Effects": [
+                {
+                  "Type": "Relationship",
+                  "Target": "npc.lou",
+                  "Relationship": {
+                    "Friendship": 3
+                  }
+                }
+              ]
+            },
+            {
+              "Id": "joke",
+              "Text": "Don't mess my hairline up, Lou.",
+              "Tone": "Joke",
+              "Next": "crews",
+              "Effects": [
+                {
+                  "Type": "Relationship",
+                  "Target": "npc.lou",
+                  "Relationship": {
+                    "Affection": 2
+                  }
+                }
+              ]
+            }
+          ],
+          "Variants": []
+        },
+        {
+          "Id": "crews",
+          "Speaker": "Lou",
+          "Text": "Five crews split this city now. Red and black got Southside — The Slaughterhouse. Crown Syndicate sits up downtown counting money. Slime Circle out East, 4PF on the Westside, Tru Alliance holding North Heights and Old Town.",
+          "Options": [
+            {
+              "Id": "more",
+              "Text": "That's it? Five crews?",
+              "Tone": "Truth",
+              "Next": "table",
+              "Effects": []
+            }
+          ],
+          "Variants": []
+        },
+        {
+          "Id": "table",
+          "Speaker": "Lou",
+          "Text": "...That's barbershop talk. But folks say somebody sits above all five. Somebody nobody's seen. Anyway — you want the part sharp or soft?",
+          "Options": [
+            {
+              "Id": "sharp",
+              "Text": "Sharp.",
+              "Tone": "Neutral",
+              "Next": null,
+              "Effects": []
+            },
+            {
+              "Id": "soft",
+              "Text": "Soft.",
+              "Tone": "Neutral",
+              "Next": null,
+              "Effects": []
+            }
+          ],
+          "Variants": []
+        }
+      ]
+    },
+    {
+      "Id": "dialogue.dre.reunion",
+      "NpcId": "npc.dre",
+      "StartNode": "start",
+      "Nodes": [
+        {
+          "Id": "start",
+          "Speaker": "Dre",
+          "Text": "AYY! Southside's own finally came home! Boy, you still got them noodle arms?",
+          "Options": [
+            {
+              "Id": "challenge",
+              "Text": "Run it at the gym and find out.",
+              "Tone": "Challenge",
+              "Next": "agree",
+              "Effects": [
+                {
+                  "Type": "Relationship",
+                  "Target": "npc.dre",
+                  "Relationship": {
+                    "Respect": 3
+                  }
+                }
+              ]
+            },
+            {
+              "Id": "joke",
+              "Text": "Noodles hit hard when they're cooked right.",
+              "Tone": "Joke",
+              "Next": "agree",
+              "Effects": [
+                {
+                  "Type": "Relationship",
+                  "Target": "npc.dre",
+                  "Relationship": {
+                    "Friendship": 3
+                  }
+                }
+              ]
+            }
+          ],
+          "Variants": []
+        },
+        {
+          "Id": "agree",
+          "Speaker": "Dre",
+          "Text": "Bet. Gym on the corner. Loser buys wings — and I'm hungry.",
+          "Options": [
+            {
+              "Id": "go",
+              "Text": "Let's go.",
+              "Tone": "Neutral",
+              "Next": null,
+              "Effects": [],
+              "Trigger": "dialogue.dre.spar_agreed"
+            }
+          ],
+          "Variants": []
+        }
+      ]
+    },
+    {
+      "Id": "dialogue.rell.confrontation",
+      "NpcId": "npc.rell",
+      "StartNode": "start",
+      "EndTrigger": "dialogue.rell.confrontation.done",
+      "Nodes": [
+        {
+          "Id": "start",
+          "Speaker": "Rell",
+          "Text": "Tone letting anybody in the booth now? This my slot, bro.",
+          "Options": [
+            {
+              "Id": "talk",
+              "Text": "Room's big enough for both of us. I just need one take.",
+              "Tone": "Respectful",
+              "Next": null,
+              "Effects": [],
+              "MissionBranch": "mission.ch1.first_recording:talk"
+            },
+            {
+              "Id": "stand",
+              "Text": "I'm here to record. Move or don't.",
+              "Tone": "Challenge",
+              "Next": "stand",
+              "Effects": []
+            },
+            {
+              "Id": "fight",
+              "Text": "Say it again. Outside.",
+              "Tone": "Threaten",
+              "Next": null,
+              "Effects": [],
+              "MissionBranch": "mission.ch1.first_recording:fight",
+              "StartFight": "fighter.rell"
+            }
+          ],
+          "Variants": []
+        },
+        {
+          "Id": "stand",
+          "Speaker": "Rell",
+          "Text": "...Aight. I'ma remember your face though.",
+          "Options": [
+            {
+              "Id": "ok",
+              "Text": "Remember it right.",
+              "Tone": "Challenge",
+              "Next": null,
+              "Effects": [],
+              "MissionBranch": "mission.ch1.first_recording:stand_ground"
+            }
+          ],
+          "Variants": [
+            {
+              "Text": "...You got nerve. Fine. Go ahead.",
+              "When": {
+                "MinRespect": 10
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "dialogue.tone.studio",
+      "NpcId": "npc.tone",
+      "StartNode": "start",
+      "Nodes": [
+        {
+          "Id": "start",
+          "Speaker": "Tone",
+          "Text": "Booth's warm. I got three beats you can pick from — none of 'em free after today.",
+          "Options": [
+            {
+              "Id": "record",
+              "Text": "Let's record.",
+              "Tone": "Respectful",
+              "Next": "done",
+              "Effects": [],
+              "When": {
+                "RequireFlags": [
+                  "ch1.rell_confronted"
+                ]
+              }
+            },
+            {
+              "Id": "later",
+              "Text": "Give me a minute.",
+              "Tone": "Neutral",
+              "Next": null,
+              "Effects": []
+            }
+          ],
+          "Variants": [
+            {
+              "Text": "Rell's still in my lobby. Handle that first.",
+              "When": {
+                "ForbidFlags": [
+                  "ch1.rell_confronted"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "Id": "done",
+          "Speaker": "Tone",
+          "Text": "That's a demo. Rough, but it's yours. Don't let it sit on your phone.",
+          "Options": [
+            {
+              "Id": "thanks",
+              "Text": "Appreciate you, Tone.",
+              "Tone": "Respectful",
+              "Next": null,
+              "Effects": [],
+              "Trigger": "dialogue.tone.demo_recorded"
+            }
+          ],
+          "Variants": []
+        }
+      ]
+    },
+    {
+      "Id": "dialogue.reece.venue",
+      "NpcId": "npc.big_reece",
+      "StartNode": "start",
+      "Nodes": [
+        {
+          "Id": "start",
+          "Speaker": "Big Reece",
+          "Text": "Heard you made Rell sweat. In here that don't mean nothing. Brick's next on the card. You want him?",
+          "Options": [
+            {
+              "Id": "yes",
+              "Text": "Put me on.",
+              "Tone": "Challenge",
+              "Next": null,
+              "Effects": [],
+              "Trigger": "dialogue.reece.signed_up"
+            },
+            {
+              "Id": "no",
+              "Text": "Not tonight.",
+              "Tone": "WalkAway",
+              "Next": null,
+              "Effects": []
+            }
+          ],
+          "Variants": [
+            {
+              "Text": "Heard you talked Rell down. Smart. In here talk don't work. Brick's next. You want him?",
+              "When": {
+                "RequireFlags": [
+                  "ch1.rell_talked"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "dialogue.nia.invitation",
+      "NpcId": "npc.nia",
+      "StartNode": "start",
+      "Nodes": [
+        {
+          "Id": "start",
+          "Speaker": "Nia",
+          "Text": "Demo on Tuesday, Brick on the floor Thursday. You move fast. There's a showcase downtown at Crown Tower. All five crews send somebody. I want you on it.",
+          "Options": [
+            {
+              "Id": "yes",
+              "Text": "I'll be there.",
+              "Tone": "Respectful",
+              "Next": null,
+              "Effects": [],
+              "Trigger": "dialogue.nia.invitation_accepted"
+            },
+            {
+              "Id": "negotiate",
+              "Text": "What's in it for me?",
+              "Tone": "Negotiate",
+              "Next": "pitch",
+              "Effects": []
+            }
+          ],
+          "Variants": []
+        },
+        {
+          "Id": "pitch",
+          "Speaker": "Nia",
+          "Text": "Exposure. Every person who matters in this city in one room. That's worth more than a purse.",
+          "Options": [
+            {
+              "Id": "yes",
+              "Text": "Alright. I'm in.",
+              "Tone": "Neutral",
+              "Next": null,
+              "Effects": [],
+              "Trigger": "dialogue.nia.invitation_accepted"
+            }
+          ],
+          "Variants": []
+        }
+      ]
+    },
+    {
+      "Id": "dialogue.grandma.invitation",
+      "NpcId": "npc.grandma",
+      "StartNode": "start",
+      "Nodes": [
+        {
+          "Id": "start",
+          "Speaker": "Grandma",
+          "Text": "You got that look. Go on, tell me.",
+          "Options": [
+            {
+              "Id": "tell",
+              "Text": "I got invited to a showcase. Downtown. Crown Tower.",
+              "Tone": "Truth",
+              "Next": "reaction",
+              "Effects": []
+            }
+          ],
+          "Variants": []
+        },
+        {
+          "Id": "reaction",
+          "Speaker": "Grandma",
+          "Text": "Crown Tower... Downtown changes people, baby. Just — come home when you say you will. Hear me?",
+          "Options": [
+            {
+              "Id": "promise",
+              "Text": "I promise.",
+              "Tone": "Respectful",
+              "Next": null,
+              "Effects": [
+                {
+                  "Type": "Relationship",
+                  "Target": "npc.grandma",
+                  "Relationship": {
+                    "Trust": 3
+                  }
+                }
+              ],
+              "Trigger": "dialogue.grandma.invitation_told"
+            }
+          ],
+          "Variants": [
+            {
+              "Text": "Crown Tower... You took care of my prescription without me asking twice. I know you got sense. Just come home when you say you will.",
+              "When": {
+                "RequireFlags": [
+                  "side.grandmas_errand.done"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Id": "dialogue.marlo.intro",
+      "NpcId": "npc.marlo",
+      "StartNode": "start",
+      "Nodes": [
+        {
+          "Id": "start",
+          "Speaker": "Marlo",
+          "Text": "Southside Motors. I fix what's broke and sell what runs. When you got real money, come talk business.",
+          "Options": [
+            {
+              "Id": "ok",
+              "Text": "I'll be back.",
+              "Tone": "Respectful",
+              "Next": null,
+              "Effects": [
+                {
+                  "Type": "Relationship",
+                  "Target": "npc.marlo",
+                  "Relationship": {
+                    "Respect": 1
+                  }
+                }
+              ]
+            }
+          ],
+          "Variants": []
+        }
+      ]
+    },
+    {
+      "Id": "dialogue.grandma.home",
+      "NpcId": "npc.grandma",
+      "StartNode": "start",
+      "Nodes": [
+        {
+          "Id": "start",
+          "Speaker": "Grandma",
+          "Text": "You hungry? There's greens on the stove.",
+          "Options": [
+            {
+              "Id": "ok",
+              "Text": "Thank you, Grandma.",
+              "Tone": "Respectful",
+              "Next": null,
+              "Effects": []
+            }
+          ],
+          "Variants": [
+            {
+              "Text": "You stay out of trouble today?",
+              "When": {
+                "MinAttitude": "Warm"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

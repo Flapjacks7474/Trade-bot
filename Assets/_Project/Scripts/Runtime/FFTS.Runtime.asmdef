@@ -1,0 +1,13 @@
+{
+    "name": "FFTS.Runtime",
+    "rootNamespace": "FFTS.Runtime",
+    "references": ["FFTS.Simulation", "Unity.InputSystem"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

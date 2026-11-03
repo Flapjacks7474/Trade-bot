@@ -1,0 +1,115 @@
+{
+  "Crews": [
+    {
+      "Id": "crew.crown_syndicate",
+      "DisplayName": "The Crown Syndicate",
+      "Colors": "Black and gold",
+      "Headquarters": "Crown Tower",
+      "Territory": [
+        "district.crown_center",
+        "district.north_heights"
+      ],
+      "BusinessInterests": [
+        "Recording studios",
+        "Luxury lounges",
+        "Entertainment",
+        "Property investments",
+        "Industry relationships"
+      ],
+      "Identity": "Wealth, industry power, influence and control.",
+      "Leader": {
+        "CastingReference": "Future",
+        "PlaceholderName": "Aurelius \"Goldie\" Crane",
+        "LikenessRightsCleared": false
+      }
+    },
+    {
+      "Id": "crew.slime_circle",
+      "DisplayName": "The Slime Circle",
+      "Colors": "Purple and lime",
+      "Headquarters": "Slime House",
+      "Territory": [
+        "district.east_end"
+      ],
+      "BusinessInterests": [
+        "Independent studios",
+        "Labels",
+        "Artist development",
+        "Fashion",
+        "Music events"
+      ],
+      "Identity": "Creativity, independence, experimentation and loyalty.",
+      "Leader": {
+        "CastingReference": "Young Thug",
+        "PlaceholderName": "Jaylen \"Verde\" Moss",
+        "LikenessRightsCleared": false
+      }
+    },
+    {
+      "Id": "crew.slaughterhouse",
+      "DisplayName": "The Slaughterhouse",
+      "Colors": "Red and black",
+      "Headquarters": "The Yard",
+      "Territory": [
+        "district.southside"
+      ],
+      "BusinessInterests": [
+        "Gyms",
+        "Fighting venues",
+        "Security",
+        "Automotive shops"
+      ],
+      "Identity": "Discipline, reputation, organization and fighting ability.",
+      "Leader": {
+        "CastingReference": "21 Savage",
+        "PlaceholderName": "Silas \"Blade\" Mercer",
+        "LikenessRightsCleared": false
+      }
+    },
+    {
+      "Id": "crew.4pf_empire",
+      "DisplayName": "The 4PF Empire",
+      "Colors": "Blue and white",
+      "Headquarters": "The Blueprint",
+      "Territory": [
+        "district.westside"
+      ],
+      "BusinessInterests": [
+        "Clothing brands",
+        "Recording studios",
+        "Restaurants",
+        "Talent management",
+        "Artist development"
+      ],
+      "Identity": "Ambition, expansion, rising talent and business.",
+      "Leader": {
+        "CastingReference": "Lil Baby",
+        "PlaceholderName": "Darius \"Blueprint\" Hale",
+        "LikenessRightsCleared": false
+      }
+    },
+    {
+      "Id": "crew.tru_alliance",
+      "DisplayName": "The Tru Alliance",
+      "Colors": "Emerald and gold",
+      "Headquarters": "The Estate",
+      "Territory": [
+        "district.north_heights",
+        "district.old_town"
+      ],
+      "BusinessInterests": [
+        "Restaurants",
+        "Nightclubs",
+        "Real estate",
+        "Hospitality",
+        "Entertainment"
+      ],
+      "Identity": "Preservation of influence, wealth and the established system.",
+      "Leader": {
+        "CastingReference": "2 Chainz",
+        "PlaceholderName": "Cornelius \"Two Rings\" Bishop",
+        "LikenessRightsCleared": false
+      }
+    }
+  ]
+}

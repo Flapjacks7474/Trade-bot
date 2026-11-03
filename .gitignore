@@ -1,0 +1,31 @@
+# Unity
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/*
+!/[Bb]uilds/.gitkeep
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+*.csproj
+*.sln
+*.suo
+*.user
+*.pidb
+*.booproj
+*.unityproj
+*.apk
+*.aab
+*.unitypackage
+crashlytics-build.properties
+.vs/
+.idea/
+# Keep the dotnet test harness projects (they live outside Assets/)
+!/Tests/DotNet/**/*.csproj
+/Tests/DotNet/bin/
+/Tests/DotNet/obj/
+/Tests/DotNet/**/bin/
+/Tests/DotNet/**/obj/
+/Tests/DotNet/TestResults/
