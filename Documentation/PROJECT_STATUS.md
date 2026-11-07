@@ -12,6 +12,10 @@ Unity driving/racing layer written and compile-checked, not run.
 **Milestone 5 (Characters & missions):** complete at the simulation level: NPC schedules, travel along roads, update
 tiers, authored personalities and time-aware dialogue join the existing missions, branches, dialogue and relationships.
 
+**Playable now:** a browser version of Chapter 1 (`WebPrototype/`) runs on phones and desktops from a private link. It's built
+from the same JSON content, with a line-by-line JavaScript port of the game rules (9 node tests mirror the C# tests, plus a
+headless-browser gameplay smoke test). It's the way to play while the Unity build is pending.
+
 **GitHub push is blocked** (403: the Claude GitHub App has no write access to `Flapjacks7474/Trade-bot`). Work is
 committed locally and delivered as zip files; push once access is granted.
 

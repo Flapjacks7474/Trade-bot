@@ -2,6 +2,19 @@
 
 All notable changes. Dates are UTC.
 
+## [0.4.0-playable-web] — 2026-11-08
+
+### Added
+- Browser-playable version of Chapter 1 (`WebPrototype/`): 3D Southside from the layout data, touch and keyboard controls,
+  missions and dialogue, fights against Dre, Rell and Brick, NPC schedules, garage, driving and the Pecan Street Sprint, device saves.
+- JavaScript port of the simulation (combat, AI, story, missions, vehicles, racing, living world) with node tests mirroring the C# suite.
+- Headless-browser smoke test that plays through walking, talking, fighting, buying, driving, racing, save/reload and the phone layout.
+
+### Fixed (found by the smoke test)
+- Hidden screens could still block taps (now `[hidden]` always wins).
+- An autosave triggered right as a fight began was skipped; autosaves now retry when nothing blocks them.
+- Name signs covered the view up close; signs fade with distance, sleeping NPCs stay indoors, phone HUD no longer overlaps.
+
 ## [0.3.0-living-world] — 2026-11-07
 
 ### Added (Milestone 5 — Characters & missions)
