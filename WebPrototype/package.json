@@ -1,0 +1,15 @@
+{
+  "name": "ffts-web-prototype",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Browser-playable prototype of the Fight for the South Southside slice, built from the same JSON content as the Unity project.",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node --test tests/"
+  },
+  "devDependencies": {
+    "esbuild": "0.20.2",
+    "three": "0.160.0"
+  }
+}
