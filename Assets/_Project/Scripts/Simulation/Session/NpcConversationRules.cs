@@ -16,6 +16,8 @@ namespace FFTS.Session
         public string Branch;                                         // "missionId:branchId"
         public List<string> RequireFlags = new List<string>();
         public List<string> ForbidFlags = new List<string>();
+        public string Activity;                                       // NPC's current scheduled activity, e.g. "sleep"
+        public List<string> Segments = new List<string>();           // time-of-day restriction
         public string DialogueId;
         public string FightId;
         public VenueType Venue = VenueType.Street;
@@ -72,6 +74,12 @@ namespace FFTS.Session
             }
             foreach (var f in r.RequireFlags) if (!s.Story.Has(f)) return false;
             foreach (var f in r.ForbidFlags) if (s.Story.Has(f)) return false;
+            if (r.Segments != null && r.Segments.Count > 0 && !r.Segments.Contains(s.Clock.Segment.ToString())) return false;
+            if (r.Activity != null)
+            {
+                var n = s.LivingWorld?.Get(r.NpcId);
+                if (n == null || n.Activity != r.Activity || n.Status == FFTS.LivingWorld.NpcStatus.Traveling) return false;
+            }
             return true;
         }
 

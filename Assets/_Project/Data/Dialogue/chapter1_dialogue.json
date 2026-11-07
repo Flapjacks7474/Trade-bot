@@ -174,7 +174,7 @@
         {
           "Id": "crews",
           "Speaker": "Lou",
-          "Text": "Five crews split this city now. Red and black got Southside — The Slaughterhouse. Crown Syndicate sits up downtown counting money. Slime Circle out East, 4PF on the Westside, Tru Alliance holding North Heights and Old Town.",
+          "Text": "Five crews split this city now. Red and black got Southside \u2014 The Slaughterhouse. Crown Syndicate sits up downtown counting money. Slime Circle out East, 4PF on the Westside, Tru Alliance holding North Heights and Old Town.",
           "Options": [
             {
               "Id": "more",
@@ -189,7 +189,7 @@
         {
           "Id": "table",
           "Speaker": "Lou",
-          "Text": "...That's barbershop talk. But folks say somebody sits above all five. Somebody nobody's seen. Anyway — you want the part sharp or soft?",
+          "Text": "...That's barbershop talk. But folks say somebody sits above all five. Somebody nobody's seen. Anyway \u2014 you want the part sharp or soft?",
           "Options": [
             {
               "Id": "sharp",
@@ -256,7 +256,7 @@
         {
           "Id": "agree",
           "Speaker": "Dre",
-          "Text": "Bet. Gym on the corner. Loser buys wings — and I'm hungry.",
+          "Text": "Bet. Gym on the corner. Loser buys wings \u2014 and I'm hungry.",
           "Options": [
             {
               "Id": "go",
@@ -342,7 +342,7 @@
         {
           "Id": "start",
           "Speaker": "Tone",
-          "Text": "Booth's warm. I got three beats you can pick from — none of 'em free after today.",
+          "Text": "Booth's warm. I got three beats you can pick from \u2014 none of 'em free after today.",
           "Options": [
             {
               "Id": "record",
@@ -501,7 +501,7 @@
         {
           "Id": "reaction",
           "Speaker": "Grandma",
-          "Text": "Crown Tower... Downtown changes people, baby. Just — come home when you say you will. Hear me?",
+          "Text": "Crown Tower... Downtown changes people, baby. Just \u2014 come home when you say you will. Hear me?",
           "Options": [
             {
               "Id": "promise",
@@ -582,6 +582,15 @@
             }
           ],
           "Variants": [
+            {
+              "Text": "It's late, baby. Lock the door behind you, and don't let them streets keep you.",
+              "When": {
+                "Segments": [
+                  "Night",
+                  "LateNight"
+                ]
+              }
+            },
             {
               "Text": "You stay out of trouble today?",
               "When": {

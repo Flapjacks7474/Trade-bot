@@ -6,7 +6,7 @@ Open-world Southern hip-hop action RPG set in **Finess City**, combining street 
 racing, business ownership, crew politics and a branching family story. Target engine: **Unity 6.3 LTS (URP)**, PC first.
 
 **Current state:** foundation milestone. The gameplay rules ship in an engine-independent C# assembly with
-an automated test suite (120 tests, all passing — see `Documentation/TEST_RESULTS.md`). A Unity
+an automated test suite (134 tests, all passing — see `Documentation/TEST_RESULTS.md`). A Unity
 vertical-slice layer builds a graybox Southside from data. **The Unity project has not yet been opened in a Unity
 editor**, so nothing here has been verified at runtime inside Unity. Read `Documentation/PROJECT_STATUS.md` first.
 

@@ -10,9 +10,12 @@ namespace FFTS.Runtime
         private string _speakerFallback;
         public bool IsOpen => _runner != null;
 
-        public void Open(DialogueRunner runner, string speaker)
+        private string _npcId;
+
+        public void Open(DialogueRunner runner, string speaker, string npcId = null)
         {
-            _runner = runner; _speakerFallback = speaker;
+            _runner = runner; _speakerFallback = speaker; _npcId = npcId;
+            if (npcId != null) CoreGameManager.Instance.Session.LivingWorld?.Hold(npcId, true); // they stop to talk
             CoreGameManager.Instance.Lock(this);
             Cursor.lockState = CursorLockMode.None; Cursor.visible = true;
         }
@@ -20,6 +23,8 @@ namespace FFTS.Runtime
         private void Close()
         {
             _runner = null;
+            if (_npcId != null) CoreGameManager.Instance.Session.LivingWorld?.Hold(_npcId, false);
+            _npcId = null;
             CoreGameManager.Instance.Unlock(this);
             Cursor.lockState = CursorLockMode.Locked; Cursor.visible = false;
         }

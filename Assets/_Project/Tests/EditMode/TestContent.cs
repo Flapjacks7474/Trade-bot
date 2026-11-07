@@ -17,6 +17,7 @@ namespace FFTS.Tests
             Layouts = { TestData.Read("World/southside_layout.json") },
             Vehicles = { TestData.Read("Vehicles/vehicles.json") },
             Races = { TestData.Read("Racing/races.json") },
+            NpcProfiles = { TestData.Read("Characters/npc_profiles.json") },
         };
 
         public static GameSession NewSession(out ValidationReport report, ulong seed = 1)

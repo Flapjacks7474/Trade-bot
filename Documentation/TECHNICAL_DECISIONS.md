@@ -85,3 +85,9 @@ toward the simulated position and reports closing speed back as an impact.
 ## TD-017 — Racing AI uses the player's physics, no rubber-banding
 AI cars run the same `VehicleDynamics` with their definition's stats. Difficulty comes only from skill (line, braking points,
 mistakes). A test asserts no AI car ever exceeds its top speed.
+
+## TD-018 — NPC travel happens in real seconds on a road graph; tiers change frequency, not movement
+Schedules are evaluated in game hours; travel advances in real seconds at walking or driving speed along the road graph.
+Distance tiers only batch updates (60 m every frame, 250 m every second, beyond that every 5 seconds), so off-screen NPCs
+are never placed instantly. **Tradeoff:** a walker crossing the district can take hours of game time, so schedules start
+trips early and important NPCs drive. Story pins outrank routines so a mission never waits on someone's day off.

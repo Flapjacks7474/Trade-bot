@@ -50,20 +50,21 @@ namespace FFTS.Tests
         public void DreMovesFromCourtsToGymAfterAgreeingToSpar()
         {
             var s = TestContent.NewSession();
-            var layout = DistrictLayout.Parse(TestData.Read("World/southside_layout.json"), new ValidationReport());
-            var courts = layout.Npcs.Find(n => n.PlacementId == "placement.dre");
-            var gym = layout.Npcs.Find(n => n.PlacementId == "placement.dre_gym");
-            Assert.IsTrue(NpcConversationRules.IsVisible(s, courts));
-            Assert.IsFalse(NpcConversationRules.IsVisible(s, gym));
             Assert.AreNotEqual(FFTS.Missions.MissionActionResult.Ok, s.Missions.Start("mission.ch1.old_friends"), "locked missions cannot be forced");
             s.ReportTrigger("location.southside.grandma_house");
             TestContent.Talk(s, "dialogue.grandma.welcome", "respect", "leave");
             TestContent.Talk(s, "dialogue.lou.barbershop", "ask", "more", "sharp");
             s.ReportTrigger("location.southside.corner_store");
             s.ReportTrigger("location.southside.tone_studio");
+            s.TickWorld(0.1f, 0, 0);
+            Assert.AreEqual("location.southside.basketball_courts", s.LivingWorld.Get("npc.dre").TargetLocationId, "waiting at the courts for the reunion");
             TestContent.Talk(s, "dialogue.dre.reunion", "challenge", "go");
-            Assert.IsFalse(NpcConversationRules.IsVisible(s, courts));
-            Assert.IsTrue(NpcConversationRules.IsVisible(s, gym));
+            s.TickWorld(0.1f, 0, 0);
+            var dre = s.LivingWorld.Get("npc.dre");
+            Assert.AreEqual("location.southside.community_gym", dre.TargetLocationId);
+            Assert.AreEqual(FFTS.LivingWorld.NpcStatus.Traveling, dre.Status, "he walks there; no teleport");
+            for (int i = 0; i < 600 && dre.Status == FFTS.LivingWorld.NpcStatus.Traveling; i++) s.TickWorld(0.5f, dre.X, dre.Z);
+            Assert.IsTrue(s.LivingWorld.IsAt("npc.dre", "location.southside.community_gym"));
         }
     }
 }

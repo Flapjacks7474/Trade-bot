@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using FFTS.Combat;
 using FFTS.Core;
 using FFTS.Dialogue;
+using FFTS.LivingWorld;
 using FFTS.Missions;
 using FFTS.Racing;
 using FFTS.Vehicles;
@@ -20,6 +21,7 @@ namespace FFTS.Session
         public List<string> Layouts = new List<string>();
         public List<string> Vehicles = new List<string>();
         public List<string> Races = new List<string>();
+        public List<string> NpcProfiles = new List<string>();
     }
 
     public static class GameContentLoader
@@ -42,6 +44,9 @@ namespace FFTS.Session
             content.Races = RaceDatabase.FromJson(src.Races, content.Vehicles, report);
             layouts = new List<DistrictLayout>();
             foreach (var json in src.Layouts) layouts.Add(DistrictLayout.Parse(json, report));
+            content.Layout = layouts.Count > 0 ? layouts[0] : null;
+            if (content.Layout != null)
+                foreach (var json in src.NpcProfiles) content.NpcProfiles.AddRange(LivingWorldManager.Parse(json, content.Layout, report));
             CrossCheck(content, layouts, report);
             return content;
         }
@@ -80,6 +85,13 @@ namespace FFTS.Session
                         }
                     }
             }
+            foreach (var p in content.NpcProfiles)
+                foreach (var e in p.Schedule)
+                {
+                    foreach (var o in e.ObjectivesDone) NpcConversationRules.CheckObjectiveRef(o, content, report);
+                    foreach (var o in e.ObjectivesNotDone) NpcConversationRules.CheckObjectiveRef(o, content, report);
+                    if (e.MissionActive != null && !content.Missions.Exists(m => m.Id == e.MissionActive)) report.Error($"NPC {p.NpcId}: schedule pin on unknown mission {e.MissionActive}.");
+                }
             if (content.Races != null)
                 foreach (var r in content.Races.Races)
                 {

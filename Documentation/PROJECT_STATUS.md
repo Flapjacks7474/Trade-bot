@@ -9,6 +9,8 @@ _Last updated: 2026-11-07_
 has not run in an editor.
 **Milestone 4 (Driving):** simulation complete and tested (vehicles, driving model, garages, one race with AI).
 Unity driving/racing layer written and compile-checked, not run.
+**Milestone 5 (Characters & missions):** complete at the simulation level: NPC schedules, travel along roads, update
+tiers, authored personalities and time-aware dialogue join the existing missions, branches, dialogue and relationships.
 
 **GitHub push is blocked** (403: the Claude GitHub App has no write access to `Flapjacks7474/Trade-bot`). Work is
 committed locally and delivered as zip files; push once access is granted.
@@ -54,11 +56,17 @@ TEST_RESULTS.md). Nothing has been play-tested.
 | Garages & ownership (buy, sell, store, retrieve, repair, tow/recover, upgrades, garage space) | ✅ Tested | GarageTests |
 | Racing (ordered checkpoints, countdown, honest AI, DNF, purses, first-win bonus, ranks) | ✅ Tested | RacingTests |
 | Vehicles + racing in saves and mission triggers | ✅ Tested | DrivingSessionTests |
+| NPC schedules (10 Southside NPCs, weekly routines, story pins) | ✅ Tested | LivingWorldTests |
+| NPC travel along the road graph, no teleporting, Full/Simplified/Distant update tiers, hold while talking | ✅ Tested | LivingWorldTests |
+| Authored personalities loaded into relationships | ✅ Tested | LivingWorldSessionTests |
+| Time-of-day dialogue variants and activity-aware conversation rules (e.g. Grandma asleep) | ✅ Tested | LivingWorldSessionTests |
+| NPC state in saves (mid-trip positions) | ✅ Tested | LivingWorldSessionTests |
+| Unity NPC agents (moving capsules / cars, activity labels, talk while walking) | ⚠️ Written, compile-checked, **never run** | — |
 | Unity driving (enter/exit, collisions, chase/hood/cockpit cameras, garage panel, race director, HUD) | ⚠️ Written, compile-checked, **never run** | — |
 
 ## Not started (by roadmap order)
 
-Traffic, police, other race types (M4 leftovers) · NPC schedules and travel (M5) · FINESS OS phone (M6) · rival encounters, crew
+Traffic, police, other race types (M4 leftovers) · background crowds (M5 leftover) · FINESS OS phone (M6) · rival encounters, crew
 behaviour, world events (M7) · music career beyond the first-demo flag (M8) · businesses/property (M9) ·
 chapters 2–8 (M10) · other districts (M11) · release prep (M12) · police/law · customization.
 
@@ -73,4 +81,5 @@ chapters 2–8 (M10) · other districts (M11) · release prep (M12) · police/la
 1. Open in Unity 6.3, resolve packages, run **FFTS > Build Southside Slice Scene**, run the EditMode tests in the
    Test Runner, play the slice through Chapter 1, and log every issue in BUG_TRACKER.md.
 2. Drive the Magnolia Cruiser around Southside and run the Pecan Street Sprint in-editor; tune feel.
-3. Then Milestone 5: NPC schedules and travel (simulation first, tested against the game clock).
+3. Watch the NPCs go about their day in-editor; check pacing (walkers at 1.6 m/s can take hours of game time to cross the district).
+4. Then Milestone 6: FINESS OS phone (Map, Contacts, Messages, Bank, mission tracking) on top of the existing systems.

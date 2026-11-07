@@ -122,8 +122,15 @@ namespace FFTS.Runtime
             }
         }
 
+        private void LateUpdateWorld()
+        {
+            var p = Player != null ? Player.position : new Vector3(Session.Position.X, 0, Session.Position.Z);
+            Session.TickWorld(Time.deltaTime, p.x, p.z);
+        }
+
         private void LateUpdate()
         {
+            LateUpdateWorld();
             if (_autosavePending && !Fights.InFight && !Dialogue.IsOpen && !Races.Active)
             {
                 _autosavePending = false;
@@ -150,7 +157,7 @@ namespace FFTS.Runtime
             if (rule.FightId != null) { Fights.Begin(rule.FightId, rule.Venue, CurrentLocationId()); return; }
             var runner = Session.StartDialogue(rule.DialogueId);
             if (runner == null) { Notify("Missing dialogue " + rule.DialogueId); return; }
-            Dialogue.Open(runner, displayName);
+            Dialogue.Open(runner, displayName, npcId);
         }
 
         /// <summary>Location the player is currently inside (or nearest within 30 m).</summary>
@@ -206,6 +213,7 @@ namespace FFTS.Runtime
                 if (cc != null) cc.enabled = true;
             }
             Reloaded?.Invoke();
+            foreach (var a in UnityEngine.Object.FindObjectsByType<NpcAgent>(FindObjectsSortMode.None)) a.Snap();
             Notify(r.Outcome == LoadOutcome.RecoveredFromBackup ? "Loaded backup (primary save was damaged)" : "Loaded (" + slot + ")");
         }
     }

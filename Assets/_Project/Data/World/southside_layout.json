@@ -301,18 +301,7 @@
       "OffsetX": 0,
       "OffsetZ": 0,
       "Color": "#ff9f1c",
-      "PlacementId": "placement.dre",
-      "HideAfterObjective": "mission.ch1.old_friends/meet_dre"
-    },
-    {
-      "NpcId": "npc.dre",
-      "DisplayName": "Dre",
-      "LocationId": "location.southside.community_gym",
-      "OffsetX": 3,
-      "OffsetZ": -10,
-      "Color": "#ff9f1c",
-      "PlacementId": "placement.dre_gym",
-      "ShowAfterObjective": "mission.ch1.old_friends/meet_dre"
+      "PlacementId": "placement.dre"
     },
     {
       "NpcId": "npc.tone",

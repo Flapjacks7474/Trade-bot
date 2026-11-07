@@ -4,6 +4,8 @@ using FFTS.Combat;
 using FFTS.Core;
 using FFTS.Dialogue;
 using FFTS.Economy;
+using FFTS.LivingWorld;
+using FFTS.World;
 using FFTS.Missions;
 using FFTS.Racing;
 using FFTS.Vehicles;
@@ -43,6 +45,7 @@ namespace FFTS.Session
         public StoryState Story = new StoryState();
         public MissionsState Missions = new MissionsState();
         public GarageState Garage = new GarageState();
+        public LivingWorldState LivingWorld = new LivingWorldState();
         public RacingState Racing = new RacingState();
         public int FightCounter;
     }
@@ -55,6 +58,8 @@ namespace FFTS.Session
         public CombatDatabase Combat;
         public VehicleDatabase Vehicles;
         public RaceDatabase Races;
+        public DistrictLayout Layout;
+        public List<NpcProfile> NpcProfiles = new List<NpcProfile>();
     }
 
     /// <summary>
@@ -79,6 +84,10 @@ namespace FFTS.Session
         public MissionManager Missions { get; }
         public GarageManager Garage { get; }
         public RaceManager Racing { get; }
+        /// <summary>NPC routines and travel; null when content has no layout or profiles.</summary>
+        public LivingWorldManager LivingWorld { get; }
+        private int _lastScheduledHour = -1;
+        private bool _schedulesDirty;
         public GameContent Content { get; }
         public PlayerIdentity Player { get; private set; } = new PlayerIdentity();
         public WorldPosition Position { get; private set; } = new WorldPosition();
@@ -99,6 +108,18 @@ namespace FFTS.Session
             Racing = new RaceManager(Content.Races ?? RaceDatabase.FromJson(new string[0], vehicles, new ValidationReport()), vehicles, Bank, Reputation, Social, Bus);
             Missions.Load(Content.Missions, report ?? new ValidationReport());
             Bus.Subscribe<StoryFlagChanged>(_ => Missions.RefreshAvailability());
+            if (Content.Layout != null && Content.NpcProfiles.Count > 0)
+            {
+                LivingWorld = new LivingWorldManager(Content.NpcProfiles, Content.Layout, Bus);
+                LivingWorld.StoryConditionsMet = StoryPinMet;
+                foreach (var p in Content.NpcProfiles) Social.SetPersonality(p.NpcId, p.Personality);
+                LivingWorld.InitializeAt(Clock.Day, Clock.Hour);
+                _lastScheduledHour = Clock.Hour;
+                // Story changes can move pinned NPCs; re-evaluate on the next tick (not inside the event).
+                Bus.Subscribe<MissionStateChanged>(_ => _schedulesDirty = true);
+                Bus.Subscribe<ObjectiveCompleted>(_ => _schedulesDirty = true);
+                Bus.Subscribe<StoryFlagChanged>(_ => _schedulesDirty = true);
+            }
             PumpMissions();
         }
 
@@ -122,6 +143,32 @@ namespace FFTS.Session
             if (Missions.TrackedMission == null)
                 foreach (var d in Missions.ByStatus(MissionStatus.Active))
                     if (d.Category == MissionCategory.Main) { Missions.TrackedMission = d.Id; break; }
+        }
+
+        // ---------------------------------------------------------------- living world
+
+        private bool StoryPinMet(ScheduleEntry e)
+        {
+            if (e.MissionActive != null && Missions.Status(e.MissionActive) != MissionStatus.Active) return false;
+            foreach (var o in e.ObjectivesDone) if (!NpcConversationRules.ObjectiveDone(this, o)) return false;
+            foreach (var o in e.ObjectivesNotDone) if (NpcConversationRules.ObjectiveDone(this, o)) return false;
+            foreach (var f in e.RequireFlags) if (!Story.Has(f)) return false;
+            return true;
+        }
+
+        /// <summary>
+        /// Advances NPC travel by real seconds and re-plans routines when the game hour or story state changes.
+        /// The platform layer calls this every frame with the player's position (it sets update frequency per NPC).
+        /// </summary>
+        public void TickWorld(float realSeconds, float playerX, float playerZ)
+        {
+            if (LivingWorld == null) return;
+            if (Clock.Hour != _lastScheduledHour || _schedulesDirty)
+            {
+                _lastScheduledHour = Clock.Hour; _schedulesDirty = false;
+                LivingWorld.UpdateSchedules(Clock.Day, Clock.Hour);
+            }
+            LivingWorld.Step(realSeconds, playerX, playerZ);
         }
 
         // ---------------------------------------------------------------- triggers & fights
@@ -218,6 +265,7 @@ namespace FFTS.Session
             => Content.Dialogues.TryGetValue(dialogueId, out var d) ? new DialogueRunner(d, this) : null;
 
         public bool HasFlag(string flag) => Story.Has(flag);
+        public string CurrentSegment => Clock.Segment.ToString();
         public RelationshipValues Relationship(string npcId) => Social.Get(npcId, PlayerId);
         public Attitude AttitudeOf(string npcId) => Social.EvaluateAttitude(npcId, PlayerId);
         public void ApplyEffect(string key, RewardDefinition effect)
@@ -244,7 +292,8 @@ namespace FFTS.Session
                 GameVersion = GameVersion, SaveLabel = label ?? Clock.ToString(),
                 Player = Player, Position = Position, ClockMinutes = Clock.TotalMinutes, RngState = Random.State,
                 Bank = Bank.Capture(), Reputation = Reputation.Capture(), Social = Social.Capture(), Story = Story.Capture(),
-                Missions = m, Garage = Garage.Capture(), Racing = Racing.Capture(), FightCounter = _fightCounter
+                Missions = m, Garage = Garage.Capture(), Racing = Racing.Capture(),
+                LivingWorld = LivingWorld?.Capture() ?? new LivingWorldState(), FightCounter = _fightCounter
             };
         }
 
@@ -262,6 +311,12 @@ namespace FFTS.Session
             Missions.Restore(s.Missions);
             Garage.Restore(s.Garage);
             Racing.Restore(s.Racing);
+            if (LivingWorld != null)
+            {
+                if (s.LivingWorld != null && s.LivingWorld.Npcs.Count > 0) LivingWorld.Restore(s.LivingWorld);
+                else LivingWorld.InitializeAt(Clock.Day, Clock.Hour); // older save without NPC state
+                _lastScheduledHour = -1; // re-plan against the restored clock and story
+            }
             PumpMissions();
             _dialogueEffectKeys.Clear();
             foreach (var k in s.Missions.GrantedRewardKeys) if (k.StartsWith("dialogue.")) _dialogueEffectKeys.Add(k);

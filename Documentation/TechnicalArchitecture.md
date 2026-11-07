@@ -12,7 +12,7 @@
 │ PlayerInputSource (Input System / legacy) · PlayerMotor · CameraRig         │
 │ WorldInteractable + InteractionManager · SliceBuilder + LocationTracker     │
 │ FightDirector (60 Hz fixed tick) + FighterView · DialoguePanel · GameHud    │
-│ DrivingDirector + VehicleView · RaceDirector · GaragePanel                  │
+│ DrivingDirector + VehicleView · RaceDirector · GaragePanel · NpcAgent       │
 └───────────────────────────────┬─────────────────────────────────────────────┘
                                 │ reads state, sends commands, listens to events
 ┌──────────────────── FFTS.Simulation (noEngineReferences) ───────────────────┐
@@ -27,6 +27,7 @@
 │ World: DistrictLayout   Crews: CrewFile                                     │
 │ Vehicles: VehicleDatabase · VehicleDynamics · GarageManager                 │
 │ Racing: RaceDatabase · RaceSession · RaceDriverAI · RaceManager             │
+│ LivingWorld: RoadGraph · LivingWorldManager (schedules, travel, tiers)      │
 │ Session: GameSession · GameContentLoader · NpcConversationRules ·           │
 │          FightConsequences · GameSaveData                                   │
 └─────────────────────────────────────────────────────────────────────────────┘
@@ -51,7 +52,7 @@ delegate, so Story does not depend on Missions (that would be a cycle).
 ## Events (implemented)
 `TimeSegmentChanged`, `DayChanged`, `TransactionPosted`, `ReputationChanged`, `RelationshipChanged`,
 `StoryFlagChanged`, `MissionStateChanged`, `MissionCompleted`, `ObjectiveCompleted`, `WorldEventRecorded`,
-`FightCompleted`, `GameSaved`, `GameLoaded`, `VehiclePurchased`, `VehicleSold`, `RaceCompleted`. Planned: `BusinessPurchased`,
+`FightCompleted`, `GameSaved`, `GameLoaded`, `VehiclePurchased`, `VehicleSold`, `RaceCompleted`, `NpcArrived`, `NpcDeparted`. Planned: `BusinessPurchased`,
 `TerritoryChanged`, `RivalEncounterResolved`, `IncidentReported`, `SongReleased`, `CrewRankChanged`.
 
 ## Triggers
@@ -80,6 +81,7 @@ first, then the backup. Migrations (`ISaveMigration`) run on raw JSON before typ
 | ReputationManager | same name |
 | SaveManager | `SaveSlotManager<GameSaveData>` + `GameSession.Capture/Restore` |
 | UIManager | `GameHud`, `DialoguePanel` (placeholder) |
+| NPCManager / LivingWorldManager | `LivingWorldManager` + `NpcAgent` |
 | WorldStreamingManager | not yet; `SliceBuilder` builds one district |
 | VehicleManager / GarageManager | `GarageManager` |
 | DrivingController | `VehicleDynamics` + `DrivingDirector` + `VehicleView` |

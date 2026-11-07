@@ -1,14 +1,15 @@
 # Test Results
 
-## Run 2026-11-07 — simulation suite (outside Unity), Milestone 4 added
+## Run 2026-11-07 (later) — simulation suite, Milestone 5 added
 
 | Item | Value |
 |---|---|
-| Command | `Tools/run-tests.sh` (`dotnet test` on `Tests/DotNet/SimulationTests`) |
-| Environment | Linux container, .NET SDK 8.0.133, NUnit 3.14, NUnit3TestAdapter 4.5 |
-| Simulation compiled as | netstandard2.1, C# 9, warnings as errors (0 warnings, 0 errors) |
-| Result | **120 passed, 0 failed, 0 skipped** (82 from the foundation + 38 for vehicles, driving, garages, racing) |
-| Unity editor | **Not available — EditMode tests NOT yet run inside Unity** |
+| Command | `Tools/run-tests.sh` |
+| Environment | Linux container, .NET SDK 8.0.133, NUnit 3.14 |
+| Simulation compiled as | netstandard2.1, C# 9, warnings as errors (0/0) |
+| Result | **134 passed, 0 failed, 0 skipped** (14 new for NPC schedules, travel, tiers, personalities, time-aware dialogue) |
+| Unity runtime compile check | 0 errors, 1 expected warning (CS0649) |
+| Unity editor | **Not available — not run inside Unity** |
 
 | Test | Result |
 |---|---|
@@ -33,6 +34,7 @@
 | CannotBuyWithoutMoneyOrSpaceOrWhereNotSold | Passed |
 | CannotEnterBrokeOrWreckedOrWithoutACar | Passed |
 | ChairmanRevealIsBlockedBeforeChapterSevenMission | Passed |
+| ChapterOneStoryNpcsReachTheirPinsFromAnyHour | Passed |
 | ChaptersOnlyMoveForward | Passed |
 | CheckpointsOnlyCountInOrder | Passed |
 | ClassesFeelDifferent | Passed |
@@ -48,6 +50,7 @@
 | DialogueEffectsApplyOnceEvenWhenRepeated | Passed |
 | DodgeAvoidsAttackDuringInvulnerability | Passed |
 | DreMovesFromCourtsToGymAfterAgreeingToSpar | Passed |
+| DriversAreFasterThanWalkers | Passed |
 | DrivingIsDeterministic | Passed |
 | DuplicateIdempotencyKeyNeverPostsTwice | Passed |
 | EightDistrictsFiveCrewsAndCastingGateDefaultsClosed | Passed |
@@ -57,6 +60,7 @@
 | EventBusDetectsEventLoops | Passed |
 | EveryButtonActionHasAMask | Passed |
 | EveryRaceCheckpointSitsOnAsphalt | Passed |
+| FarAwayNpcsUpdateLessOftenButCoverTheSameGround | Passed |
 | FileStorageWritesAtomicallyWithBackup | Passed |
 | FinisherDefeatsWeakenedOpponent | Passed |
 | FinisherRequiresMomentumVulnerabilityAndRange | Passed |
@@ -66,6 +70,7 @@
 | GroundAttackOnlyHitsDownedOpponent | Passed |
 | HandbrakeCreatesMoreDriftThanSteeringAlone | Passed |
 | HeldBlockBlocksStrikeAndTakesOnlyChip | Passed |
+| HeldNpcsStopUntilReleased | Passed |
 | HigherDifficultyWinsMoreOften | Passed |
 | HitstunDecayPreventsInfiniteLightSpam | Passed |
 | IdRulesRejectBadIdsAndRegistryCatchesDuplicates | Passed |
@@ -90,20 +95,26 @@
 | NewerSaveVersionIsRefused | Passed |
 | NitrousExceedsNormalTopSpeedThenRunsOutAndBleedsDown | Passed |
 | NoNitrousWithoutTheKit | Passed |
+| NpcPositionsSurviveSaveAndLoadMidTrip | Passed |
+| NpcsTravelContinuouslyAndNeverTeleport | Passed |
 | OnlyWitnessesKnowAnEvent | Passed |
 | OpponentsHaveDistinctFightingBehaviour | Passed |
 | OptionalMissionChangesLaterDialogueAndCostsMoney | Passed |
 | PayUsesCashThenCheckingAndIsIdempotent | Passed |
+| PersonalitiesAreLoadedAndShapeReactions | Passed |
 | PersonalityChangesReactionToTheSameThreat | Passed |
 | PresetsChangeAssistsNotTopSpeed | Passed |
+| ProfilesCoverEveryHourOfTheWeek | Passed |
 | RacingStateRoundTripsAndStillBlocksDoublePay | Passed |
 | RandomIsDeterministicAndRestorable | Passed |
 | RankRisesWithPoints | Passed |
 | ReplayNeverDuplicatesRewardsOrRewritesChoices | Passed |
 | RetrieveDriveStoreRepairCycle | Passed |
 | ReversalRequiresMomentumAndSwapsRoles | Passed |
+| RoadGraphConnectsTheDistrictAndRoutesStayOnRoads | Passed |
 | RoadsAreAsphaltAndGrassIsNot | Passed |
 | RoundTripInMemory | Passed |
+| RoutinesFollowTheClock | Passed |
 | RulesFileValidates | Passed |
 | RumorsNeedASourceAndDegrade | Passed |
 | SameFightMovesFaceCardAndPublicImageDifferently | Passed |
@@ -115,10 +126,12 @@
 | ShippedVehicleDataIsValid | Passed |
 | SimulationIsDeterministic | Passed |
 | SkillMatters | Passed |
+| SleepingGrandmaBarksButStoryStillWorks | Passed |
 | SocialStateRoundTrips | Passed |
 | SouthsideHasEveryRequiredSliceLocation | Passed |
 | StaminaPreventsEndlessHeavies | Passed |
 | SteeringNeedsSpeedAndTurnsTheCar | Passed |
+| StoryPinsOutrankRoutines | Passed |
 | StrikeBeatsGrappleOnSameTick | Passed |
 | TalkingToNpcsFollowsMissionState | Passed |
 | TemperAmplifiesResentment | Passed |
@@ -128,10 +141,14 @@
 | UpgradesChangeEffectiveStats | Passed |
 | UpgradesRespectSlotsAndPayOnce | Passed |
 | ValidationCatchesDuplicatesBadStatsAndMissingPrefabs | Passed |
+| ValidationCatchesScheduleGapsAndUnknownPlaces | Passed |
 | ValidationRejectsDuplicateIdsBadStatsAndCycles | Passed |
 | ValuesClampTo0To100 | Passed |
 | WantsTriggerOnlyForUnfinishedLiveObjectives | Passed |
+| WitnessesComeFromWhoIsActuallyNearby | Passed |
 | WreckedCarsMustBeRecoveredAndRepaired | Passed |
+
+## Earlier run 2026-11-07 — Milestone 4: 120 passed, 0 failed (superseded above)
 
 ## Run 2026-11-07 — Unity runtime layer compile check (outside Unity)
 

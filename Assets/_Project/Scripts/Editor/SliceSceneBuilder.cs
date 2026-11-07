@@ -68,6 +68,7 @@ namespace FFTS.EditorTools
             lib.Layouts = Load("World").Where(t => t.name.EndsWith("_layout")).ToArray();
             lib.Vehicles = Load("Vehicles");
             lib.Races = Load("Racing");
+            lib.NpcProfiles = Load("Characters").Where(t => t.name.StartsWith("npc_profiles")).ToArray();
             lib.ConversationRules = AssetDatabase.LoadAssetAtPath<TextAsset>(DataRoot + "/Dialogue/npc_conversations.json");
             lib.Districts = AssetDatabase.LoadAssetAtPath<TextAsset>(DataRoot + "/World/districts.json");
             lib.Crews = AssetDatabase.LoadAssetAtPath<TextAsset>(DataRoot + "/Crews/crews.json");

@@ -70,6 +70,13 @@ namespace FFTS.Runtime
         private void CollectWitnesses(CoreGameManager gm)
         {
             _witnesses.Clear();
+            var lw = gm.Session.LivingWorld;
+            if (lw != null)
+            {
+                foreach (var id in lw.NpcsNear(gm.Player.position.x, gm.Player.position.z, WitnessRadius))
+                    if (id != GameSession.NpcIdForFighter(_opponentId)) _witnesses.Add(id);
+                return;
+            }
             foreach (var n in Object.FindObjectsByType<NpcPresence>(FindObjectsSortMode.None))
             {
                 if (!n.gameObject.activeInHierarchy) continue;

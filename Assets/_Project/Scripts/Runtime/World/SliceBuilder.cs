@@ -26,7 +26,10 @@ namespace FFTS.Runtime
             ground.isStatic = true;
             foreach (var r in layout.Roads) BuildRoad(root, r);
             foreach (var l in layout.Locations) BuildLocation(root, l);
-            foreach (var n in layout.Npcs) BuildNpc(root, layout, n);
+            var lw = gm.Session.LivingWorld;
+            foreach (var n in layout.Npcs)
+                if (lw == null || lw.Profile(n.NpcId) == null) BuildNpc(root, layout, n); // static fallback for unscheduled NPCs
+            if (lw != null) foreach (var p in lw.Profiles) NpcAgent.Spawn(p, root);
             BuildGaragesAndRaces(root, gm, layout);
 
             var player = BuildPlayer(new Vector3(gm.Session.Position.X, 0.1f, gm.Session.Position.Z));

@@ -15,6 +15,7 @@ namespace FFTS.Dialogue
         public int? MinTrust;
         public int? MinRespect;
         public Attitude? MinAttitude;
+        public List<string> Segments = new List<string>();   // time of day: Morning, Afternoon, Evening, Night, LateNight
     }
 
     public sealed class DialogueVariant
@@ -64,6 +65,7 @@ namespace FFTS.Dialogue
         void ApplyEffect(string key, RewardDefinition effect);
         void ReportTrigger(string trigger);
         bool ChooseMissionBranch(string missionId, string branchId);
+        string CurrentSegment { get; }
     }
 
     public sealed class DialogueOutcome
@@ -144,6 +146,7 @@ namespace FFTS.Dialogue
                 if (c.MinRespect.HasValue && r.Respect < c.MinRespect.Value) return false;
             }
             if (c.MinAttitude.HasValue && _ctx.AttitudeOf(_def.NpcId) < c.MinAttitude.Value) return false;
+            if (c.Segments != null && c.Segments.Count > 0 && !c.Segments.Contains(_ctx.CurrentSegment)) return false;
             return true;
         }
 

@@ -15,6 +15,11 @@
     },
     {
       "NpcId": "npc.grandma",
+      "Activity": "sleep",
+      "Bark": "Grandma is asleep in her chair. Better let her rest."
+    },
+    {
+      "NpcId": "npc.grandma",
       "DialogueId": "dialogue.grandma.home"
     },
     {

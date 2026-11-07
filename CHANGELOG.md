@@ -2,6 +2,21 @@
 
 All notable changes. Dates are UTC.
 
+## [0.3.0-living-world] — 2026-11-07
+
+### Added (Milestone 5 — Characters & missions)
+- Road graph from district layout data (intersections, Dijkstra routing).
+- NPC profiles for 10 Southside characters: authored personalities, homes, walk/drive, weekly routines, story pins.
+- `LivingWorldManager`: schedule evaluation with story pins first, continuous travel along roads, Full/Simplified/Distant
+  update tiers, hold-while-talking, arrival/departure events, save/restore mid-trip.
+- Time-of-day dialogue conditions and activity-aware conversation rules (Grandma asleep at night, still available for story).
+- Personalities now drive relationship scaling for every scheduled NPC.
+- Unity: `NpcAgent` views (smoothed movement, car while driving, activity labels); fight witnesses from nearby NPCs.
+- 14 new tests (134 total, all passing).
+
+### Changed
+- Dre's courts → gym move now comes from his schedule pins; the placement-visibility workaround was removed from the data.
+
 ## [0.2.0-driving] — 2026-11-07
 
 ### Added (Milestone 4 — Driving)

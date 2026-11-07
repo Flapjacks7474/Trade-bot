@@ -20,7 +20,8 @@
 ## Simplifications
 - Combat is 1v1 on a line. No group fights or environmental props beyond arena walls. One style (Street Fighting) authored.
 - Mission 3 tutorial steps are optional objectives, so a player who wins without blocking isn't soft-locked.
-- NPCs are static placements with objective-based visibility (Dre moves to the gym). No schedules or travel yet.
+- NPCs follow schedules and walk or drive along road centrelines. They don't avoid the player or cars, and there are no background crowds yet.
+- Walking NPCs are slow relative to the clock (1 game minute = 1 real second by default): a long walk can take hours of game time.
 - Opponent fighter-id → NPC-id mapping is by naming convention (`fighter.rell` → `npc.rell`).
 - Bank ledger keeps the last 5,000 entries in saves. Archived keys aren't persisted individually, so very old idempotency
   keys could theoretically be reused after a reload. Acceptable while every reward key is also in the mission ledger.
