@@ -2,6 +2,23 @@
 
 All notable changes. Dates are UTC.
 
+## [0.2.0-driving] — 2026-11-07
+
+### Added (Milestone 4 — Driving)
+- Vehicle data model with validation; 3 vehicles (fictional makes), 4 upgrades, 2 garages.
+- Deterministic driving model: traction-limited launch, braking/reverse, speed-scaled steering, handbrake drift, surface grip
+  (road vs off-road from layout data), nitrous kit, impact damage and wrecks, Arcade/Street/Expert handling presets.
+- Garage manager: buy (idempotent, persisted), sell, store, retrieve, repair, tow, upgrades, extra garage space.
+- Racing: Pecan Street Sprint with countdown, ordered checkpoints, honest AI rivals (Rell, Deuce), purses, first-win bonus,
+  racing rank, best times, reputation/relationship consequences, mission triggers.
+- Vehicles and racing persisted in saves; content cross-check covers race and garage locations.
+- Unity layer: vehicle views with box-swept collisions, driving director (enter/exit, park, wreck handling), chase/hood/cockpit
+  cameras, race director with checkpoint marker and HUD, IMGUI garage panel; new CameraView action (C / right-stick click).
+- 38 new tests (120 total, all passing).
+
+### Fixed
+- BUG-008 … BUG-011 (see Documentation/BUG_TRACKER.md).
+
 ## [0.1.0-foundation] — 2026-11-03
 
 ### Added

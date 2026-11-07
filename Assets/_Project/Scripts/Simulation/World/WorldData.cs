@@ -96,6 +96,24 @@ namespace FFTS.World
         }
 
         public LocationDefinition Find(string id) => Locations.Find(l => l.Id == id);
+
+        public const float AsphaltGrip = 1f, OffRoadGrip = 0.7f;
+
+        /// <summary>Tyre grip multiplier at a point: asphalt on roads and paved lots, reduced elsewhere.</summary>
+        public float SurfaceGripAt(float x, float z)
+        {
+            foreach (var r in Roads)
+            {
+                float dx = r.X2 - r.X1, dz = r.Z2 - r.Z1;
+                float len2 = dx * dx + dz * dz;
+                float t = len2 <= 0 ? 0 : System.Math.Max(0, System.Math.Min(1, ((x - r.X1) * dx + (z - r.Z1) * dz) / len2));
+                float px = r.X1 + t * dx - x, pz = r.Z1 + t * dz - z;
+                if (px * px + pz * pz <= (r.Width / 2f) * (r.Width / 2f)) return AsphaltGrip;
+            }
+            foreach (var l in Locations)
+                if (l.Type == "street" && System.Math.Abs(x - l.X) <= l.Width / 2f && System.Math.Abs(z - l.Z) <= l.Depth / 2f) return AsphaltGrip;
+            return OffRoadGrip;
+        }
     }
 
     public sealed class DistrictFile

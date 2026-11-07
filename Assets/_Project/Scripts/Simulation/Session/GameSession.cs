@@ -5,6 +5,8 @@ using FFTS.Core;
 using FFTS.Dialogue;
 using FFTS.Economy;
 using FFTS.Missions;
+using FFTS.Racing;
+using FFTS.Vehicles;
 using FFTS.Relationships;
 using FFTS.Reputation;
 using FFTS.SaveSystem;
@@ -40,6 +42,8 @@ namespace FFTS.Session
         public SocialState Social = new SocialState();
         public StoryState Story = new StoryState();
         public MissionsState Missions = new MissionsState();
+        public GarageState Garage = new GarageState();
+        public RacingState Racing = new RacingState();
         public int FightCounter;
     }
 
@@ -49,6 +53,8 @@ namespace FFTS.Session
         public List<MissionDefinition> Missions = new List<MissionDefinition>();
         public Dictionary<string, DialogueDefinition> Dialogues = new Dictionary<string, DialogueDefinition>();
         public CombatDatabase Combat;
+        public VehicleDatabase Vehicles;
+        public RaceDatabase Races;
     }
 
     /// <summary>
@@ -71,6 +77,8 @@ namespace FFTS.Session
         public SocialManager Social { get; }
         public StoryManager Story { get; }
         public MissionManager Missions { get; }
+        public GarageManager Garage { get; }
+        public RaceManager Racing { get; }
         public GameContent Content { get; }
         public PlayerIdentity Player { get; private set; } = new PlayerIdentity();
         public WorldPosition Position { get; private set; } = new WorldPosition();
@@ -86,6 +94,9 @@ namespace FFTS.Session
             Social = new SocialManager(Bus);
             Story = new StoryManager(Bus);
             Missions = new MissionManager(Bus, Story, this);
+            var vehicles = Content.Vehicles ?? VehicleDatabase.FromJson(new string[0], new ValidationReport());
+            Garage = new GarageManager(vehicles, Bank, Bus);
+            Racing = new RaceManager(Content.Races ?? RaceDatabase.FromJson(new string[0], vehicles, new ValidationReport()), vehicles, Bank, Reputation, Social, Bus);
             Missions.Load(Content.Missions, report ?? new ValidationReport());
             Bus.Subscribe<StoryFlagChanged>(_ => Missions.RefreshAvailability());
             PumpMissions();
@@ -151,6 +162,19 @@ namespace FFTS.Session
         public static string NpcIdForFighter(string fighterId) => fighterId.StartsWith("fighter.") ? "npc." + fighterId.Substring(8) : fighterId;
 
         public string NextFightId() => "fight." + (++_fightCounter);
+
+        /// <summary>Resolves a finished race (idempotent per attempt) and feeds missions "race.won.*" / "race.finished.*".</summary>
+        public RaceOutcome ResolveRace(RaceSession race, string ownershipId = null)
+        {
+            var outcome = Racing.Resolve(race);
+            if (ownershipId != null) Garage.RecordDrive(ownershipId, race.Player.Car, race.Player.Car.DistanceMeters);
+            if (!outcome.AlreadyResolved)
+            {
+                if (!outcome.Dnf) ReportTrigger("race.finished." + race.Definition.Id);
+                if (!outcome.Dnf && outcome.Place == 1) ReportTrigger("race.won." + race.Definition.Id);
+            }
+            return outcome;
+        }
 
         // ---------------------------------------------------------------- rewards
 
@@ -220,7 +244,7 @@ namespace FFTS.Session
                 GameVersion = GameVersion, SaveLabel = label ?? Clock.ToString(),
                 Player = Player, Position = Position, ClockMinutes = Clock.TotalMinutes, RngState = Random.State,
                 Bank = Bank.Capture(), Reputation = Reputation.Capture(), Social = Social.Capture(), Story = Story.Capture(),
-                Missions = m, FightCounter = _fightCounter
+                Missions = m, Garage = Garage.Capture(), Racing = Racing.Capture(), FightCounter = _fightCounter
             };
         }
 
@@ -236,6 +260,8 @@ namespace FFTS.Session
             Social.Restore(s.Social);
             Story.Restore(s.Story);   // story before missions: availability depends on chapter/flags
             Missions.Restore(s.Missions);
+            Garage.Restore(s.Garage);
+            Racing.Restore(s.Racing);
             PumpMissions();
             _dialogueEffectKeys.Clear();
             foreach (var k in s.Missions.GrantedRewardKeys) if (k.StartsWith("dialogue.")) _dialogueEffectKeys.Add(k);

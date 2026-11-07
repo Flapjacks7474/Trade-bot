@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace FFTS.Runtime
 {
-    public enum CameraMode { Explore, Fight, Finisher }
+    public enum CameraMode { Explore, Fight, Finisher, Vehicle }
 
     /// <summary>
     /// Third-person orbit camera with collision, plus fight framing (side-on, both fighters in shot) and a
@@ -23,7 +23,13 @@ namespace FFTS.Runtime
         private Vector3 _fightA, _fightB, _fightAxis;
         private float _finisherUntil;
 
-        public void SetExplore() => Mode = CameraMode.Explore;
+        private Transform _vehicle;
+        private int _vehicleView;
+
+        public void SetExplore() { Mode = CameraMode.Explore; _vehicle = null; }
+
+        /// <summary>Vehicle cameras: 0 chase, 1 hood, 2 cockpit.</summary>
+        public void SetVehicle(Transform car, int view) { Mode = CameraMode.Vehicle; _vehicle = car; _vehicleView = view; }
 
         public void SetFight(Vector3 a, Vector3 b, Vector3 axis)
         {
@@ -37,6 +43,18 @@ namespace FFTS.Runtime
         {
             var gm = CoreGameManager.Instance;
             if (Target == null) return;
+
+            if (Mode == CameraMode.Vehicle && _vehicle != null)
+            {
+                var t = _vehicle;
+                if (_vehicleView == 1) { transform.SetPositionAndRotation(t.position + Vector3.up * 1.35f + t.forward * 0.9f, t.rotation); return; }
+                if (_vehicleView == 2) { transform.SetPositionAndRotation(t.position + Vector3.up * 1.15f - t.forward * 0.1f - t.right * 0.35f, t.rotation); return; }
+                Vector3 want = t.position - t.forward * 7f + Vector3.up * 2.6f;
+                transform.position = Vector3.Lerp(transform.position, want, 1f - Mathf.Exp(-6f * Time.deltaTime));
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(t.position + Vector3.up + t.forward * 3f - transform.position), 1f - Mathf.Exp(-10f * Time.deltaTime));
+                _yaw = transform.eulerAngles.y;
+                return;
+            }
 
             if (Mode == CameraMode.Explore)
             {

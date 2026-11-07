@@ -37,6 +37,9 @@ namespace FFTS.EditorTools
             so.ApplyModifiedPropertiesWithoutUndo();
             core.AddComponent<FightDirector>();
             core.AddComponent<DialoguePanel>();
+            core.AddComponent<DrivingDirector>();
+            core.AddComponent<RaceDirector>();
+            core.AddComponent<GaragePanel>();
             new GameObject("Slice Builder").AddComponent<SliceBuilder>();
 
             Directory.CreateDirectory(Path.GetDirectoryName(ScenePath));
@@ -63,6 +66,8 @@ namespace FFTS.EditorTools
             lib.Styles = Load("Moves");
             lib.Fighters = Load("Characters").Where(t => t.name.StartsWith("fighters")).ToArray();
             lib.Layouts = Load("World").Where(t => t.name.EndsWith("_layout")).ToArray();
+            lib.Vehicles = Load("Vehicles");
+            lib.Races = Load("Racing");
             lib.ConversationRules = AssetDatabase.LoadAssetAtPath<TextAsset>(DataRoot + "/Dialogue/npc_conversations.json");
             lib.Districts = AssetDatabase.LoadAssetAtPath<TextAsset>(DataRoot + "/World/districts.json");
             lib.Crews = AssetDatabase.LoadAssetAtPath<TextAsset>(DataRoot + "/Crews/crews.json");

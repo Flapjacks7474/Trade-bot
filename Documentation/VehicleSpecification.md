@@ -1,4 +1,26 @@
-# Vehicle Specification — status: NOT IMPLEMENTED (Milestone 4)
+# Vehicle Specification — status: IMPLEMENTED (simulation tested; Unity layer unverified)
+
+## Implemented (Milestone 4)
+| Piece | Where | Notes |
+|---|---|---|
+| `VehicleDefinition` / `UpgradeDefinition` / `GarageDefinition` | `Simulation/Vehicles/VehicleData.cs`, `Data/Vehicles/vehicles.json` | Validation: duplicate ids, stat ranges, missing prefab keys, unknown sale vehicles |
+| `VehicleInstance` (saved) | same | Damage, mileage, upgrades, customization, garage, availability (Stored/Out/Wrecked/Impounded), last position |
+| `VehicleDynamics` | `Simulation/Vehicles/VehicleDynamics.cs` | Deterministic 60 Hz model: launch traction, accel falloff, drag, braking, reverse, speed-scaled steering, drift angle, handbrake, surface grip, nitrous (needs the kit), impact damage, wreck at 100% |
+| Handling presets | Arcade / Street / Expert | Change grip, steering and drift recovery assists; never top speed |
+| `GarageManager` | `Simulation/Vehicles/GarageManager.cs` | Buy (idempotent, routed to an owned garage with space), sell (resale from rarity/mileage/damage/upgrades), retrieve, store, repair, tow ($150), upgrades (one per slot), extra garage space |
+| Unity | `Runtime/Driving/*` | Kinematic box-swept collision, enter/exit (E under 2 m/s), chase/hood/cockpit (C), park at owned garage, garage panel |
+
+## Content
+| Vehicle | Make (fictional) | Class | Price | Notes |
+|---|---|---|---|---|
+| Magnolia Cruiser '86 | Delmont | Muscle, RWD | $750 | starter; tough, wide turning |
+| Kudzu RS | Hoshiro | Tuner, FWD | $2,400 | sharp turn-in, fragile |
+| Crestmore Eight | Crestmore | Luxury sedan, AWD | $9,500 | not sold in Southside yet; highest top speed |
+
+Garages: **Grandma's Driveway** (owned from the start, 1 space, upgradable to 2) and **Southside Motors** (dealer selling the
+Cruiser and the Kudzu). Upgrades: Engine Stage 1, Street Brakes, Street Tires, Nitrous Kit.
+
+## Original plan (kept for reference)
 
 ## Data model (planned)
 - **VehicleDefinition** (immutable content): id, displayName, class (Muscle, Tuner, LuxurySedan, SUVTruck, Exotic, Classic,

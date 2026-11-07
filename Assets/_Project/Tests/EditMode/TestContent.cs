@@ -15,6 +15,8 @@ namespace FFTS.Tests
             Styles = { TestData.Read("Moves/street_fighting.json") },
             Fighters = { TestData.Read("Characters/fighters.json") },
             Layouts = { TestData.Read("World/southside_layout.json") },
+            Vehicles = { TestData.Read("Vehicles/vehicles.json") },
+            Races = { TestData.Read("Racing/races.json") },
         };
 
         public static GameSession NewSession(out ValidationReport report, ulong seed = 1)

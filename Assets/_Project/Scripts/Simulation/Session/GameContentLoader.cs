@@ -3,6 +3,8 @@ using FFTS.Combat;
 using FFTS.Core;
 using FFTS.Dialogue;
 using FFTS.Missions;
+using FFTS.Racing;
+using FFTS.Vehicles;
 using FFTS.World;
 using Newtonsoft.Json;
 
@@ -16,6 +18,8 @@ namespace FFTS.Session
         public List<string> Styles = new List<string>();
         public List<string> Fighters = new List<string>();
         public List<string> Layouts = new List<string>();
+        public List<string> Vehicles = new List<string>();
+        public List<string> Races = new List<string>();
     }
 
     public static class GameContentLoader
@@ -34,6 +38,8 @@ namespace FFTS.Session
                 foreach (var d in DialogueRunner.Parse(json, report))
                     if (!content.Dialogues.ContainsKey(d.Id)) content.Dialogues[d.Id] = d;
             content.Combat = CombatDatabase.FromJson(src.Styles, src.Fighters, report);
+            content.Vehicles = VehicleDatabase.FromJson(src.Vehicles, report);
+            content.Races = RaceDatabase.FromJson(src.Races, content.Vehicles, report);
             layouts = new List<DistrictLayout>();
             foreach (var json in src.Layouts) layouts.Add(DistrictLayout.Parse(json, report));
             CrossCheck(content, layouts, report);
@@ -74,6 +80,15 @@ namespace FFTS.Session
                         }
                     }
             }
+            if (content.Races != null)
+                foreach (var r in content.Races.Races)
+                {
+                    producible.Add("race.won." + r.Id); producible.Add("race.finished." + r.Id);
+                    if (layouts.Count > 0 && !layouts.Exists(l => l.Find(r.LocationId) != null)) report.Error($"Race {r.Id}: start location {r.LocationId} not in any layout.");
+                }
+            if (content.Vehicles != null)
+                foreach (var g in content.Vehicles.Garages)
+                    if (layouts.Count > 0 && !layouts.Exists(l => l.Find(g.LocationId) != null)) report.Error($"Garage {g.Id}: location {g.LocationId} not in any layout.");
             if (content.Combat != null)
                 foreach (var f in content.Combat.Fighters) { producible.Add("fight.won." + f.Id); producible.Add("fight.lost." + f.Id); }
 

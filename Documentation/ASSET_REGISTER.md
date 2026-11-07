@@ -6,6 +6,7 @@ No third-party or final assets exist in the repository. Everything visible at ru
 |---|---|---|---|---|---|---|
 | Graybox buildings, roads, ground | Runtime-generated primitives | Unity built-in Cube | Unity built-in | Generated at Play by `SliceBuilder` | All | **Placeholder** |
 | Characters (player, NPCs, opponents) | Runtime-generated capsules | Unity built-in Capsule | Unity built-in | Generated at Play | All | **Placeholder.** `FighterDefinition.PlaceholderModel` ids reserve slots |
+| Vehicles (3) | Runtime-generated boxes | Unity built-in Cube | Unity built-in | Generated at Play | All | **Placeholder.** Makes (Delmont, Hoshiro, Crestmore) are fictional; prefab keys reserved |
 | World labels | TextMesh + built-in font | `LegacyRuntime.ttf` / `Arial.ttf` | Unity built-in | Runtime | All | **Placeholder** |
 | HUD / dialogue / fight bars | IMGUI | Code | Project | Runtime | PC | **Placeholder** (TD-011) |
 | Content data (missions, dialogue, moves, fighters, world, crews, districts) | JSON | Original, authored in this repo | Project license (see README) | In repo | All | Original writing |

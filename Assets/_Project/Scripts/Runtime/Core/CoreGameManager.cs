@@ -46,6 +46,16 @@ namespace FFTS.Runtime
 
         public FightDirector Fights { get; private set; }
         public DialoguePanel Dialogue { get; private set; }
+        public DrivingDirector Driving { get; private set; }
+        public RaceDirector Races { get; private set; }
+        public GaragePanel Garages { get; private set; }
+
+        private T Ensure<T>() where T : Component
+        {
+            var c = GetComponent<T>();
+            if (c == null) c = gameObject.AddComponent<T>();
+            return c;
+        }
 
         private void Awake()
         {
@@ -70,6 +80,8 @@ namespace FFTS.Runtime
             Session.Bus.Subscribe<Core.MissionCompleted>(e => { if (!e.WasReplay) { _autosavePending = true; Notify("Mission complete: " + Title(e.MissionId)); } });
             Session.Bus.Subscribe<Core.MissionStateChanged>(e => { if (e.NewState == "Failed") Notify("Mission failed: " + Title(e.MissionId) + " — retrying from checkpoint"); });
             Session.Bus.Subscribe<Core.ObjectiveCompleted>(e => Notify("Objective complete"));
+            Session.Bus.Subscribe<FFTS.Racing.RaceCompleted>(e => { if (!e.Dnf) _autosavePending = true; });
+            Session.Bus.Subscribe<FFTS.Vehicles.VehiclePurchased>(e => _autosavePending = true);
             Session.Bus.HandlerFailed += (evt, ex) => Debug.LogException(ex);
 
             // Explicit checks: '??' bypasses UnityEngine.Object's overloaded null comparison.
@@ -77,6 +89,9 @@ namespace FFTS.Runtime
             if (Fights == null) Fights = gameObject.AddComponent<FightDirector>();
             Dialogue = GetComponent<DialoguePanel>();
             if (Dialogue == null) Dialogue = gameObject.AddComponent<DialoguePanel>();
+            Driving = Ensure<DrivingDirector>();
+            Races = Ensure<RaceDirector>();
+            Garages = Ensure<GaragePanel>();
         }
 
         private void OnDestroy()
@@ -96,7 +111,7 @@ namespace FFTS.Runtime
         {
             Frame = _input.Sample();
 
-            if (!Fights.InFight && !Dialogue.IsOpen)
+            if (!Fights.InFight && !Dialogue.IsOpen && !Garages.IsOpen && !Races.Active)
             {
                 _clockAccumulator += Time.deltaTime;
                 int minutes = (int)(_clockAccumulator / Mathf.Max(0.01f, realSecondsPerGameMinute));
@@ -109,9 +124,10 @@ namespace FFTS.Runtime
 
         private void LateUpdate()
         {
-            if (_autosavePending && !Fights.InFight && !Dialogue.IsOpen)
+            if (_autosavePending && !Fights.InFight && !Dialogue.IsOpen && !Races.Active)
             {
                 _autosavePending = false;
+                Driving.Flush();
                 CapturePlayerPosition();
                 string slot = Saves.Autosave(Session.Capture());
                 Notify("Autosaved (" + slot + ")");
@@ -169,6 +185,8 @@ namespace FFTS.Runtime
         public void SaveTo(string slot)
         {
             if (Fights.InFight) { Notify("Can't save during a fight."); return; }
+            if (Races.Active) { Notify("Can't save during a race."); return; }
+            Driving.Flush();
             CapturePlayerPosition();
             try { Saves.Save(slot, Session.Capture()); Notify("Saved (" + slot + ")"); }
             catch (Exception ex) { Debug.LogException(ex); Notify("Save failed: " + ex.Message); }
@@ -176,6 +194,7 @@ namespace FFTS.Runtime
 
         public void LoadFrom(string slot)
         {
+            if (Races.Active || Fights.InFight) { Notify("Finish what you're doing first."); return; }
             var r = Saves.Load(slot);
             if (!r.Succeeded) { Notify("Load failed: " + r.Outcome + " " + r.Message); return; }
             Session.Restore(r.Data);

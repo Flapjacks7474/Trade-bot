@@ -12,6 +12,7 @@
 │ PlayerInputSource (Input System / legacy) · PlayerMotor · CameraRig         │
 │ WorldInteractable + InteractionManager · SliceBuilder + LocationTracker     │
 │ FightDirector (60 Hz fixed tick) + FighterView · DialoguePanel · GameHud    │
+│ DrivingDirector + VehicleView · RaceDirector · GaragePanel                  │
 └───────────────────────────────┬─────────────────────────────────────────────┘
                                 │ reads state, sends commands, listens to events
 ┌──────────────────── FFTS.Simulation (noEngineReferences) ───────────────────┐
@@ -24,6 +25,8 @@
 │ Relationships: SocialManager (relationships, personality, memory)           │
 │ Story: StoryManager   Missions: MissionManager   Dialogue: DialogueRunner   │
 │ World: DistrictLayout   Crews: CrewFile                                     │
+│ Vehicles: VehicleDatabase · VehicleDynamics · GarageManager                 │
+│ Racing: RaceDatabase · RaceSession · RaceDriverAI · RaceManager             │
 │ Session: GameSession · GameContentLoader · NpcConversationRules ·           │
 │          FightConsequences · GameSaveData                                   │
 └─────────────────────────────────────────────────────────────────────────────┘
@@ -48,8 +51,8 @@ delegate, so Story does not depend on Missions (that would be a cycle).
 ## Events (implemented)
 `TimeSegmentChanged`, `DayChanged`, `TransactionPosted`, `ReputationChanged`, `RelationshipChanged`,
 `StoryFlagChanged`, `MissionStateChanged`, `MissionCompleted`, `ObjectiveCompleted`, `WorldEventRecorded`,
-`FightCompleted`, `GameSaved`, `GameLoaded`. Planned: `VehiclePurchased`, `BusinessPurchased`, `TerritoryChanged`,
-`RivalEncounterResolved`, `IncidentReported`, `SongReleased`, `RaceCompleted`, `CrewRankChanged`.
+`FightCompleted`, `GameSaved`, `GameLoaded`, `VehiclePurchased`, `VehicleSold`, `RaceCompleted`. Planned: `BusinessPurchased`,
+`TerritoryChanged`, `RivalEncounterResolved`, `IncidentReported`, `SongReleased`, `CrewRankChanged`.
 
 ## Triggers
 Missions advance through string triggers: `location.*` (LocationTracker), `interact.*` (interaction markers),
@@ -78,7 +81,10 @@ first, then the backup. Migrations (`ISaveMigration`) run on raw JSON before typ
 | SaveManager | `SaveSlotManager<GameSaveData>` + `GameSession.Capture/Restore` |
 | UIManager | `GameHud`, `DialoguePanel` (placeholder) |
 | WorldStreamingManager | not yet; `SliceBuilder` builds one district |
-| Others (Vehicle, Garage, Racing, Police, Music, Business, Property, Phone, Platform…) | not started |
+| VehicleManager / GarageManager | `GarageManager` |
+| DrivingController | `VehicleDynamics` + `DrivingDirector` + `VehicleView` |
+| RacingManager | `RaceManager` + `RaceSession` + `RaceDirector` |
+| Others (Police, Music, Business, Property, Phone, Platform…) | not started |
 
 ## Performance notes
 Combat simulation allocates only the per-step event list (reused). AI enqueues one struct per tick. The full test

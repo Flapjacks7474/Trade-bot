@@ -6,7 +6,7 @@ Open-world Southern hip-hop action RPG set in **Finess City**, combining street 
 racing, business ownership, crew politics and a branching family story. Target engine: **Unity 6.3 LTS (URP)**, PC first.
 
 **Current state:** foundation milestone. The gameplay rules ship in an engine-independent C# assembly with
-an automated test suite (82 tests, all passing — see `Documentation/TEST_RESULTS.md`). A Unity
+an automated test suite (120 tests, all passing — see `Documentation/TEST_RESULTS.md`). A Unity
 vertical-slice layer builds a graybox Southside from data. **The Unity project has not yet been opened in a Unity
 editor**, so nothing here has been verified at runtime inside Unity. Read `Documentation/PROJECT_STATUS.md` first.
 
@@ -46,6 +46,8 @@ Batch Windows build: `Unity -batchmode -quit -projectPath . -executeMethod FFTS.
 
 WASD move · Mouse camera · Shift sprint/dodge · E interact · J light · K heavy · I kick · L grapple ·
 Space block (tap just before impact = parry-counter) · O counter stance · U finisher · T taunt · F5/F9 quicksave/quickload · F1 help.
+
+Driving: W/S throttle/brake (S reverses when stopped) · A/D steer · Space handbrake · Shift nitrous (with kit) · C camera · E get out / park / start race.
 
 ## Licensing and likeness notice
 

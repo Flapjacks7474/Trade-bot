@@ -1,12 +1,17 @@
 # Project Status
 
-_Last updated: 2026-11-03_
+_Last updated: 2026-11-07_
 
 ## Current milestone
 
 **Milestone 1 (Core Foundation): complete at the simulation level, unverified in Unity.**
 **Milestone 3 (Combat) and parts of 5 and 6:** simulation done and tested. The Unity presentation is written but
 has not run in an editor.
+**Milestone 4 (Driving):** simulation complete and tested (vehicles, driving model, garages, one race with AI).
+Unity driving/racing layer written and compile-checked, not run.
+
+**GitHub push is blocked** (403: the Claude GitHub App has no write access to `Flapjacks7474/Trade-bot`). Work is
+committed locally and delivered as zip files; push once access is granted.
 
 The overriding fact: **no Unity editor was available in the development environment.** Everything marked
 "verified" below was verified by compiling and running automated tests with .NET 8 against the same source
@@ -44,10 +49,16 @@ TEST_RESULTS.md). Nothing has been play-tested.
 | Chapter 1 content (6 missions + 1 side) | ✅ Full playthrough test passes via the API | CampaignTests.FullChapterOnePlaythroughReachesChapterTwo |
 | Unity slice (graybox Southside, player, camera, NPCs, fights, dialogue, HUD, save/load keys) | ⚠️ Written, compile-checked, **never run** | — |
 | Editor tools (scene builder, URP setup, validation, batch build) | ⚠️ Written, **not compiled** (no UnityEditor.dll) | — |
+| Vehicle data + validation (3 vehicles, 4 upgrades, 2 garages, fictional makes) | ✅ Tested | VehicleDataTests |
+| Driving model (throttle/brake/reverse, steering, handbrake drift, surface grip, nitrous, damage, presets) | ✅ Tested | VehicleDynamicsTests |
+| Garages & ownership (buy, sell, store, retrieve, repair, tow/recover, upgrades, garage space) | ✅ Tested | GarageTests |
+| Racing (ordered checkpoints, countdown, honest AI, DNF, purses, first-win bonus, ranks) | ✅ Tested | RacingTests |
+| Vehicles + racing in saves and mission triggers | ✅ Tested | DrivingSessionTests |
+| Unity driving (enter/exit, collisions, chase/hood/cockpit cameras, garage panel, race director, HUD) | ⚠️ Written, compile-checked, **never run** | — |
 
 ## Not started (by roadmap order)
 
-Vehicles/driving/racing (M4) · NPC schedules and travel (M5) · FINESS OS phone (M6) · rival encounters, crew
+Traffic, police, other race types (M4 leftovers) · NPC schedules and travel (M5) · FINESS OS phone (M6) · rival encounters, crew
 behaviour, world events (M7) · music career beyond the first-demo flag (M8) · businesses/property (M9) ·
 chapters 2–8 (M10) · other districts (M11) · release prep (M12) · police/law · customization.
 
@@ -61,5 +72,5 @@ chapters 2–8 (M10) · other districts (M11) · release prep (M12) · police/la
 
 1. Open in Unity 6.3, resolve packages, run **FFTS > Build Southside Slice Scene**, run the EditMode tests in the
    Test Runner, play the slice through Chapter 1, and log every issue in BUG_TRACKER.md.
-2. Then Milestone 4 (Driving): `VehicleDefinition`/`VehicleInstance` data plus validation in Simulation (tested), then a
-   WheelCollider-based `DrivingController`, enter/exit, garage store/retrieve, and one Southside sprint race.
+2. Drive the Magnolia Cruiser around Southside and run the Pecan Street Sprint in-editor; tune feel.
+3. Then Milestone 5: NPC schedules and travel (simulation first, tested against the game clock).

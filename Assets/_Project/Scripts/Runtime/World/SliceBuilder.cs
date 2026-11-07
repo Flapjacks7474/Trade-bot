@@ -27,6 +27,7 @@ namespace FFTS.Runtime
             foreach (var r in layout.Roads) BuildRoad(root, r);
             foreach (var l in layout.Locations) BuildLocation(root, l);
             foreach (var n in layout.Npcs) BuildNpc(root, layout, n);
+            BuildGaragesAndRaces(root, gm, layout);
 
             var player = BuildPlayer(new Vector3(gm.Session.Position.X, 0.1f, gm.Session.Position.Z));
             gm.Player = player.transform;
@@ -86,6 +87,32 @@ namespace FFTS.Runtime
                 w.IsAvailable = () => verb == "look" || verb == "rest" || CoreGameManager.Instance.Session.Missions.WantsTrigger(trigger);
                 w.OnInteract = () => UseInteraction(verb, trigger, ia.Prompt);
                 marker.AddComponent<MarkerVisibility>().Interactable = w;
+            }
+        }
+
+        private static void BuildGaragesAndRaces(Transform root, CoreGameManager gm, DistrictLayout layout)
+        {
+            foreach (var g in gm.Session.Garage.Database.Garages)
+            {
+                var l = layout.Find(g.LocationId);
+                if (l == null) continue;
+                var pos = new Vector3(l.X + l.Width / 2f - 1.5f, 0, l.Z - l.Depth / 2f - 2.5f);
+                var marker = Graybox.Box("garage." + g.Id, root, pos + Vector3.up * 0.6f, new Vector3(0.8f, 1.2f, 0.8f), "#4cc9f0", collider: false);
+                Graybox.Label(marker.transform, g.DisplayName, Vector3.up * 1.4f, 0.08f, new Color(0.6f, 0.9f, 1f));
+                var w = marker.AddComponent<WorldInteractable>();
+                w.Id = "garage." + g.Id; w.Verb = "garage"; w.Prompt = "Open " + g.DisplayName; w.Radius = 3f; w.Priority = 1;
+                string id = g.Id;
+                w.OnInteract = () => CoreGameManager.Instance.Garages.Open(id);
+                // Parking spot outline where retrieved cars appear.
+                Graybox.Box("parking." + g.Id, root, new Vector3(g.SpawnX, 0.03f, g.SpawnZ), new Vector3(3f, 0.02f, 5.5f), "#4cc9f0", collider: false)
+                    .transform.rotation = Quaternion.Euler(0, g.SpawnHeadingDeg, 0);
+            }
+            foreach (var r in gm.Session.Racing.Races.Races)
+            {
+                var l = layout.Find(r.LocationId);
+                if (l == null) continue;
+                var flag = Graybox.Box("race." + r.Id, root, new Vector3(l.X, 3f, l.Z + l.Depth / 2f + 1f), new Vector3(0.4f, 6f, 0.4f), "#ef476f", collider: false);
+                Graybox.Label(flag.transform, "RACE: " + r.DisplayName + "\n(drive here and press E)", Vector3.up * 3.6f, 0.08f, new Color(1f, 0.7f, 0.75f));
             }
         }
 

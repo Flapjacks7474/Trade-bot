@@ -27,8 +27,16 @@
 - Negative money "rewards" (costs) fail silently with insufficient funds. Needs UI feedback and a design rule.
 - Grandma's Errand starts automatically once available. Side-mission offers should eventually be NPC-initiated.
 
+## Driving (Milestone 4)
+- Cars are boxes with block wheels; no engine audio, skid marks or particles. No traffic vehicles yet.
+- Collision is a kinematic box sweep: cars stop and take damage, they don't bounce or push each other.
+- Analogue triggers are read as on/off by the Input System adapter, so there's no partial throttle on gamepad yet.
+- A wrecked car can be repaired at any garage panel before it's been towed. Should require towing first.
+- Only the active vehicle exists in the world; other vehicles left "Out" must be towed from a garage.
+- Race opponents ignore buildings (they drive the checkpoint line; Unity collisions stop them if they clip a corner).
+
 ## Not implemented (see PROJECT_STATUS.md)
-Vehicles, racing, police, phone, music career gameplay, businesses, property, customization, crews/territory
+Traffic, police, phone, music career gameplay, businesses, property, customization, crews/territory
 simulation, rival encounters, world events, chapters 2–8, other districts, mobile controls, accessibility options,
 settings persistence, Addressables streaming.
 

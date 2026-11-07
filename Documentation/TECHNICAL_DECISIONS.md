@@ -73,3 +73,15 @@ The checksum then covers exact bytes. Newer-version saves are refused rather tha
 ## TD-015 — Story reveal is guarded in code and in content validation
 `story.chairman.identity_revealed` requires chapter ≥ 7 **and** the reveal mission active/completed. The mission
 validator rejects earlier missions setting it, and the dialogue parser rejects any dialogue setting it.
+
+## TD-016 — Vehicle physics is a deterministic simulation model, collisions come from Unity
+`VehicleDynamics` is a hand-written ground-plane model (drift angle instead of a tyre model), stepped at 60 Hz. Unity sweeps a box
+toward the simulated position and reports closing speed back as an impact.
+- **Why:** testable without the editor, deterministic for AI racers and future replays, consistent across PC/mobile, no
+  WheelCollider tuning that can't be verified here.
+- **Tradeoffs:** no suspension, ramps or rollovers; car-to-car contact is a stop-and-damage, not a shove. A WheelCollider or
+  custom raycast-suspension upgrade can replace the presentation later without changing ownership, racing or save code.
+
+## TD-017 — Racing AI uses the player's physics, no rubber-banding
+AI cars run the same `VehicleDynamics` with their definition's stats. Difficulty comes only from skill (line, braking points,
+mistakes). A test asserts no AI car ever exceeds its top speed.

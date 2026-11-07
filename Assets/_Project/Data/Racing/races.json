@@ -1,0 +1,106 @@
+{
+  "Races": [
+    {
+      "Id": "race.southside.pecan_sprint",
+      "DisplayName": "Pecan Street Sprint",
+      "Type": "Sprint",
+      "LocationId": "location.southside.race_start",
+      "Laps": 1,
+      "Checkpoints": [
+        {
+          "X": -110,
+          "Z": -120,
+          "Radius": 12
+        },
+        {
+          "X": -80,
+          "Z": -118,
+          "Radius": 14
+        },
+        {
+          "X": -80,
+          "Z": -50,
+          "Radius": 12
+        },
+        {
+          "X": -80,
+          "Z": -2,
+          "Radius": 14
+        },
+        {
+          "X": -10,
+          "Z": 0,
+          "Radius": 12
+        },
+        {
+          "X": 98,
+          "Z": 0,
+          "Radius": 14
+        },
+        {
+          "X": 100,
+          "Z": -70,
+          "Radius": 12
+        },
+        {
+          "X": 100,
+          "Z": -150,
+          "Radius": 14
+        }
+      ],
+      "Grid": [
+        {
+          "X": -150,
+          "Z": -117,
+          "HeadingDeg": 90
+        },
+        {
+          "X": -150,
+          "Z": -123,
+          "HeadingDeg": 90
+        },
+        {
+          "X": -158,
+          "Z": -117,
+          "HeadingDeg": 90
+        },
+        {
+          "X": -158,
+          "Z": -123,
+          "HeadingDeg": 90
+        }
+      ],
+      "Opponents": [
+        {
+          "RacerId": "racer.rell",
+          "DisplayName": "Rell",
+          "NpcId": "npc.rell",
+          "VehicleId": "vehicle.kudzu_rs",
+          "Skill": 0.7
+        },
+        {
+          "RacerId": "racer.deuce",
+          "DisplayName": "Deuce",
+          "NpcId": "npc.deuce",
+          "VehicleId": "vehicle.magnolia_cruiser",
+          "Skill": 0.45
+        }
+      ],
+      "EntryFeeCents": 2000,
+      "PurseCents": [
+        30000,
+        15000,
+        5000
+      ],
+      "FirstWinBonusCents": 25000,
+      "RankPoints": [
+        60,
+        35,
+        15
+      ],
+      "MinRank": "UnknownDriver",
+      "TimeLimitSeconds": 150,
+      "CountdownSeconds": 3
+    }
+  ]
+}

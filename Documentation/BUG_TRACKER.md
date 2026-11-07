@@ -10,4 +10,9 @@
 | BUG-006 | Low | Fixed | Two .NET projects shared one `obj/` folder (restore failure) | `dotnet test` | Projects moved to separate folders |
 | BUG-007 | Low | Fixed | Guard-break test never broke guard: block pushback moved the defender out of range and the scripted attacker never stepped back in; heavies also drained too little stamina | `BlockingDrainsStaminaUntilGuardBreak` | Test attacker now walks forward between swings; heavy/kick `StaminaDamage` raised (tuning) |
 
+| BUG-008 | Medium | Fixed | Cars topped out at ~83% of their rated top speed (aero drag too strong) | `AcceleratesTowardButNotPastTopSpeed` | Drag coefficient 0.0009 → 0.0005 |
+| BUG-009 | High | Fixed | After loading a save, repeating a purchase key reported "garage full" instead of "already bought" (in-memory dedupe only) | `GarageStateRoundTripsThroughJson` | `Buy` checks the bank's persisted ledger first |
+| BUG-010 | Low | Fixed | Braking from very low speed switched into reverse before stopping | `BrakingStopsFasterThanCoasting` | Brake-to-reverse threshold 0.5 → 0.05 m/s |
+| BUG-011 | Low | Fixed | `GaragePanel` missing `using System.Linq` | Runtime compile check | Added |
+
 Open bugs: none known. Expect many once the slice runs in Unity; log them here with repro steps.

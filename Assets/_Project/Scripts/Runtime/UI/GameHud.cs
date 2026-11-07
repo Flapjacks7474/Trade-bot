@@ -57,6 +57,8 @@ namespace FFTS.Runtime
             if (_interaction != null && _interaction.Current != null && !gm.ControlsLocked)
                 GUI.Label(new Rect(Screen.width / 2f - 250, Screen.height - 120, 500, 30), "<size=18>[E] " + _interaction.Current.Prompt + "</size>", Centered(label));
 
+            if (gm.Driving.IsDriving) DrawDriving(gm, label);
+
             if (gm.Fights.InFight) DrawFight(gm, label);
             if (_help) DrawHelp(label);
 
@@ -79,6 +81,26 @@ namespace FFTS.Runtime
             float h = 30 + def.Objectives.Count * 20;
             GUI.Box(new Rect(Screen.width - 410, 10, 400, h), GUIContent.none);
             GUI.Label(new Rect(Screen.width - 400, 14, 380, h), sb.ToString(), label);
+        }
+
+        private static void DrawDriving(CoreGameManager gm, GUIStyle label)
+        {
+            var car = gm.Driving.Current; var d = car.Dyn;
+            GUI.Box(new Rect(Screen.width - 260, Screen.height - 130, 250, 110), GUIContent.none);
+            string nos = d.Stats.NitrousCapacitySeconds > 0 ? $"  NOS {d.NitrousRemaining / d.Stats.NitrousCapacitySeconds:P0}" : "";
+            GUI.Label(new Rect(Screen.width - 250, Screen.height - 126, 230, 104),
+                $"<size=26><b>{Mathf.Abs(d.SpeedKph):0}</b></size> km/h\n{car.DisplayName}\nDamage {d.Damage:0}%{nos}\nView: {(gm.Driving.CameraView == 0 ? "Chase" : gm.Driving.CameraView == 1 ? "Hood" : "Cockpit")} (C)", label);
+            if (gm.Driving.Prompt != null)
+                GUI.Label(new Rect(Screen.width / 2f - 300, Screen.height - 120, 600, 30), "<size=18>" + gm.Driving.Prompt + "</size>", Centered(label));
+
+            var race = gm.Races;
+            if (!race.Active) return;
+            var s = race.Session;
+            GUI.Box(new Rect(Screen.width / 2f - 170, 110, 340, 64), GUIContent.none);
+            GUI.Label(new Rect(Screen.width / 2f - 160, 114, 320, 60),
+                $"<b>{s.Definition.DisplayName}</b>\nPosition {s.PositionOf(s.Player)}/{s.Racers.Count} · Checkpoint {System.Math.Min(s.Player.NextCheckpoint + 1, s.CheckpointCount)}/{s.CheckpointCount} · {s.Elapsed:0.0}s", Centered(label));
+            if (race.Banner != null)
+                GUI.Label(new Rect(Screen.width / 2f - 300, Screen.height / 2f - 60, 600, 80), "<size=48><b>" + race.Banner + "</b></size>", Centered(label));
         }
 
         private static void DrawFight(CoreGameManager gm, GUIStyle label)
@@ -113,9 +135,10 @@ namespace FFTS.Runtime
             const string text = "<b>Controls</b> (F1 toggles)\nWASD move · Mouse camera · Shift sprint · E interact\n" +
                                 "J light · K heavy · I kick · L grapple · Space block (tap just before a hit = parry)\n" +
                                 "Shift dodge · O counter stance · U finisher · T taunt\nIn a clinch: J knee · K throw · L wall slam (near wall) · mash L/Shift to escape\n" +
+                                "Driving: W/S throttle/brake · A/D steer · Space handbrake · Shift nitrous · C camera · E get out\n" +
                                 "F5 quicksave · F9 quickload · 1-9 dialogue choices";
-            GUI.Box(new Rect(10, Screen.height - 150, 640, 120), GUIContent.none);
-            GUI.Label(new Rect(20, Screen.height - 146, 620, 116), text, label);
+            GUI.Box(new Rect(10, Screen.height - 170, 640, 140), GUIContent.none);
+            GUI.Label(new Rect(20, Screen.height - 166, 620, 136), text, label);
         }
 
         private static GUIStyle _centered;

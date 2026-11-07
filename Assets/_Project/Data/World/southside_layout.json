@@ -44,6 +44,14 @@
       "X2": -80,
       "Z2": 80,
       "Width": 8
+    },
+    {
+      "Id": "road.southside.lot_access",
+      "X1": -175,
+      "Z1": -120,
+      "X2": -80,
+      "Z2": -120,
+      "Width": 10
     }
   ],
   "Locations": [
