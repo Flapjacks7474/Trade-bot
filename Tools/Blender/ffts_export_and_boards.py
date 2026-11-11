@@ -34,7 +34,7 @@ def export(rig, man):
                               export_frame_step=1, export_optimize_animation_size=True, export_def_bones=True)
     bpy.ops.export_scene.fbx(filepath=os.path.join(exp, "FFTS_FightRig.fbx"), use_selection=True, add_leaf_bones=False,
                              bake_anim=True, bake_anim_use_all_actions=True, bake_anim_use_nla_strips=False,
-                             bake_anim_force_startend_keying=True, bake_anim_simplify_factor=0.0,
+                             bake_anim_force_startend_keying=True, bake_anim_simplify_factor=1.0,
                              armature_nodetype='NULL', primary_bone_axis='Y', secondary_bone_axis='X', apply_unit_scale=True)
     return [os.path.join(exp, f) for f in ("FFTS_FightRig.glb", "FFTS_FightRig.fbx")]
 
@@ -54,15 +54,23 @@ def opponent(rig, man):
     opp.animation_data_create(); opp.animation_data.action = bpy.data.actions["anim.street.stance_guard"]
     return opp
 
+def aim(cam, loc, target):
+    cam.location = loc
+    cam.rotation_euler = (Vector(target) - Vector(loc)).to_track_quat('-Z', 'Y').to_euler()
+
+def set_opp_visible(opp, visible):
+    opp.hide_render = not visible
+    for ch in opp.children: ch.hide_render = not visible
+
 def stage():
     sc = bpy.context.scene
     for n in ("FFTS_FightCam", "FFTS_IntroCam", "FFTS_Floor", "FFTS_Caption", "FFTS_Key", "FFTS_Fill"):
         o = bpy.data.objects.get(n)
         if o: bpy.data.objects.remove(o, do_unlink=True)
     fight = bpy.data.objects.new("FFTS_FightCam", bpy.data.cameras.new("FFTS_FightCam")); sc.collection.objects.link(fight)
-    fight.location = (4.2, -GAP / 2, 1.15); fight.rotation_euler = (math.radians(88), 0, math.radians(90)); fight.data.lens = 32
+    aim(fight, (3.7, -1.55, 1.20), (0, -GAP / 2, 1.0)); fight.data.lens = 36
     intro = bpy.data.objects.new("FFTS_IntroCam", bpy.data.cameras.new("FFTS_IntroCam")); sc.collection.objects.link(intro)
-    intro.location = (1.5, -2.9, 1.35); intro.rotation_euler = (math.radians(86), 0, math.radians(27)); intro.data.lens = 45
+    aim(intro, (1.25, -3.3, 1.25), (0, 0, 0.98)); intro.data.lens = 42
     bpy.ops.mesh.primitive_plane_add(size=20, location=(0, 0, 0)); floor = bpy.context.active_object; floor.name = "FFTS_Floor"
     fm = bpy.data.materials.get("FFTS_floor") or bpy.data.materials.new("FFTS_floor"); fm.diffuse_color = (0.22, 0.22, 0.24, 1)
     floor.data.materials.append(fm)
@@ -102,12 +110,12 @@ def boards(rig, man, all_styles, only=None):
         stn = st.get("Stance") or {}
         # intro panel
         rig.animation_data.action = bpy.data.actions["anim.%s.stance_idle" % prefix]; sc.frame_set(0)
-        opp.hide_render = True; sc.camera = intro
+        set_opp_visible(opp, False); sc.camera = intro
         caption(cap, intro, ["%s - %s" % (st["DisplayName"].upper(), stn.get("Name", "")),
                              "Defence: %s   %s" % (stn.get("Defense", ""), ("Hybrid of " + " + ".join(st["HybridOf"])) if st.get("HybridOf") else st.get("Discipline", "")),
                              "INTRO / STANCE  |  3/4 hero cam 45mm, slow push-in"])
         render(os.path.join(folder, "000_intro.png"))
-        opp.hide_render = False; sc.camera = fight
+        set_opp_visible(opp, True); sc.camera = fight
         for mi, m in enumerate(st["Moves"]):
             act = bpy.data.actions.get(m["AnimationKey"])
             if not act: continue
