@@ -5,7 +5,9 @@ import { createFight, C, S } from '../sim/combat.js';
 import { surfaceAt } from '../sim/world.js';
 import { RANKS } from '../sim/vehicles.js';
 import { Input } from './input.js';
-import { buildWorld, makePerson, poseWalk, makeCarMesh, makeLabel, collide } from './world3d.js';
+import { buildWorld, makePerson, makeCarMesh, makeLabel, collide } from './world3d.js';
+import { createGraphics, QUALITY } from './graphics.js';
+import { loadCharacters, charactersReady, createCharacter, locomotion, fightAnimation, loadHeroModel } from './characters.js';
 
 const DATA = window.FFTS_DATA;
 const SAVE_KEY = 'ffts.save.v1';
@@ -18,33 +20,53 @@ const store = {
 
 // ------------------------------------------------------------------ renderer & scene
 const view = $('view');
-const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-renderer.outputColorSpace = THREE.SRGBColorSpace;
-view.appendChild(renderer.domElement);
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 900);
-const hemi = new THREE.HemisphereLight(0xcfe3ff, 0x3a3326, 0.9); scene.add(hemi);
-const sun = new THREE.DirectionalLight(0xfff0d6, 1.6); sun.castShadow = true; sun.shadow.mapSize.set(1024, 1024);
-Object.assign(sun.shadow.camera, { left: -40, right: 40, top: 40, bottom: -40, near: 1, far: 200 }); scene.add(sun, sun.target);
-scene.fog = new THREE.Fog(0x9fb7c9, 120, 420);
-const { solids } = buildWorld(scene, DATA.layout);
-function resize() { const w = view.clientWidth, h = view.clientHeight; renderer.setSize(w, h); camera.aspect = w / h; camera.updateProjectionMatrix(); }
-addEventListener('resize', resize); resize();
-
+const QUALITY_KEY = 'ffts.quality';
+let savedQuality = null; try { savedQuality = localStorage.getItem(QUALITY_KEY); } catch {}
+const touchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+const gfx = createGraphics(view, savedQuality || (touchDevice ? 'medium' : 'high'));
+const { renderer, scene, camera } = gfx;
+const { solids } = buildWorld(scene, DATA.layout, gfx.quality);
 const input = new Input(renderer.domElement);
 let game = null;
 
 // ------------------------------------------------------------------ actors
-const player = makePerson('#c8102e'); scene.add(player);
-const playerState = { x: DATA.layout.SpawnX, z: DATA.layout.SpawnZ, heading: 0, yaw: 0, pitch: 0.32, inside: new Set() };
+const LOOKS = {
+  // Matches the hero model: bald, white tank top, olive cargo pants, white sneakers.
+  player: { shirt: '#eeeae2', pants: '#5b5a3e', skin: '#4a2f20' },
+  'npc.grandma': { shirt: '#d9c7e8', pants: '#6a5d73', skin: '#4a3122', height: 0.93 },
+  'npc.lou': { shirt: '#f2f2ee', pants: '#2c2c30', skin: '#6b4a35' },
+  'npc.dre': { shirt: '#ff9f1c', pants: '#3b3f46', skin: '#3f2a1d', hat: '#ff9f1c' },
+  'npc.rell': { shirt: '#18867c', pants: '#111214', skin: '#5a3a28' },
+  'npc.tone': { shirt: '#5c3d8f', pants: '#1e1e24', skin: '#7a5640', hat: '#2a1d40' },
+  'npc.big_reece': { shirt: '#9e1b24', pants: '#1a1a1d', skin: '#3a2619', height: 1.08 },
+  'npc.brick': { shirt: '#5f656e', pants: '#2f3237', skin: '#4a3122', height: 1.1 },
+  'npc.nia': { shirt: '#f2c14e', pants: '#2b2440', skin: '#6b4a35', height: 0.97 },
+  'npc.marlo': { shirt: '#1d7f62', pants: '#3a3a3d', skin: '#5a3a28', hat: '#1d7f62' },
+  'npc.deuce': { shirt: '#8d99ae', pants: '#2b2d31', skin: '#7a5640', hat: '#30343a' }
+};
+const look = (id) => LOOKS[id] || { shirt: DATA.npcs.find((n) => n.NpcId === id)?.Color || '#888' };
+const makeActor = (id) => {
+  if (charactersReady()) { const c = createCharacter(look(id)); return { root: c.root, char: c }; }
+  const p = makePerson(look(id).shirt); return { root: p, char: null };
+};
+const actors = []; // everything with an animation mixer to tick
+let playerActor = null;
+const playerState = { x: DATA.layout.SpawnX, z: DATA.layout.SpawnZ, heading: 0, yaw: 0, pitch: 0.32, inside: new Set(), speed: 0 };
 const npcViews = new Map();
-for (const p of DATA.npcs) {
-  const g = new THREE.Group(); const body = makePerson(p.Color); g.add(body);
-  const car = makeCarMesh(p.Color); car.visible = false; g.add(car);
-  const label = makeLabel(p.DisplayName, { size: 40 }); label.position.y = 2.4; g.add(label);
-  scene.add(g); npcViews.set(p.NpcId, { g, body, car, label, last: '', hidden: false, speed: 0 });
+function createActors() {
+  if (playerActor) scene.remove(playerActor.root);
+  playerActor = makeActor('player'); scene.add(playerActor.root);
+  for (const v of npcViews.values()) scene.remove(v.g);
+  npcViews.clear();
+  for (const p of DATA.npcs) {
+    const g = new THREE.Group(); const a = makeActor(p.NpcId); g.add(a.root);
+    const car = makeCarMesh(look(p.NpcId).shirt); car.visible = false; g.add(car);
+    const label = makeLabel(p.DisplayName, { size: 40 }); label.position.y = 2.35; g.add(label);
+    scene.add(g); npcViews.set(p.NpcId, { g, body: a.root, char: a.char, car, label, last: '', hidden: false });
+  }
+  refreshLabels();
 }
+const player = { get visible() { return playerActor.root.visible; }, set visible(v) { playerActor.root.visible = v; } };
 
 // Interaction markers for layout interactions, garages, race starts.
 const markers = [];
@@ -71,9 +93,12 @@ for (const r of DATA.races) {
 }
 // Signs fade out when the camera is very close or far away, so they never block the view.
 const labels = [];
-const npcLabels = new Set([...npcViews.values()].map((v) => v.label));
-scene.traverse((o) => { if (o.isSprite && !npcLabels.has(o)) labels.push({ s: o, near: 14, far: 170 }); });
-for (const v of npcViews.values()) labels.push({ s: v.label, near: 3.5, far: 45 });
+function refreshLabels() {
+  labels.length = 0;
+  const npcLabels = new Set([...npcViews.values()].map((v) => v.label));
+  scene.traverse((o) => { if (o.isSprite && !npcLabels.has(o)) labels.push({ s: o, near: 14, far: 170 }); });
+  for (const v of npcViews.values()) labels.push({ s: v.label, near: 3.5, far: 45 });
+}
 function updateLabels() {
   const p = new THREE.Vector3();
   for (const l of labels) {
@@ -113,10 +138,11 @@ function startGame(fromSave) {
   playerState.inside.clear();
   lastLog = game.missions.log.length;
   spawnParkedCar();
-  mode = 'explore'; overlay = null; $('title').hidden = true; setPads();
-  for (const [, v] of npcViews) { const n = game.world.npcs.get(v.g.userData.id); }
+  mode = 'explore'; overlay = null; $('title').hidden = true; document.body.classList.remove('on-title'); setPads();
   for (const [id, v] of npcViews) { const n = game.world.npcs.get(id); v.g.position.set(n.x, 0, n.z); }
   if (!fromSave) toast('Welcome home. Walk up Magnolia Ave to Grandma\'s house.');
+  playerActor.root.visible = true;
+  if (hero) hero.visible = false;
   autosaveAt = performance.now() + 60000;
 }
 function save(silent) {
@@ -165,10 +191,11 @@ function updateExplore(dt) {
     playerState.heading = Math.atan2(mx, mz);
     collide(solids, playerState, 0.45);
     if (parked) collide([{ x: parked.mesh.position.x, z: parked.mesh.position.z, hw: 1.0, hd: 1.0 }], playerState, 1.6);
-    poseWalk(player, sprint ? 7 : 4.5, dt);
+    playerState.speed = speed * Math.min(1, Math.hypot(ax.x, ax.y));
     if (input.look.dx === 0) playerState.yaw += angleDiff(playerState.heading, playerState.yaw) * Math.min(1, dt * 1.2) * Math.max(0, ax.y);
-  } else poseWalk(player, 0, dt);
-  player.position.set(playerState.x, 0, playerState.z); player.rotation.y = playerState.heading; player.visible = true;
+  } else playerState.speed = 0;
+  if (playerActor.char) locomotion(playerActor.char, overlay ? 0 : playerState.speed);
+  playerActor.root.position.set(playerState.x, 0, playerState.z); playerActor.root.rotation.set(0, playerState.heading, 0); player.visible = true;
 
   // Location enter triggers
   for (const l of DATA.layout.Locations) {
@@ -245,7 +272,7 @@ function startFight(fighterId, venue) {
   let ax = Math.sin(playerState.heading), az = Math.cos(playerState.heading);
   if (n && Math.hypot(n.x - playerState.x, n.z - playerState.z) < 8) { const dx = n.x - playerState.x, dz = n.z - playerState.z, d = Math.hypot(dx, dz) || 1; ax = dx / d; az = dz / d; }
   const origin = { x: playerState.x + ax * 1.1, z: playerState.z + az * 1.1 };
-  const opp = makePerson(game.world.profiles.get(npcId)?.Color || '#888'); scene.add(opp);
+  const oppActor = makeActor(npcId); const opp = oppActor.root; opp.userData.char = oppActor.char; scene.add(opp);
   const loc = [...playerState.inside][0] || null;
   fight = { sim, ai, origin, axis: { x: ax, z: az }, opp, npcId, fighterId, venue: venue || venueAt(playerState.x, playerState.z), loc, acc: 0, latched: new Set(), endAt: 0,
     witnesses: game.world.near(playerState.x, playerState.z, 25).filter((id) => id !== npcId) };
@@ -271,7 +298,7 @@ function updateFight(dt) {
     }
   }
   const pa = { x: f.origin.x + f.axis.x * sim.A.x, z: f.origin.z + f.axis.z * sim.A.x }, pb = { x: f.origin.x + f.axis.x * sim.B.x, z: f.origin.z + f.axis.z * sim.B.x };
-  poseFighter(player, sim.A, pa, pb, dt); poseFighter(f.opp, sim.B, pb, pa, dt);
+  poseFighter(playerActor.root, playerActor.char, sim.A, pa, pb, dt); poseFighter(f.opp, f.opp.userData.char, sim.B, pb, pa, dt);
   playerState.x = pa.x; playerState.z = pa.z;
 }
 function fightEvent(e) {
@@ -286,42 +313,20 @@ function fightEvent(e) {
   if (e.type === 'Blocked' && e.target === 'fighter.player') game.trigger('combat.tutorial.blocked');
   if (e.type === 'Hit' && me && e.detail && e.detail.startsWith('combo ') && +e.detail.slice(6) >= 3) game.trigger('combat.tutorial.combo');
   if (e.type === 'Thrown' && me) game.trigger('combat.tutorial.thrown');
-  if ((e.type === 'Hit' || e.type === 'Countered' || e.type === 'ClinchStrike') && e.target) { const m = e.target === 'fighter.player' ? player : fight.opp; m.userData.flash = 0.12; }
+  if ((e.type === 'Hit' || e.type === 'Countered' || e.type === 'ClinchStrike') && e.target) { const m = e.target === 'fighter.player' ? playerActor.root : fight.opp; m.userData.flash = 0.12; }
 }
-function poseFighter(m, f, at, toward, dt) {
-  const u = m.userData; m.position.set(at.x, 0, at.z); m.rotation.y = Math.atan2(toward.x - at.x, toward.z - at.z);
-  for (const k of ['armL', 'armR', 'legL', 'legR']) { u[k].rotation.set(0, 0, 0); }
-  m.rotation.x = 0; m.position.y = 0; u.torso.rotation.x = 0;
-  const st = f.state, mv = f.move;
-  if (st === S.Moving) poseWalk(m, 3, dt);
-  if (st === S.Idle || st === S.Moving) { u.armL.rotation.x = -1.1; u.armR.rotation.x = -1.1; u.armL.rotation.z = 0.35; u.armR.rotation.z = -0.35; }
-  if (st === S.Blocking || st === S.BlockStun) { u.armL.rotation.x = -2.6; u.armR.rotation.x = -2.6; u.armL.rotation.z = 0.5; u.armR.rotation.z = -0.5; }
-  if (st === S.Countering) { u.armL.rotation.x = -2.2; u.armR.rotation.x = -1.4; u.torso.rotation.x = -0.2; }
-  if ((st === S.Attacking || st === S.Combo || st === S.Finisher) && mv) {
-    const active = f.inActive || (f.inRecovery && f.moveConnected && f.moveTick < f.moveStartup + mv.Active + 4);
-    const reach = active ? 1 : f.inStartup ? 0.35 : 0.2;
-    if (mv.Kind === 'Kick') { u.legR.rotation.x = -1.6 * reach; u.armL.rotation.x = -1.1; }
-    else if (mv.Kind === 'Grapple') { u.armL.rotation.x = -1.6 * reach - 0.2; u.armR.rotation.x = -1.6 * reach - 0.2; }
-    else if (mv.Kind === 'Taunt') { u.armL.rotation.x = -3; u.armR.rotation.x = -3; }
-    else if (mv.Kind === 'GroundAttack') { u.legR.rotation.x = -0.9 * reach; }
-    else { const arm = mv.Id.includes('jab') || mv.Id.includes('uppercut') ? u.armL : u.armR; arm.rotation.x = -1.57 * (0.6 + reach * 0.5); u.torso.rotation.x = 0.15 * reach; }
-    if (st === S.Finisher) { u.armR.rotation.x = -2.9; u.torso.rotation.x = 0.35; }
-  }
-  if (st === S.Grappling || st === S.Throwing) { u.armL.rotation.x = -1.5; u.armR.rotation.x = -1.5; if (st === S.Throwing) m.rotation.z = Math.sin(f.moveTick * 0.2) * 0.4; }
-  else m.rotation.z = 0;
-  if (st === S.Grappled || st === S.FinisherVictim) { u.torso.rotation.x = -0.3; u.armL.rotation.x = -0.4; u.armR.rotation.x = -0.4; }
-  if (st === S.HitStun || st === S.Stunned) { u.torso.rotation.x = -0.35; m.position.y = 0; }
-  if (st === S.Dodging) m.position.y = 0, (u.torso.rotation.x = -0.5);
-  if (st === S.KnockedDown || st === S.Defeated) { m.rotation.x = -Math.PI / 2; m.position.y = 0.3; }
-  if (st === S.GettingUp) { m.rotation.x = -Math.PI / 2 * (1 - f.stateTicks / Math.max(1, f.stateDuration)); }
-  if (u.flash > 0) { u.flash -= dt; m.traverse((o) => { if (o.isMesh) o.material.emissive?.setHex(0x661111); }); }
-  else m.traverse((o) => { if (o.isMesh) o.material.emissive?.setHex(0x000000); });
+function poseFighter(m, char, f, at, toward, dt) {
+  m.position.set(at.x, 0, at.z); m.rotation.set(0, Math.atan2(toward.x - at.x, toward.z - at.z), 0);
+  if (char) fightAnimation(char, f);
+  else if (f.state === S.KnockedDown || f.state === S.Defeated) m.rotation.x = -Math.PI / 2;
+  const flash = (m.userData.flash || 0) > 0; if (flash) m.userData.flash -= dt;
+  m.traverse((o) => { if (o.isMesh && o.material.emissive) o.material.emissive.setHex(flash ? 0x551010 : 0x000000); });
 }
 function endFight() {
   const f = fight, won = game.onFight(f.sim.result, f.fighterId, f.venue, f.loc, f.witnesses);
   toast(won ? `You beat ${game.npcName(f.npcId)}.` : `${game.npcName(f.npcId)} got the better of you.`);
   scene.remove(f.opp); if (npcViews.get(f.npcId)) npcViews.get(f.npcId).hidden = false;
-  player.rotation.set(0, playerState.heading, 0); player.position.y = 0;
+  playerActor.root.rotation.set(0, playerState.heading, 0);
   fight = null; mode = 'explore'; setPads(); $('fight-tip').textContent = '';
 }
 
@@ -381,7 +386,7 @@ function updateDrive(dt) {
   d.acc += Math.min(dt, 0.1);
   const inp = driveInput();
   while (d.acc >= 1 / 60) { d.acc -= 1 / 60; car.step(inp, 1 / 60); carCollisions(car, d.mesh); }
-  placeCar(d.mesh, car, dt);
+  placeCar(d.mesh, car, dt, inp.brake > 0.1);
   playerState.x = car.x; playerState.z = car.z;
   if (car.wrecked) { toast('Your car is wrecked. Tow it from a garage and repair it.'); exitCar(); return; }
   // Context action
@@ -396,8 +401,9 @@ function updateDrive(dt) {
     else if (!inside) playerState.inside.delete(l.Id);
   }
 }
-function placeCar(mesh, car, dt) {
+function placeCar(mesh, car, dt, braking) {
   mesh.position.set(car.x, 0, car.z); mesh.rotation.y = car.heading * Math.PI / 180;
+  if (mesh.userData.tail) mesh.userData.tail.emissiveIntensity = braking ? 4 : 0.8;
   for (const w of mesh.userData.wheels) w.rotation.x += car.speed * dt / 0.36;
 }
 function startRace(def) {
@@ -426,7 +432,7 @@ function updateRace(dt) {
       if (e.type === 'TimeExpired') showBanner('TIME UP', 2);
     }
   }
-  placeCar(drive.mesh, car, dt);
+  placeCar(drive.mesh, car, dt, inp.brake > 0.1);
   for (const x of R.racers) if (!x.isPlayer) placeCar(race.meshes.get(x.id), x.car, dt);
   playerState.x = car.x; playerState.z = car.z;
   const cp = R.def.Checkpoints[Math.min(R.player.next, R.def.Checkpoints.length - 1)];
@@ -571,16 +577,7 @@ function updateCamera(dt) {
   const want = new THREE.Vector3(playerState.x - Math.sin(y) * Math.cos(p) * dist, 1.6 + Math.sin(p) * dist, playerState.z - Math.cos(y) * Math.cos(p) * dist);
   camera.position.lerp(want, 1 - Math.exp(-10 * dt)); camera.lookAt(playerState.x, 1.5, playerState.z);
 }
-const dayColor = new THREE.Color(0x9fc4e0), duskColor = new THREE.Color(0xe08a5b), nightColor = new THREE.Color(0x0d1424);
-function updateLighting() {
-  const h = game.minutes % 1440 / 60;
-  const day = h >= 7 && h < 18 ? 1 : h >= 5 && h < 7 ? (h - 5) / 2 : h >= 18 && h < 20 ? 1 - (h - 18) / 2 : 0;
-  const dusk = (h >= 5.5 && h < 7.5) || (h >= 17.5 && h < 19.5) ? 0.6 : 0;
-  const sky = nightColor.clone().lerp(dayColor, day).lerp(duskColor, dusk * (1 - Math.abs(day - 0.5) * 2) * 0.8);
-  scene.background = sky; scene.fog.color.copy(sky);
-  sun.intensity = 0.25 + day * 1.4; hemi.intensity = 0.35 + day * 0.6;
-  sun.position.set(playerState.x + 40, 80, playerState.z + 20); sun.target.position.set(playerState.x, 0, playerState.z);
-}
+function updateLighting() { gfx.setTime((game.minutes % 1440) / 60, playerState.x, playerState.z); }
 
 // ------------------------------------------------------------------ NPC views
 function updateNpcs(dt) {
@@ -595,7 +592,10 @@ function updateNpcs(dt) {
     v.car.visible = driving; v.body.visible = !driving;
     if (traveling) v.g.rotation.y = n.heading * Math.PI / 180;
     else if (!fight && Math.hypot(playerState.x - n.x, playerState.z - n.z) < 4) v.g.rotation.y = Math.atan2(playerState.x - n.x, playerState.z - n.z);
-    poseWalk(v.body, traveling && !driving ? 1.6 : 0, dt);
+    if (v.char && v.g.visible && v.body.visible) {
+      const near = camera.position.distanceTo(v.g.position) < 90;
+      if (near) { locomotion(v.char, traveling ? 1.6 : 0); v.char.update(dt); }
+    }
     const text = prof.DisplayName + (traveling ? '' : n.activity === 'sleep' ? ' · asleep' : '');
     if (text !== v.last) { v.label.userData.redraw(text); v.last = text; }
   }
@@ -623,10 +623,13 @@ function frame(now) {
     if (now > hudAt) { hudAt = now + 120; updateHud(target); drawMinimap(target); }
   }
   if (banner.until && now > banner.until) { $('banner').hidden = true; banner.until = 0; }
-  for (const m of markers) { m.mesh.rotation.y += dt * 1.5; m.mesh.visible = !game || markerAvailable(m); }
-  updateCamera(dt);
+  for (const m of markers) { m.mesh.rotation.y += dt * 1.5; m.mesh.visible = !!game && markerAvailable(m); }
+  if (!game) { gfx.setTime(17.6, -60, 10); titleOrbit(dt); }
+  if (playerActor?.char) playerActor.char.update(dt);
+  if (fight?.opp.userData.char) fight.opp.userData.char.update(dt);
+  if (game) updateCamera(dt);
   updateLabels();
-  renderer.render(scene, camera);
+  gfx.render();
   input.endFrame();
   requestAnimationFrame(frame);
 }
@@ -643,14 +646,42 @@ $('confirm-yes').onclick = () => { store.clear(); closeMenu(); if (drive) { scen
 $('confirm-no').onclick = () => ($('confirm-new').hidden = true);
 $('garage-close').onclick = closeGarage;
 $('dlg-leave').onclick = closeDialogue;
+// Title screen: the hero model stands on Magnolia Ave and slowly turns.
+let hero = null;
+const HERO_AT = { x: -48, z: 12 };
+const heroLoad = { state: 'loading' };
+loadHeroModel('assets/characters/player.fbx').then((h) => { heroLoad.state = 'ready'; hero = h; hero.position.set(HERO_AT.x, 0.14, HERO_AT.z); hero.rotation.y = -0.5; scene.add(hero); }).catch((e) => { heroLoad.state = 'failed: ' + e.message; console.warn('Hero model unavailable', e); });
+function titleOrbit(dt) {
+  titleOrbit.t = (titleOrbit.t || 0) + dt;
+  const wide = innerWidth / innerHeight > 1;
+  if (hero) { hero.visible = true; hero.rotation.y = (wide ? -0.25 : 0) + Math.sin(titleOrbit.t * 0.3) * 0.35; }
+  // Desktop: hero on the right third, beside the title. Phone: centred above the title block.
+  if (wide) { camera.position.set(HERO_AT.x - 1.1, 1.45, HERO_AT.z + 4.4); camera.lookAt(HERO_AT.x - 2.0, 1.15, HERO_AT.z); }
+  else { camera.position.set(HERO_AT.x + 0.3, 1.5, HERO_AT.z + 5.6); camera.lookAt(HERO_AT.x, 1.0, HERO_AT.z); }
+}
 const hasSave = !!store.get();
 $('btn-continue').hidden = !hasSave;
+$('btn-continue').disabled = $('btn-new').disabled = true;
+$('loading').textContent = 'Loading Southside…';
+loadCharacters((p) => ($('loading').textContent = `Loading people… ${Math.round(p * 100)}%`))
+  .catch((e) => { console.warn('Character models unavailable, using simple figures.', e); })
+  .finally(() => { createActors(); $('loading').textContent = ''; $('btn-continue').disabled = $('btn-new').disabled = false; });
+function renderQuality() {
+  const box = $('quality'); box.innerHTML = '';
+  for (const [k, q] of Object.entries(QUALITY)) {
+    const b = document.createElement('button'); b.textContent = q.label; b.disabled = gfx.quality === k;
+    b.onclick = () => { gfx.setQuality(k); try { localStorage.setItem(QUALITY_KEY, k); } catch {} renderQuality(); };
+    box.appendChild(b);
+  }
+}
+renderQuality();
 $('btn-continue').onclick = () => startGame(true);
 $('btn-new').onclick = () => { if (hasSave && !confirmNewFromTitle) { confirmNewFromTitle = true; $('btn-new').textContent = 'Tap again to start over'; return; } store.clear(); startGame(false); };
 let confirmNewFromTitle = false;
 $('controls-touch').hidden = !input.touch; $('controls-keys').hidden = input.touch;
 setPads();
+document.body.classList.add('on-title');
 requestAnimationFrame(frame);
 
 // Test/debug hook (used by the automated smoke test).
-window.__ffts = { get game() { return game; }, get mode() { return mode; }, get overlay() { return overlay; }, playerState, startGame, talkTo, chooseOption, get runner() { return runner; }, get fight() { return fight; }, activate, get current() { return current; }, openGarage, enterCar, get drive() { return drive; }, startRace, get race() { return race; } };
+window.__ffts = { heroLoad, get hero() { return hero; }, startFight, get game() { return game; }, get mode() { return mode; }, get overlay() { return overlay; }, playerState, startGame, talkTo, chooseOption, get runner() { return runner; }, get fight() { return fight; }, activate, get current() { return current; }, openGarage, enterCar, get drive() { return drive; }, startRace, get race() { return race; } };

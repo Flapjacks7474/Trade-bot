@@ -5,11 +5,16 @@ import { resolve } from 'node:path';
 const shots = process.argv[2] || '.';
 const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
 const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
+const noFonts = (p) => p.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.abort());
+await noFonts(page);
+// Gameplay test runs on Low graphics: software WebGL here is far slower than any real GPU.
+await page.addInitScript(() => { try { if (!sessionStorage.getItem('ffts.smoke')) { localStorage.setItem('ffts.quality', 'low'); localStorage.removeItem('ffts.save.v1'); sessionStorage.setItem('ffts.smoke', '1'); } } catch {} });
 const errors = [];
 page.on('pageerror', (e) => errors.push('pageerror: ' + e.message));
 page.on('console', (m) => { if (m.type() === 'error' && !/fonts\.(googleapis|gstatic)|ERR_|net::/.test(m.text())) errors.push('console: ' + m.text()); });
-await page.goto('file://' + resolve('dist/local.html'));
-await page.waitForTimeout(1500);
+await page.goto(process.env.BASE_URL || 'file://' + resolve('dist/local.html'), { waitUntil: 'domcontentloaded' });
+await page.waitForFunction(() => !document.getElementById('btn-new').disabled, null, { timeout: 60000 });
+await page.waitForTimeout(800);
 await page.screenshot({ path: shots + '/1-title.png' });
 await page.click('#btn-new');
 await page.waitForTimeout(800);
@@ -71,14 +76,16 @@ await step('race result', () => ({ points: __ffts.game.racing.points, wins: __ff
 // Save + reload persists.
 await until(() => !__ffts.race, 60000);
 await page.keyboard.press('Escape'); await page.waitForTimeout(200); await page.click('#menu-save'); await page.waitForTimeout(200);
-await page.reload(); await page.waitForTimeout(1200);
+await page.reload({ waitUntil: 'domcontentloaded' }); await page.waitForFunction(() => !document.getElementById('btn-new').disabled, null, { timeout: 60000 });
 await step('continue visible after reload', () => ({ continueShown: !document.getElementById('btn-continue').hidden }));
 await page.click('#btn-continue'); await page.waitForTimeout(500);
 await step('restored', () => ({ m3: __ffts.game.missions.status('mission.ch1.old_friends'), cars: __ffts.game.garage.cars.length, points: __ffts.game.racing.points }));
-// Phone layout with touch.
+// Phone layout with touch (close the desktop page first: software WebGL here is single-threaded).
+await page.close();
 const phone = await browser.newPage({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true, deviceScaleFactor: 2 });
+await noFonts(phone);
 phone.on('pageerror', (e) => errors.push('phone pageerror: ' + e.message));
-await phone.goto('file://' + resolve('dist/local.html')); await phone.waitForTimeout(1000);
+await phone.goto(process.env.BASE_URL || 'file://' + resolve('dist/local.html'), { waitUntil: 'domcontentloaded' }); await phone.waitForFunction(() => !document.getElementById('btn-new').disabled, null, { timeout: 60000 });
 await phone.screenshot({ path: shots + '/8-phone-title.png' });
 await phone.tap('#btn-new'); await phone.waitForTimeout(1200);
 await phone.screenshot({ path: shots + '/9-phone-play.png' });

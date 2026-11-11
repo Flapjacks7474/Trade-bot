@@ -11,6 +11,7 @@
   color-scheme: dark;
 }
 [hidden] { display: none !important; }
+body.on-title #top, body.on-title #minimap, body.on-title #mission, body.on-title #act { display: none !important; }
 html, body { height: 100%; overflow: hidden; background: var(--ink); color: var(--paper); }
 body { font-family: var(--ui); font-size: 16px; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; touch-action: none; }
 #app { position: fixed; inset: 0; }
@@ -94,8 +95,10 @@ body.touch #drive-hud { bottom: auto; top: calc(env(safe-area-inset-top, 0px) + 
 #menu-stats b { display: block; font-size: 18px; } #menu-stats span { color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: .08em; }
 .row { display: flex; flex-wrap: wrap; gap: 8px; }
 #confirm-new { margin-top: 10px; padding: 10px; border: 1px solid var(--red); border-radius: 10px; }
-#title { position: absolute; inset: 0; z-index: 20; display: grid; place-items: center; background: radial-gradient(120% 90% at 50% 100%, rgba(200,16,46,.35), transparent 60%), linear-gradient(180deg, rgba(14,16,20,.55), rgba(14,16,20,.92)); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 24px; overflow: auto; }
+#title { position: absolute; inset: 0; z-index: 20; display: grid; place-items: center; background: linear-gradient(90deg, rgba(14,16,20,.88) 0%, rgba(14,16,20,.55) 45%, rgba(14,16,20,0) 70%); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 24px; overflow: auto; }
+#title { place-items: center start; }
 #title .card { width: min(560px, 100%); display: grid; gap: 14px; }
+@media (max-width: 700px) { #title { place-items: end center; background: linear-gradient(180deg, rgba(14,16,20,0) 35%, rgba(14,16,20,.9) 75%); } #title h1 { font-size: clamp(40px, 12vw, 64px); } #title .controls { display: none; } }
 #title h1 { font-family: var(--display); font-weight: 400; font-size: clamp(48px, 14vw, 104px); line-height: 0.9; margin: 0; letter-spacing: 0.01em; text-transform: uppercase; text-wrap: balance; }
 #title h1 span { color: var(--red); }
 #title .tag { font-size: 20px; font-weight: 600; color: var(--paper); margin: 0; }
@@ -172,6 +175,8 @@ body.touch #drive-hud { bottom: auto; top: calc(env(safe-area-inset-top, 0px) + 
     <div id="menu-stats"></div>
     <div class="row"><button id="menu-save">Save</button><button id="menu-load">Load last save</button><button id="menu-new">New game</button></div>
     <div id="confirm-new" hidden><p>Start over? Your saved progress on this device will be erased.</p><div class="row"><button id="confirm-yes">Erase and restart</button><button id="confirm-no">Keep playing</button></div></div>
+    <h3>Graphics</h3>
+    <div class="row" id="quality"></div>
     <h3>How to play</h3>
     <div class="controls" id="controls-touch">Left thumb: <b>move</b> (push far to sprint). Right thumb: <b>look</b>. Yellow button: <b>talk, use, drive</b>.<br>Fights: <b>JAB, JAB, HEAVY</b> is a combo. Tap <b>BLOCK</b> right before a hit to <b>parry</b>. <b>GRAB</b> then <b>HEAVY</b> throws. Fill the gold meter for a <b>FINISH</b>.</div>
     <div class="controls" id="controls-keys"><b>WASD</b> move · <b>Shift</b> sprint · drag the mouse to look · <b>E</b> talk / use / drive · <b>Esc</b> menu · <b>1–9</b> dialogue.<br>Fights: <b>J</b> jab · <b>K</b> heavy · <b>I</b> kick · <b>L</b> grab · <b>Space</b> block (tap = parry) · <b>Shift</b> dodge · <b>O</b> counter · <b>U</b> finisher · <b>T</b> taunt.<br>Driving: <b>W/S</b> gas/brake · <b>A/D</b> steer · <b>Space</b> handbrake · <b>Shift</b> nitrous · <b>C</b> camera · <b>E</b> get out / park / start race.</div>
@@ -183,6 +188,7 @@ body.touch #drive-hud { bottom: auto; top: calc(env(safe-area-inset-top, 0px) + 
       <h1>Fight for <span>the South</span></h1>
       <p class="tag">Nobody owns the South. Until somebody earns it.</p>
       <div class="row"><button id="btn-continue" hidden>Continue</button><button id="btn-new">New game</button></div>
+      <p id="loading" class="meta" aria-live="polite"></p>
       <div class="controls">Come home to Grandma's house, link back up with Dre, settle things with Rell, take a fight under the cold-storage plant, buy a car and run the Pecan Street Sprint. Progress saves on this device.</div>
     </div>
   </section>
