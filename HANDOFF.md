@@ -4,12 +4,34 @@ You are taking over an in-progress Unity 6.3 LTS open-world action RPG. Read thi
 `Documentation/PROJECT_STATUS.md`. The original full design brief is condensed in `Documentation/MasterGameDesignDocument.md`
 and the per-system specs in `Documentation/`.
 
-## State at handoff (2026-11-07)
-- Milestones done (simulation tested; Unity layer compile-checked but **never run in an editor**):
-  0 audit · 1 core foundation · 3 combat · 4 driving/racing · 5 characters/missions (schedules, travel, Chapter 1).
-- **134 automated tests, all passing**, via `Tools/run-tests.sh` (.NET 8 SDK, no Unity needed).
-- Git: branch `claude/fight-for-south-foundation-mgjm04`, 4 commits on top of `main`. **Not pushed**: the previous agent had
-  no GitHub write access (HTTP 403). If you received this as a zip, `git init` it or upload it to a new repository.
+## State at handoff (2026-11-11)
+- **Everything is on GitHub:** repo `Flapjacks7474/Trade-bot`, branch `claude/fight-for-south-foundation-mgjm04`.
+- **Unity project (the real game):** milestones 0, 1, 3, 4, 5 built. Game rules pass **134 automated tests** (`Tools/run-tests.sh`,
+  .NET 8). The Unity layer compiles against Unity reference libraries but has **never been run in a Unity editor**.
+- **Playable browser version** (`WebPrototype/`): Chapter 1 in Southside with fights, cars, the Pecan Street Sprint, NPC schedules
+  and saves. Published link (older build, before the graphics upgrade): https://claude.ai/artifact/CV2ZgWjGkitz2gnQwXVdEj
+- **Graphics upgrade (committed, not yet republished):** generated PBR textures, sidewalks, detailed buildings, trees, lamps,
+  parked cars, sky with time of day, bloom, quality presets, CC0 KayKit animated characters (`WebPrototype/assets/LICENSES.md`).
+- **Owner's hero model:** `WebPrototype/assets/characters/player.fbx` (Meshy export). One static mesh, ~282k vertices,
+  **no skeleton, no textures, no animations**; shown on the title screen, coloured by body region in code. It cannot animate
+  until it is rigged.
+
+## What the owner asked for next (not started)
+1. **Look:** people currently read as "Roblox" (KayKit chibi proportions). Wanted: Saints Row / Watch Dogs realism with the style
+   of the owner's reference character (stylised streetwear, dreads, beanie, chains, cargo pants). Use original branding: the
+   reference image shows third-party logos (XO, Nike-style shoes) that must not ship.
+2. **Fighting:** 10+ distinct styles (Street Brawling, Boxing, Kickboxing, Muay Thai, Karate, Taekwondo, Kung Fu, Wrestling,
+   Judo/Jujutsu, MMA), each with its own stance, moves, combos, defence and finishers, plus two-style hybrids with their own
+   movesets. The data framework already supports styles (`Moveset.Build` merges up to three); only Street Fighting is authored.
+   Owner prefers fewer styles with genuinely unique animation over ten that look alike.
+3. **Characters:** every character distinct (face, build, height, hair, clothes); modular player customisation.
+4. **Environmental combat** beyond the existing wall slam; interiors; NPC variety.
+5. Tools the owner wants used: Unity, Blender, Storyboard Pro (none were available in the cloud session; Blender install was interrupted).
+
+## Honest blockers
+- Realistic rigged characters and per-style fight animations need real assets: mocap or hand animation, or CC0 libraries
+  (e.g. Quaternius Universal Animation Library), or Meshy's own rig-and-animate export. Code alone cannot produce AAA animation.
+- Best path for the hero: regenerate in Meshy in a T-pose **with textures**, use Meshy auto-rigging, export GLB.
 
 ## Ground rules that keep the project healthy
 1. **Gameplay rules go in `Assets/_Project/Scripts/Simulation/`** (assembly `FFTS.Simulation`, `noEngineReferences`). No
