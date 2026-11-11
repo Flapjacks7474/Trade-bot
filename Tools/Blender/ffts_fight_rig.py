@@ -118,10 +118,10 @@ def build_mannequin(rig):
     H = REST_HEAD; T = REST_TAIL
     P = lambda l, f, u: V(l, f, u)
     parts += [
-        ("Hips", "pants", lambda bm: _ellipsoid(bm, P(0, 0, 0.97), (0.175, 0.12, 0.11))),
-        ("Spine", "top", lambda bm: _ellipsoid(bm, P(0, 0.005, 1.12), (0.155, 0.11, 0.10))),
-        ("Spine1", "top", lambda bm: _ellipsoid(bm, P(0, 0.01, 1.25), (0.165, 0.115, 0.10))),
-        ("Spine2", "top", lambda bm: _ellipsoid(bm, P(0, 0.015, 1.38), (0.20, 0.13, 0.12))),
+        ("Hips", "pants", lambda bm: _ellipsoid(bm, P(0, 0, 0.97), (0.185, 0.13, 0.13))),
+        ("Spine", "top", lambda bm: _ellipsoid(bm, P(0, 0.005, 1.12), (0.165, 0.12, 0.13))),
+        ("Spine1", "top", lambda bm: _ellipsoid(bm, P(0, 0.01, 1.25), (0.18, 0.125, 0.13))),
+        ("Spine2", "top", lambda bm: _ellipsoid(bm, P(0, 0.015, 1.36), (0.215, 0.145, 0.15))),
         ("Spine2", "skin", lambda bm: _ellipsoid(bm, P(0, -0.01, 1.42), (0.215, 0.11, 0.07))),   # trapezius/upper back
         ("Neck", "skin", lambda bm: _limb(bm, P(0, 0.0, 1.47), P(0, 0.01, 1.60), 0.060, 0.055)),
         ("Neck", "chain", lambda bm: _ellipsoid(bm, P(0, 0.02, 1.49), (0.085, 0.075, 0.012), 20, 6)),
@@ -130,13 +130,13 @@ def build_mannequin(rig):
     ]
     for side, s in (("Left", 1), ("Right", -1)):
         parts += [
-            (side + "Shoulder", "skin", lambda bm, s=s: _ellipsoid(bm, P(s * 0.19, 0, 1.44), (0.075, 0.075, 0.07))),  # deltoid
-            (side + "Arm", "skin", lambda bm, n=side: _limb(bm, H[n + "Arm"], T[n + "Arm"], 0.058, 0.045)),
-            (side + "ForeArm", "skin", lambda bm, n=side: _limb(bm, H[n + "ForeArm"], T[n + "ForeArm"], 0.045, 0.033)),
+            (side + "Shoulder", "skin", lambda bm, s=s: _ellipsoid(bm, P(s * 0.19, 0, 1.43), (0.085, 0.085, 0.08))),  # deltoid
+            (side + "Arm", "skin", lambda bm, n=side: _limb(bm, H[n + "Arm"], T[n + "Arm"], 0.068, 0.052)),
+            (side + "ForeArm", "skin", lambda bm, n=side: _limb(bm, H[n + "ForeArm"], T[n + "ForeArm"], 0.053, 0.038)),
             (side + "ForeArm", "skin", lambda bm, n=side: _ellipsoid(bm, H[n + "ForeArm"], (0.045, 0.045, 0.045), 10, 8)),
             (side + "Hand", "skin", lambda bm, s=s: _ellipsoid(bm, P(s * 0.79, 0, 1.445), (0.055, 0.045, 0.035), 12, 8)),
-            (side + "UpLeg", "pants", lambda bm, n=side: _limb(bm, H[n + "UpLeg"] + V(0, 0, 0.02), T[n + "UpLeg"], 0.085, 0.058)),
-            (side + "Leg", "pants", lambda bm, n=side: _limb(bm, H[n + "Leg"], T[n + "Leg"] + V(0, 0, 0.05), 0.058, 0.050)),
+            (side + "UpLeg", "pants", lambda bm, n=side: _limb(bm, H[n + "UpLeg"] + V(0, 0, 0.02), T[n + "UpLeg"], 0.095, 0.064)),
+            (side + "Leg", "pants", lambda bm, n=side: _limb(bm, H[n + "Leg"], T[n + "Leg"] + V(0, 0, 0.05), 0.064, 0.050)),
             (side + "Leg", "pants", lambda bm, n=side: _ellipsoid(bm, H[n + "Leg"], (0.06, 0.06, 0.06), 10, 8)),
             (side + "Leg", "pants", lambda bm, s=s: _ellipsoid(bm, P(s * 0.10, -0.02, 0.36), (0.075, 0.07, 0.07), 10, 8)),  # cargo pocket
             (side + "Foot", "boots", lambda bm, s=s: _ellipsoid(bm, P(s * 0.10, 0.06, 0.06), (0.055, 0.13, 0.06), 12, 8)),
