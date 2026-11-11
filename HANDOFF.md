@@ -4,34 +4,35 @@ You are taking over an in-progress Unity 6.3 LTS open-world action RPG. Read thi
 `Documentation/PROJECT_STATUS.md`. The original full design brief is condensed in `Documentation/MasterGameDesignDocument.md`
 and the per-system specs in `Documentation/`.
 
-## State at handoff (2026-11-11)
-- **Everything is on GitHub:** repo `Flapjacks7474/Trade-bot`, branch `claude/fight-for-south-foundation-mgjm04`.
-- **Unity project (the real game):** milestones 0, 1, 3, 4, 5 built. Game rules pass **134 automated tests** (`Tools/run-tests.sh`,
-  .NET 8). The Unity layer compiles against Unity reference libraries but has **never been run in a Unity editor**.
-- **Playable browser version** (`WebPrototype/`): Chapter 1 in Southside with fights, cars, the Pecan Street Sprint, NPC schedules
-  and saves. Published link (older build, before the graphics upgrade): https://claude.ai/artifact/CV2ZgWjGkitz2gnQwXVdEj
-- **Graphics upgrade (committed, not yet republished):** generated PBR textures, sidewalks, detailed buildings, trees, lamps,
-  parked cars, sky with time of day, bloom, quality presets, CC0 KayKit animated characters (`WebPrototype/assets/LICENSES.md`).
-- **Owner's hero model:** `WebPrototype/assets/characters/player.fbx` (Meshy export). One static mesh, ~282k vertices,
-  **no skeleton, no textures, no animations**; shown on the title screen, coloured by body region in code. It cannot animate
-  until it is rigged.
+## State at handoff (2026-11-11, second session)
+- **Everything is on GitHub:** repo `Flapjacks7474/Trade-bot`, branch `claude/fight-for-south-foundation-mgjm04` (push works now).
+- **Unity project:** milestones 0, 1, 3, 4, 5 built, plus this session's styles, hybrids and customisation rules. Never run in Unity.
+- **⚠️ First thing:** this session had **no .NET SDK**, so the C# changes (stances, hybrids, `StyleLoadout`, `Characters/*`,
+  17 new tests, `FighterAnimator`) are **uncompiled**. Run `Tools/run-tests.sh` and fix anything before new work. The same
+  rules are ported to JS and pass: `cd WebPrototype && node --test tests/*.test.mjs` (28/28).
+- **Fighting:** 10 base styles (Street, Boxing, Kickboxing, Muay Thai, Karate, Taekwondo, Kung Fu, Wrestling, Judo & Jujutsu,
+  MMA) and 6 hybrids (`Data/Moves/`). Stances change the rules (see `CombatSpecification.md`). The AI round robin keeps every style at 25-75% win rate.
+- **Customisation:** `Simulation/Characters/` + `Data/Appearance/appearance_catalog.json` (7 original brands, 45 items,
+  16 hairstyles, 11 authored looks; the player default follows the owner's reference). See `CustomizationSpecification.md`.
+- **Art pipeline (owner's PC, Windows, Blender 5.2.3 + Storyboard Pro 27.1 trial):** work folder `Documents\FightForTheSouth_Art`.
+  Blender is driven by scripts in `Tools/Blender/` (paste a bootstrap into the Text Editor; it pulls the scripts and move data
+  from GitHub raw by commit SHA). Storyboard Pro is driven by `Tools/StoryboardPro/` (Script Editor → Sandbox → `include(...)`).
+  Read `Documentation/CharacterAndAnimationPipeline.md`.
+- **Assets made:** `Assets/_Project/Art/Characters/FFTS_FightRig.fbx` (22-bone Humanoid-named rig, mannequin, 252 clips),
+  `WebPrototype/assets/animations/FFTS_FightRig.glb`, `ArtSource/Blender/10_fight_rig.blend`. Storyboard project
+  `storyboard/FFTS_FightChoreography` lives on the owner's PC (191 scenes, 16 sequences).
+- **Hero model finding:** `player.fbx` has the **hands fused inside the pockets**, no UVs, no textures and short hair. It can't be
+  rigged for fighting. The owner needs to regenerate it in Meshy in a T-pose with textures; then fit and skin it to FFTS_Rig.
+- **Browser build** not rebuilt (no three.js offline). Published link is still the older build.
 
-## What the owner asked for next (not started)
-1. **Look:** people currently read as "Roblox" (KayKit chibi proportions). Wanted: Saints Row / Watch Dogs realism with the style
-   of the owner's reference character (stylised streetwear, dreads, beanie, chains, cargo pants). Use original branding: the
-   reference image shows third-party logos (XO, Nike-style shoes) that must not ship.
-2. **Fighting:** 10+ distinct styles (Street Brawling, Boxing, Kickboxing, Muay Thai, Karate, Taekwondo, Kung Fu, Wrestling,
-   Judo/Jujutsu, MMA), each with its own stance, moves, combos, defence and finishers, plus two-style hybrids with their own
-   movesets. The data framework already supports styles (`Moveset.Build` merges up to three); only Street Fighting is authored.
-   Owner prefers fewer styles with genuinely unique animation over ten that look alike.
-3. **Characters:** every character distinct (face, build, height, hair, clothes); modular player customisation.
-4. **Environmental combat** beyond the existing wall slam; interiors; NPC variety.
-5. Tools the owner wants used: Unity, Blender, Storyboard Pro (none were available in the cloud session; Blender install was interrupted).
-
-## Honest blockers
-- Realistic rigged characters and per-style fight animations need real assets: mocap or hand animation, or CC0 libraries
-  (e.g. Quaternius Universal Animation Library), or Meshy's own rig-and-animate export. Code alone cannot produce AAA animation.
-- Best path for the hero: regenerate in Meshy in a T-pose **with textures**, use Meshy auto-rigging, export GLB.
+## What's next (owner's requests, in order)
+1. Compile and run the C# tests; fix.
+2. Hero: when the T-pose Meshy export arrives, write `ffts_bind_character.py` (fit joints to mesh landmarks, auto weights,
+   export) and swap the mannequin out. Then do the same for the 10 named NPC looks.
+3. Animation polish: clips are blocking quality. Mocap or hand polish against `ArtSource/Reports/fight_rig_report.txt`; keep the impact frames.
+4. Unity: import FBX as Humanoid, make `FightAnimationLibrary`, add `FighterAnimator` to player/opponent prefabs, play-test.
+5. UI for the creator, stores, barber and gyms (learn/equip styles). Give Dre, Rell and Brick their styles (Brick → Wrestling, Rell → Boxing) once balanced in-engine.
+6. Environmental combat beyond the wall slam; interiors; then M6 (FINESS OS phone).
 
 ## Ground rules that keep the project healthy
 1. **Gameplay rules go in `Assets/_Project/Scripts/Simulation/`** (assembly `FFTS.Simulation`, `noEngineReferences`). No

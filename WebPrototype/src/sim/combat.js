@@ -22,12 +22,22 @@ export const defaultConfig = () => ({
 
 const isStrike = (k) => ['Light', 'Heavy', 'Kick', 'Counter', 'Signature', 'GroundAttack'].includes(k);
 
+export const NEUTRAL_STANCE = Object.freeze({ Name: 'Neutral', WalkSpeed: 1, StrikeDamage: 1, KickDamage: 1, ThrowDamage: 1, ParryWindowBonus: 0,
+  CounterWindowBonus: 0, BlockChip: 1, GuardDrain: 1, DodgeDistance: 1, DodgeCost: 1, EscapeRate: 1, ClinchStrikesBonus: 0 });
+export const stanceDamage = (st, kind) => (kind === 'Kick' ? st.KickDamage : kind === 'Throw' || kind === 'EnvironmentalThrow' ? st.ThrowDamage
+  : kind === 'Finisher' || kind === 'Taunt' || kind === 'Grapple' ? 1 : st.StrikeDamage);
+
 export class Moveset {
-  constructor(styles) {
+  // Port of Moveset.Build(styles, hybrid): the hybrid (if any) goes first for moves, links, slots and stance.
+  constructor(styles, hybrid = null) {
+    if (!styles.length || styles.length > 3) throw new Error('A fighter combines 1-3 styles.');
+    const ordered = hybrid ? [hybrid, ...styles] : styles;
+    this.hybridId = hybrid ? hybrid.Id : null;
+    this.stance = (ordered.find((s) => s.Stance) || {}).Stance || NEUTRAL_STANCE;
     this.moves = new Map(); this.links = [];
-    for (const s of styles) { for (const m of s.Moves) if (!this.moves.has(m.Id)) this.moves.set(m.Id, m); this.links.push(...s.Links); }
+    for (const s of ordered) { for (const m of s.Moves) if (!this.moves.has(m.Id)) this.moves.set(m.Id, m); this.links.push(...s.Links); }
     const slots = ['Light', 'Heavy', 'Kick', 'Grapple', 'Counter', 'Finisher', 'GroundAttack', 'Taunt', 'ClinchStrike', 'ClinchThrow', 'EnvironmentalThrow', 'Reversal'];
-    for (const slot of slots) for (const s of styles) { if (!this[slot] && s[slot]) this[slot] = this.moves.get(s[slot]); }
+    for (const slot of slots) for (const s of ordered) { if (!this[slot] && s[slot]) this[slot] = this.moves.get(s[slot]); }
   }
   get(id) { return this.moves.get(id) || null; }
   findLink(from, cmd) { const l = this.links.find((x) => x.From === from && x.Command === cmd); return l ? this.get(l.To) : null; }
@@ -50,11 +60,12 @@ export class Fighter {
     if (stamina != null) this.stamina = clamp(stamina, 0, this.maxStamina);
   }
   get healthFraction() { return this.health / this.maxHealth; }
-  get walkSpeed() { return 2.2 + this.stats.Speed / 50; }
+  get stance() { return this.moves.stance || NEUTRAL_STANCE; }
+  get walkSpeed() { return (2.2 + this.stats.Speed / 50) * this.stance.WalkSpeed; }
   get strMul() { return 0.7 + this.stats.Strength / 166; }
   get durMul() { return 1.15 - this.stats.Durability / 333; }
-  get counterWindow() { return 6 + Math.trunc(this.stats.Technique / 15); }
-  get parryWindow() { return 3 + Math.trunc(this.stats.Technique / 25); }
+  get counterWindow() { return 6 + Math.trunc(this.stats.Technique / 15) + this.stance.CounterWindowBonus; }
+  get parryWindow() { return 3 + Math.trunc(this.stats.Technique / 25) + this.stance.ParryWindowBonus; }
   adjustStartup(s) { return Math.max(1, roundAway(s * (1.15 - this.stats.Speed / 400))); }
   get inActive() { return this.move && this.moveTick >= this.moveStartup && this.moveTick < this.moveStartup + this.move.Active; }
   get inStartup() { return this.move && this.moveTick < this.moveStartup; }
@@ -99,7 +110,7 @@ export class CombatSim {
       case S.Countering: if (f.stateTicks >= c.counterStanceTicks) this.set(f, S.Idle); break;
       case S.HitStun: if (this.breakaway(f, o)) break; if (f.stateTicks >= f.stateDuration) this.set(f, S.Idle); break;
       case S.BlockStun: case S.Stunned: if (f.stateTicks >= f.stateDuration) this.set(f, S.Idle); break;
-      case S.Dodging: if (f.stateTicks <= 12) f.x -= f.facing * c.dodgeDistance / 12; if (f.stateTicks >= f.stateDuration) this.set(f, S.Idle); break;
+      case S.Dodging: if (f.stateTicks <= 12) f.x -= f.facing * c.dodgeDistance * f.stance.DodgeDistance / 12; if (f.stateTicks >= f.stateDuration) this.set(f, S.Idle); break;
       case S.KnockedDown:
         if (f.buffered === C.Dodge && f.stateTicks >= c.quickRiseAfterTicks) { this.take(f); this.emit('QuickRise', f); this.set(f, S.GettingUp, c.getUpTicks / 2); }
         else if (f.stateTicks >= f.stateDuration) this.set(f, S.GettingUp, c.getUpTicks);
@@ -126,8 +137,9 @@ export class CombatSim {
     switch (cmd) {
       case C.Finisher: { const d = this.canFinish(f); if (d === 'None') this.startFinisher(f, o); else this.emit('FinisherDenied', f, o, null, 0, d); return true; }
       case C.Dodge:
-        if (f.stamina < c.dodgeStaminaCost) { this.emit('NotEnoughStamina', f, null, 'dodge'); return true; }
-        f.stamina -= c.dodgeStaminaCost; this.set(f, S.Dodging, c.dodgeTicks); return true;
+      { const cost = c.dodgeStaminaCost * f.stance.DodgeCost;
+        if (f.stamina < cost) { this.emit('NotEnoughStamina', f, null, 'dodge'); return true; }
+        f.stamina -= cost; this.set(f, S.Dodging, c.dodgeTicks); return true; }
       case C.Counter:
         if (!f.moves.Counter) return false;
         if (f.stamina < c.counterStaminaCost) { this.emit('NotEnoughStamina', f, null, 'counter'); return true; }
@@ -185,7 +197,7 @@ export class CombatSim {
     if (d.state !== S.Grappled) { this.set(a, S.Idle); return; }
     if (a.clinchTicks >= c.clinchMaxTicks) { this.set(a, S.Idle); this.set(d, S.Idle); this.push(d, a, 0.6); this.emit('ClinchReleased', a, d); return; }
     const cmd = a.buffered;
-    if (cmd === C.Light && a.clinchCooldown === 0 && a.clinchStrikes < c.clinchStrikesMax && a.moves.ClinchStrike) {
+    if (cmd === C.Light && a.clinchCooldown === 0 && a.clinchStrikes < c.clinchStrikesMax + a.stance.ClinchStrikesBonus && a.moves.ClinchStrike) {
       this.take(a); const m = a.moves.ClinchStrike;
       if (a.stamina < m.StaminaCost) { this.emit('NotEnoughStamina', a, null, m.Id); return; }
       a.stamina -= m.StaminaCost;
@@ -211,7 +223,7 @@ export class CombatSim {
       this.emit('Reversal', d, a, d.moves.Reversal.Id);
     } else if (cmd === C.Grapple || cmd === C.Dodge) {
       const gain = 16 + d.stats.Technique * 0.2 + d.stats.Strength * 0.1 - a.stats.Strength * 0.08;
-      d.escape += Math.max(6, gain);
+      d.escape += Math.max(6, gain) * d.stance.EscapeRate;
       if (d.escape >= c.escapeThreshold) {
         d.escape = 0; this.set(a, S.HitStun, 20); this.set(d, S.Idle); this.push(a, d, 0.5); this.push(d, a, 0.5);
         this.emit('GrappleEscaped', d, a);
@@ -266,8 +278,8 @@ export class CombatSim {
   }
 
   applyBlock(a, d, m) {
-    const chip = m.Damage * this.cfg.chipDamageFraction * a.strMul;
-    d.health = Math.max(1, d.health - chip); d.stamina -= m.StaminaDamage; this.addMomentum(a, m.MomentumGain * 0.3);
+    const chip = m.Damage * this.cfg.chipDamageFraction * a.strMul * stanceDamage(a.stance, m.Kind) * d.stance.BlockChip;
+    d.health = Math.max(1, d.health - chip); d.stamina -= m.StaminaDamage * d.stance.GuardDrain; this.addMomentum(a, m.MomentumGain * 0.3);
     this.push(d, a, m.Pushback * 0.7);
     if (d.stamina <= 0) { d.stamina = d.maxStamina * 0.25; this.set(d, S.Stunned, this.cfg.guardBreakStunTicks); this.emit('GuardBreak', a, d, m.Id, chip); return; }
     this.set(d, S.BlockStun, m.BlockStun); this.emit('Blocked', a, d, m.Id, chip);
@@ -328,7 +340,7 @@ export class CombatSim {
     this.knockdown(d);
   }
 
-  scaled(a, d, m) { return m.Damage * a.strMul * d.durMul * Math.max(this.cfg.minDamageScale, 1 - this.cfg.comboDamageDecay * d.combo); }
+  scaled(a, d, m) { return m.Damage * a.strMul * d.durMul * Math.max(this.cfg.minDamageScale, 1 - this.cfg.comboDamageDecay * d.combo) * stanceDamage(a.stance, m.Kind); }
   addMomentum(f, n) { f.momentum = clamp(f.momentum + n, 0, this.cfg.momentumMax); }
 
   set(f, s, duration = 0) {
@@ -496,11 +508,25 @@ export class FighterAI {
   }
 }
 
-export function createFight(data, playerId, opponentId, seed) {
-  const styles = new Map(data.styles.map((s) => [s.Id, s]));
+/** The hybrid style for a pair of base styles (order-free), or null. */
+export function findHybrid(styles, a, b) {
+  if (!a || !b || a === b) return null;
+  for (const s of styles) if (s.HybridOf && s.HybridOf.length === 2 && s.HybridOf.includes(a) && s.HybridOf.includes(b)) return s;
+  return null;
+}
+/** Port of CombatDatabase.BuildMoveset(styleIds, allowHybrid, unlockedHybrids). */
+export function buildMoveset(allStyles, styleIds, unlockedHybrids = null) {
+  const byId = new Map(allStyles.map((s) => [s.Id, s]));
+  const styles = styleIds.map((id) => { const s = byId.get(id); if (!s) throw new Error('Unknown style ' + id); return s; });
+  let hybrid = styleIds.length >= 2 ? findHybrid(allStyles, styleIds[0], styleIds[1]) : null;
+  if (hybrid && unlockedHybrids && !unlockedHybrids.includes(hybrid.Id)) hybrid = null;
+  return new Moveset(styles, hybrid);
+}
+
+export function createFight(data, playerId, opponentId, seed, playerStyles = null) {
   const fighters = new Map(data.fighters.map((f) => [f.Id, f]));
   const pd = fighters.get(playerId), od = fighters.get(opponentId);
-  const ms = (d) => new Moveset(d.Styles.map((id) => styles.get(id)));
+  const ms = (d) => (d === pd && playerStyles ? buildMoveset(data.styles, playerStyles.equipped, playerStyles.hybrids) : buildMoveset(data.styles, d.Styles));
   const sim = new CombatSim(defaultConfig(), new Fighter(pd, ms(pd), -1.1), new Fighter(od, ms(od), 1.1), 'fight.' + seed);
   const ai = new FighterAI(sim.B, od.AiStyle, od.AiDifficulty, new Rng(seed));
   return { sim, ai };

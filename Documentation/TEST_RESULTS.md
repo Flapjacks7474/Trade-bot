@@ -1,5 +1,18 @@
 # Test Results
 
+## Run 2026-11-11 — fighting styles, hybrids, customisation, art pipeline
+
+| Item | Value |
+|---|---|
+| JS rule suite | `cd WebPrototype && node --test tests/*.test.mjs` → **28 passed, 0 failed** (9 existing + 11 style + 8 appearance) |
+| C# simulation suite | **Not run.** This session had no .NET SDK and no network for installing one. 17 new EditMode tests (`StyleTests`, `AppearanceTests`) are written but **not compiled**; the previous 134 were not re-run. **Run `Tools/run-tests.sh` first.** |
+| Unity editor | **Not available. Not run inside Unity.** `FighterAnimator.cs` and the `FightDirector` changes are uncompiled. |
+| Blender 5.2.3 (owner's PC) | `ffts_fight_rig.py` ran: 16 styles, 252 actions, 0 missing templates. Export verified by parsing the GLB: 252 uniquely named clips, 22 joints, durations match frame data (e.g. `anim.street.jab` 17 frames = 5+2+10). |
+| Storyboard Pro 27.1 (owner's PC) | `ffts_build_fight_boards.js` ran: **191 scenes in 16 sequences, 0 issues**, images confirmed in panels. |
+
+Balance (AI round robin, `styles.test.mjs`): Street 0.35 · Boxing 0.41 · Judo 0.35 · Karate 0.56 · Kickboxing 0.69 · Kung Fu 0.52 ·
+MMA 0.46 · Muay Thai 0.57 · Taekwondo 0.69 · Wrestling 0.41 (bounds 0.25-0.75).
+
 ## Run 2026-11-07 (later) — simulation suite, Milestone 5 added
 
 | Item | Value |

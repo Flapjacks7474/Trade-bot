@@ -1,6 +1,6 @@
 # Combat Specification (implemented)
 
-Source of truth: `Scripts/Simulation/Combat/*`, data `Data/Moves/street_fighting.json`, `Data/Characters/fighters.json`.
+Source of truth: `Scripts/Simulation/Combat/*`, data `Data/Moves/*.json` (10 styles + `hybrids.json`), `Data/Characters/fighters.json`.
 
 ## Simulation
 - 60 ticks/s fixed step, deterministic. Two fighters on a line (`X` in metres), arena half-width 6 m, walls at the ends.
@@ -75,3 +75,46 @@ Idle/stance 12 · Walk/run 10 · Punches 24 · Kicks/knees 16 · Blocks/counters
 Knockdowns/recovery 12 · Finishers 20 · Taunts 16 · Entrances 12. None exist yet. Each move's `AnimationKey` plus
 startup/active/recovery give the timing markers animators must hit. Root motion is presentation-only; the
 simulation owns position.
+
+
+## Fighting styles (added 2026-11-11)
+Ten base styles and six hybrids. Each base style is a complete kit (light, heavy, kick, grapple, counter, clinch strike,
+clinch throw, reversal, finisher, taunt, mostly a ground attack and a wall throw) with at least one 3-hit combo.
+Each style has its own **stance**: a defence profile that changes the rules (not just the animation).
+
+| Style | Stance / defence | Rule changes (stance) | Identity |
+|---|---|---|---|
+| Street Fighting | Street Guard / cover up | neutral (the original numbers) | balanced starter, wall slams |
+| Boxing | Philly Shell / slip and roll | punches ×1.15, walk ×1.1, parry +3, dodges 0.6 distance at half cost, throws ×0.6 | fastest jab, body shots drain guard, no kicks |
+| Kickboxing | High Guard / shell and check | kicks ×1.15, chip ×0.8, guard drain ×0.9 | punch-to-kick Dutch strings, leg kicks |
+| Muay Thai | Thai Stance / check and teep | kicks ×1.2, chip ×0.7, +2 clinch knees, escapes ×1.2, walk ×0.95 | elbows, plum clinch, teep |
+| Karate | Long Stance / intercept | counter window +3, parry +1, long dodges ×1.3 | lunging strikes, counter-punching |
+| Taekwondo | Bouncing Side Stance / footwork | kicks ×1.3, punches ×0.8, walk ×1.15, guard drain ×1.15 | spinning kicks, side kicks |
+| Kung Fu | Horse & Cat / sticky hands | parry +4, counter +2, dodges ×0.8 cost | chain punches, sweeps, locks |
+| Wrestling | Wrestler's Crouch / sprawl | throws ×1.35, escapes ×1.4, guard drain ×0.75, kicks ×0.7 | longest takedown, wall powerbomb |
+| Judo & Jujutsu | Shizentai / grip fighting | throws ×1.25, escapes ×1.3, counter +2, strikes ×0.88 | fastest grip, reversals, armbar |
+| MMA | MMA Stance / sprawl and shell | escapes ×1.15, +1 clinch strike | strike-to-takedown chains, ground and pound |
+
+**Hybrids** (`HybridOf` = two parents) apply automatically when both parents are equipped and the hybrid has been learned.
+The hybrid goes first in `Moveset.Build`: its stance, slots and links win, and its links may start from either parent's
+moves (cross-style combos). Each has exclusive moves and its own finisher.
+
+| Hybrid | Parents | Signature idea |
+|---|---|---|
+| Southside Hands | Street + Boxing | shoulder-roll counters, double hook, jab-to-clinch-to-wall |
+| Dirty Boxing | Boxing + Wrestling | collar tie, inside uppercuts, uppercut suplex |
+| Clinch King | Muay Thai + Wrestling | five clinch knees, knee-to-lift, teep-to-double-leg |
+| Tricking | Karate + Taekwondo | blitz punch into spin kicks, butterfly twist |
+| Flowing Water | Kung Fu + Judo | biggest parry window, chain punch into redirect grip, spiral throw |
+| Cage Pressure | MMA + Kickboxing | switch kick, cage-cut combination |
+
+**Validation** (`CombatDatabase.Validate`): stance multipliers 0.5-1.5, window bonuses 0-6, clinch bonus 0-3;
+base styles fill every core slot; hybrids name two different base parents, and each pair has one hybrid only; links
+must be able to fire (cancel window > 0); no combo cycles, including across a hybrid and its parents.
+
+**Learning** (`StyleLoadout`): Street is known from the start. Styles cost $250-$400, paid once with key
+`style.learn.<id>`. A hybrid needs both parents first and costs $200-$250. Equip one or two base styles; primary has slot priority.
+
+**Balance check:** an AI round robin (all base styles, same stats, 3 seeds × both sides) keeps every style's win rate
+within 25-75% (`WebPrototype/tests/styles.test.mjs`). Latest: Street 0.35, Boxing 0.41, Judo 0.35, Karate 0.56,
+Kickboxing 0.69, Kung Fu 0.52, MMA 0.46, Muay Thai 0.57, Taekwondo 0.69, Wrestling 0.41.

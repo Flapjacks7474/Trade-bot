@@ -22,6 +22,7 @@ namespace FFTS.Session
         public List<string> Vehicles = new List<string>();
         public List<string> Races = new List<string>();
         public List<string> NpcProfiles = new List<string>();
+        public List<string> Appearance = new List<string>();
     }
 
     public static class GameContentLoader
@@ -40,6 +41,7 @@ namespace FFTS.Session
                 foreach (var d in DialogueRunner.Parse(json, report))
                     if (!content.Dialogues.ContainsKey(d.Id)) content.Dialogues[d.Id] = d;
             content.Combat = CombatDatabase.FromJson(src.Styles, src.Fighters, report);
+            if (src.Appearance.Count > 0) content.Appearance = FFTS.Characters.AppearanceCatalog.Parse(src.Appearance, report);
             content.Vehicles = VehicleDatabase.FromJson(src.Vehicles, report);
             content.Races = RaceDatabase.FromJson(src.Races, content.Vehicles, report);
             layouts = new List<DistrictLayout>();

@@ -11,14 +11,22 @@
 - `Shader.Find("Universal Render Pipeline/Lit")` for graybox materials may be stripped from player builds. If
   geometry renders magenta in a build, add a material asset reference or include the shader in Always Included Shaders.
 
+## Session 2026-11-11 gaps
+- **The C# changes were not compiled** (no .NET SDK in that session). The JS port of the same rules passes 28 tests. Run `Tools/run-tests.sh` before anything else.
+- The browser build was **not rebuilt** (three.js could not be installed without network). `build-data.mjs` now loads every style and the appearance catalog; `FFTS_FightRig.glb` is in `WebPrototype/assets/animations/` but the client doesn't load it yet.
+- **Hero model can't be rigged**: the Meshy mesh has the hands fused into the pockets, no UVs and no textures. It needs a T-pose re-export (see `CharacterAndAnimationPipeline.md`).
+- Fight clips are **blocking quality** (key poses, correct timing), not final animation. The mannequin is a previs body.
+- Storyboard panels use Blender renders as drawings; opponent reactions in throw panels aren't posed (BUG-016); intro frames are cropped (BUG-015).
+- No creator, store or style-learning UI yet: the rules, content and saves exist.
+
 ## Placeholders
-- All characters are capsules; buildings are boxes with floating labels; no interiors yet (interactions sit outside fronts).
+- Characters in Unity are capsules until rigged prefabs with `FighterAnimator` are set up; the fight rig and 252 blocking-quality clips now exist (`Assets/_Project/Art/Characters/FFTS_FightRig.fbx`); buildings are boxes with floating labels; no interiors yet (interactions sit outside fronts).
 - No animations, audio, music, VFX or voice. `MoveDefinition.AnimationKey` and combat events are the integration hooks.
 - UI is IMGUI (TD-011). Not touch-friendly; no gamepad UI navigation in dialogue (mouse or number keys).
 - Fight camera is hand-written (TD-009).
 
 ## Simplifications
-- Combat is 1v1 on a line. No group fights or environmental props beyond arena walls. One style (Street Fighting) authored.
+- Combat is 1v1 on a line. No group fights or environmental props beyond arena walls. Ten styles and six hybrids are authored; fighters in the world (Dre, Rell, Brick) still use Street Fighting.
 - Mission 3 tutorial steps are optional objectives, so a player who wins without blocking isn't soft-locked.
 - NPCs follow schedules and walk or drive along road centrelines. They don't avoid the player or cars, and there are no background crowds yet.
 - Walking NPCs are slow relative to the clock (1 game minute = 1 real second by default): a long walk can take hours of game time.

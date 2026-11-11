@@ -12,12 +12,13 @@ namespace FFTS.Tests
         {
             Missions = { TestData.Read("Missions/chapter1.json") },
             Dialogues = { TestData.Read("Dialogue/chapter1_dialogue.json") },
-            Styles = { TestData.Read("Moves/street_fighting.json") },
+            Styles = new System.Collections.Generic.List<string>(TestData.AllStyles()),
             Fighters = { TestData.Read("Characters/fighters.json") },
             Layouts = { TestData.Read("World/southside_layout.json") },
             Vehicles = { TestData.Read("Vehicles/vehicles.json") },
             Races = { TestData.Read("Racing/races.json") },
             NpcProfiles = { TestData.Read("Characters/npc_profiles.json") },
+            Appearance = new System.Collections.Generic.List<string>(TestData.Appearance()),
         };
 
         public static GameSession NewSession(out ValidationReport report, ulong seed = 1)

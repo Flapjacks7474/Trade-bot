@@ -2,6 +2,30 @@
 
 All notable changes. Dates are UTC.
 
+## [0.5.0-styles-characters] — 2026-11-11
+
+### Added
+- **Nine new fighting styles** (Boxing, Kickboxing, Muay Thai, Karate, Taekwondo, Kung Fu, Wrestling, Judo & Jujutsu, MMA),
+  each with a stance that changes the rules (damage by kind, parry and counter windows, chip, guard drain, dodge
+  distance and cost, escapes, clinch strikes), its own moves, combos, counter, reversal and finisher.
+- **Six hybrids** with exclusive moves, cross-style combo links, their own stance and finisher; they apply when both parents are equipped and learned.
+- `StyleLoadout`: learn styles through FINESS BANK (`style.learn.<id>`, never charged twice), equip up to two, saved in games.
+- **Character customisation rules:** `CharacterAppearance` (body, face sliders, skin, eyes, hair, facial hair, 8 outfit slots),
+  catalog validation, `WardrobeManager` (creator, stores, barber, idempotent purchases, saves), deterministic NPC look generator
+  that rejects look-alikes. Content: 7 original brands, 45 items, 16 hairstyles, 6 stores, 11 authored looks (player
+  default after the owner's reference character).
+- **Blender pipeline** (`Tools/Blender/`): FFTS_Rig (Humanoid-named skeleton), fight mannequin, 252 animation clips generated from
+  the move data at 60 fps (impact on frame `Startup`), GLB and FBX export, storyboard frame renders.
+- **Storyboard Pro pipeline** (`Tools/StoryboardPro/`): generator for a board script that builds one sequence per style, an
+  intro scene per style and a 3-panel scene per move with action, camera and timing captions.
+- Unity: `FighterAnimator` + `FightAnimationLibrary` (Playables, tick-synced clips); `FightDirector` uses the player's style loadout.
+- JS port of styles, stances, hybrids, loadout and appearance; 19 new node tests including an AI round-robin balance check.
+- 17 new C# EditMode tests (`StyleTests`, `AppearanceTests`). **Not compiled or run:** no .NET SDK in this session.
+
+### Changed
+- Balance from the round robin: Karate and Taekwondo ranges trimmed; Wrestling and Judo strikes and throws buffed.
+- `GameSaveData` gains `Styles` and `Wardrobe` (older saves load with the starter style and default look).
+
 ## [0.4.0-playable-web] — 2026-11-08
 
 ### Added

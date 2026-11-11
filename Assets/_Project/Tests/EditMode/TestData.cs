@@ -31,8 +31,22 @@ namespace FFTS.Tests
         public static CombatDatabase Combat(out ValidationReport report)
         {
             report = new ValidationReport();
-            return CombatDatabase.FromJson(new[] { Read("Moves/street_fighting.json") }, new[] { Read("Characters/fighters.json") }, report);
+            return CombatDatabase.FromJson(AllStyles(), new[] { Read("Characters/fighters.json") }, report);
         }
+
+        /// <summary>Every style file under Data/Moves (street first), as the Unity scene builder loads them.</summary>
+        public static string[] AllStyles()
+        {
+            var files = new System.Collections.Generic.List<string>(Directory.GetFiles(Path.Combine(DataRoot, "Moves"), "*.json"));
+            files.Sort((x, y) =>
+            {
+                bool sx = Path.GetFileName(x) == "street_fighting.json", sy = Path.GetFileName(y) == "street_fighting.json";
+                return sx != sy ? (sx ? -1 : 1) : string.CompareOrdinal(x, y);
+            });
+            return files.ConvertAll(File.ReadAllText).ToArray();
+        }
+
+        public static string[] Appearance() => new[] { Read("Appearance/appearance_catalog.json") };
 
         public static CombatDatabase Combat()
         {

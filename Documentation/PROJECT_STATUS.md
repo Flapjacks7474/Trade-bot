@@ -1,6 +1,6 @@
 # Project Status
 
-_Last updated: 2026-11-07_
+_Last updated: 2026-11-11_
 
 ## Current milestone
 
@@ -67,12 +67,18 @@ TEST_RESULTS.md). Nothing has been play-tested.
 | NPC state in saves (mid-trip positions) | ✅ Tested | LivingWorldSessionTests |
 | Unity NPC agents (moving capsules / cars, activity labels, talk while walking) | ⚠️ Written, compile-checked, **never run** | — |
 | Unity driving (enter/exit, collisions, chase/hood/cockpit cameras, garage panel, race director, HUD) | ⚠️ Written, compile-checked, **never run** | — |
+| 10 fighting styles + 6 hybrids (stances change rules; own moves, combos, counters, finishers) | ✅ JS port tested (11 tests incl. AI balance); ⚠️ C# written, **not compiled** | styles.test.mjs, StyleTests |
+| Style learning/equipping via FINESS BANK (idempotent), saved | ✅ JS tested; ⚠️ C# not compiled | styles.test.mjs, StyleTests |
+| Character appearance + wardrobe + barber + NPC look generator; 45 items, 7 original brands, 11 authored looks | ✅ JS tested; ⚠️ C# not compiled | appearance.test.mjs, AppearanceTests |
+| Blender fight rig, mannequin, 252 clips (60 fps, impact on Startup), GLB/FBX export | ✅ Ran in Blender 5.2 on owner's PC; GLB verified | ArtSource/Reports |
+| Storyboard Pro fight choreography board (191 scenes, 16 sequences) | ✅ Built in Storyboard Pro 27.1 on owner's PC | TEST_RESULTS |
+| Unity `FighterAnimator` (Playables, tick-synced) | ⚠️ Written, **not compiled, never run** | — |
 
 ## Not started (by roadmap order)
 
 Traffic, police, other race types (M4 leftovers) · background crowds (M5 leftover) · FINESS OS phone (M6) · rival encounters, crew
 behaviour, world events (M7) · music career beyond the first-demo flag (M8) · businesses/property (M9) ·
-chapters 2–8 (M10) · other districts (M11) · release prep (M12) · police/law · customization.
+chapters 2–8 (M10) · other districts (M11) · release prep (M12) · police/law · creator/store/style UI · final character art.
 
 ## Blocked
 

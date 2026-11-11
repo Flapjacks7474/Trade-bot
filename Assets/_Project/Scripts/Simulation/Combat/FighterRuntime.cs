@@ -9,6 +9,8 @@ namespace FFTS.Combat
         public readonly FighterDefinition Definition;
         public readonly Moveset Moves;
         public FighterStats Stats => Definition.Stats;
+        /// <summary>Stance of the fighter's resolved moveset (hybrid first, then first style). Never null.</summary>
+        public StanceDefinition Stance => Moves.Stance ?? StanceDefinition.Neutral;
 
         public float Health { get; internal set; }
         public float MaxHealth { get; }
@@ -68,11 +70,11 @@ namespace FFTS.Combat
         public bool IsDefeated => State == CombatState.Defeated;
 
         // Stat-derived values, kept here so tests and UI read the same numbers.
-        public float WalkSpeed => 2.2f + Stats.Speed / 50f;
+        public float WalkSpeed => (2.2f + Stats.Speed / 50f) * Stance.WalkSpeed;
         public float StrengthMultiplier => 0.7f + Stats.Strength / 166f;
         public float DurabilityMultiplier => 1.15f - Stats.Durability / 333f;
-        public int CounterWindow => 6 + Stats.Technique / 15;
-        public int ParryWindow => 3 + Stats.Technique / 25;
+        public int CounterWindow => 6 + Stats.Technique / 15 + Stance.CounterWindowBonus;
+        public int ParryWindow => 3 + Stats.Technique / 25 + Stance.ParryWindowBonus;
         public int AdjustStartup(int startup) => System.Math.Max(1, MathUtil.RoundToInt(startup * (1.15f - Stats.Speed / 400f)));
 
         public bool InMovePhaseActive => CurrentMove != null && MoveTick >= MoveStartup && MoveTick < MoveStartup + CurrentMove.Active;

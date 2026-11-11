@@ -24,3 +24,10 @@ No third-party or final assets exist in the repository. Everything visible at ru
 | 2 Chainz | Cornelius "Two Rings" Bishop | Not cleared |
 
 Supporting-roster casting references (CharacterDatabase.md) are design notes only and are not in shipped data.
+
+## Added 2026-11-11 (original, made for this project)
+| Asset | Path | Source | Licence | Notes |
+|---|---|---|---|---|
+| FFTS fight rig + mannequin + 252 clips | `Assets/_Project/Art/Characters/FFTS_FightRig.fbx`, `WebPrototype/assets/animations/FFTS_FightRig.glb` | Generated in Blender 5.2 by `Tools/Blender/ffts_fight_rig.py` | Project-owned | Blocking-quality previs; replace the mannequin with final character meshes |
+| Blender source | `ArtSource/Blender/10_fight_rig.blend` | same | Project-owned | Rebuildable from the scripts |
+| Fight choreography storyboard | owner's PC: `Documents\FightForTheSouth_Art\storyboard\FFTS_FightChoreography` | Storyboard Pro 27.1 + Blender renders | Project-owned | 191 scenes / 16 sequences |

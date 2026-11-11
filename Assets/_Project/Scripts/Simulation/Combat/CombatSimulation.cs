@@ -95,7 +95,7 @@ namespace FFTS.Combat
                     if (f.StateTicks >= f.StateDuration) SetState(f, CombatState.Idle);
                     break;
                 case CombatState.Dodging:
-                    if (f.StateTicks <= 12) f.X -= f.Facing * Config.DodgeDistance / 12f;
+                    if (f.StateTicks <= 12) f.X -= f.Facing * Config.DodgeDistance * f.Stance.DodgeDistance / 12f;
                     if (f.StateTicks >= f.StateDuration) SetState(f, CombatState.Idle);
                     break;
                 case CombatState.KnockedDown:
@@ -150,10 +150,13 @@ namespace FFTS.Combat
                     return true;
                 }
                 case CombatCommand.Dodge:
-                    if (f.Stamina < Config.DodgeStaminaCost) { Emit(CombatEventType.NotEnoughStamina, f, null, "dodge", 0); return true; }
-                    f.Stamina -= Config.DodgeStaminaCost;
+                {
+                    float dodgeCost = Config.DodgeStaminaCost * f.Stance.DodgeCost;
+                    if (f.Stamina < dodgeCost) { Emit(CombatEventType.NotEnoughStamina, f, null, "dodge", 0); return true; }
+                    f.Stamina -= dodgeCost;
                     SetState(f, CombatState.Dodging, Config.DodgeTicks);
                     return true;
+                }
                 case CombatCommand.Counter:
                     if (f.Moves.Counter == null) return false;
                     if (f.Stamina < Config.CounterStaminaCost) { Emit(CombatEventType.NotEnoughStamina, f, null, "counter", 0); return true; }
@@ -253,7 +256,7 @@ namespace FFTS.Combat
             if (a.ClinchTicks >= Config.ClinchMaxTicks) { ReleaseClinch(a, d); return; }
 
             var cmd = a.Buffered;
-            if (cmd == CombatCommand.Light && a.ClinchCooldown == 0 && a.ClinchStrikes < Config.ClinchStrikesMax && a.Moves.ClinchStrike != null)
+            if (cmd == CombatCommand.Light && a.ClinchCooldown == 0 && a.ClinchStrikes < Config.ClinchStrikesMax + a.Stance.ClinchStrikesBonus && a.Moves.ClinchStrike != null)
             {
                 Take(a);
                 var m = a.Moves.ClinchStrike;
@@ -292,7 +295,7 @@ namespace FFTS.Combat
             else if (cmd == CombatCommand.Grapple || cmd == CombatCommand.Dodge)
             {
                 float gain = 16f + d.Stats.Technique * 0.2f + d.Stats.Strength * 0.1f - a.Stats.Strength * 0.08f;
-                d.EscapeProgress += Math.Max(6f, gain);
+                d.EscapeProgress += Math.Max(6f, gain) * d.Stance.EscapeRate;
                 if (d.EscapeProgress >= Config.EscapeThreshold)
                 {
                     d.EscapeProgress = 0;
@@ -403,9 +406,9 @@ namespace FFTS.Combat
 
         private void ApplyBlock(FighterRuntime a, FighterRuntime d, MoveDefinition m)
         {
-            float chip = m.Damage * Config.ChipDamageFraction * a.StrengthMultiplier;
+            float chip = m.Damage * Config.ChipDamageFraction * a.StrengthMultiplier * a.Stance.DamageFor(m.Kind) * d.Stance.BlockChip;
             d.Health = Math.Max(1f, d.Health - chip);
-            d.Stamina -= m.StaminaDamage;
+            d.Stamina -= m.StaminaDamage * d.Stance.GuardDrain;
             AddMomentum(a, m.MomentumGain * 0.3f);
             Push(d, a, m.Pushback * 0.7f);
             if (d.Stamina <= 0)
@@ -512,7 +515,7 @@ namespace FFTS.Combat
         private float ScaledDamage(FighterRuntime a, FighterRuntime d, MoveDefinition m)
         {
             float scale = Math.Max(Config.MinDamageScale, 1f - Config.ComboDamageDecay * d.ComboCounter);
-            return m.Damage * a.StrengthMultiplier * d.DurabilityMultiplier * scale;
+            return m.Damage * a.StrengthMultiplier * d.DurabilityMultiplier * scale * a.Stance.DamageFor(m.Kind);
         }
 
         private void AddMomentum(FighterRuntime f, float amount) => f.Momentum = MathUtil.Clamp(f.Momentum + amount, 0f, Config.MomentumMax);

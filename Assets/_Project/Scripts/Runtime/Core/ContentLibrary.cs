@@ -18,6 +18,7 @@ namespace FFTS.Runtime
         public TextAsset[] Vehicles;
         public TextAsset[] Races;
         public TextAsset[] NpcProfiles;
+        public TextAsset[] Appearance;
         public TextAsset ConversationRules;
         public TextAsset Districts;
         public TextAsset Crews;
@@ -27,6 +28,7 @@ namespace FFTS.Runtime
             var s = new ContentSources();
             Add(s.Missions, Missions); Add(s.Dialogues, Dialogues); Add(s.Styles, Styles); Add(s.Fighters, Fighters); Add(s.Layouts, Layouts);
             Add(s.Vehicles, Vehicles); Add(s.Races, Races); Add(s.NpcProfiles, NpcProfiles);
+            Add(s.Appearance, Appearance);
             return s;
         }
 

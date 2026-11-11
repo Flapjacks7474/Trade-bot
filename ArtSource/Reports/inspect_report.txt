@@ -1,0 +1,7 @@
+source/player.fbx  2986540 bytes
+source/Mannequin_Medium.glb  420044 bytes
+OBJ mesh_node type=MESH parent=- verts=47027 faces=94062 tris~94062 uv=0 vcol=0 mats=[] dims=(0.819, 0.634, 1.898) scale=(1.0, 1.0, 1.0) nonmanifold_edges=0 loose=0 islands=1 shapekeys=False groups=0 mods=[]
+MAT Dots Stroke nodes=['FRAME', 'OUTPUT_MATERIAL', 'BSDF_PRINCIPLED', 'OUTPUT_MATERIAL', 'BSDF_DIFFUSE'] images=[]
+MAT Material nodes=['OUTPUT_MATERIAL', 'BSDF_PRINCIPLED'] images=[]
+ACTIONS []
+IMAGES ['Render Result', 'Viewer Node']

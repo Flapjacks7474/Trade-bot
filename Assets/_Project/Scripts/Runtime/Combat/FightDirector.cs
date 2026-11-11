@@ -27,6 +27,7 @@ namespace FFTS.Runtime
         private VenueType _venue;
         private Vector3 _origin, _axis;
         private FighterView _playerView, _opponentView;
+        private FighterAnimator _playerAnim, _opponentAnim;   // present only once the rigged character prefabs exist
         private GameObject _opponentGo;
         private float _accumulator, _endTimer;
         private ButtonMask _latchedPresses;
@@ -48,7 +49,8 @@ namespace FFTS.Runtime
             _axis = gm.Player.forward; _axis.y = 0;
             _axis = _axis.sqrMagnitude < 0.01f ? Vector3.forward : _axis.normalized;
 
-            var a = new FighterRuntime(playerDef, db.BuildMoveset(playerDef), -1.1f);
+            // The player fights with the styles they have learned and equipped (hybrid included when unlocked).
+            var a = new FighterRuntime(playerDef, gm.Session.Styles != null ? gm.Session.Styles.BuildMoveset() : db.BuildMoveset(playerDef), -1.1f);
             var b = new FighterRuntime(oppDef, db.BuildMoveset(oppDef), 1.1f);
             Sim = new CombatSimulation(new CombatConfig(), a, b, gm.Session.NextFightId());
             Ai = new FighterAI(b, oppDef.AiStyle, oppDef.AiDifficulty, new DeterministicRandom(gm.Session.Random.State ^ (ulong)gm.Session.Clock.TotalMinutes));
@@ -63,6 +65,10 @@ namespace FFTS.Runtime
             _opponentGo = Graybox.Capsule("Opponent " + oppDef.DisplayName, null, _origin + _axis * 1.1f, "#8a8a8a");
             _opponentView = _opponentGo.AddComponent<FighterView>();
             _opponentView.Bind(b);
+            _playerAnim = gm.Player.GetComponentInChildren<FighterAnimator>();
+            if (_playerAnim != null) _playerAnim.Bind(a);
+            _opponentAnim = _opponentGo.GetComponentInChildren<FighterAnimator>();
+            if (_opponentAnim != null) _opponentAnim.Bind(b);
             _accumulator = 0; _endTimer = 0; _latchedPresses = ButtonMask.None;
             gm.Notify("FIGHT: " + OpponentName + " (" + _venue + ")");
         }
@@ -155,6 +161,8 @@ namespace FFTS.Runtime
             Vector3 pa = _origin + _axis * Sim.A.X, pb = _origin + _axis * Sim.B.X;
             _playerView.Present(pa, pb - pa, Sim);
             _opponentView.Present(pb, pa - pb, Sim);
+            if (_playerAnim != null) _playerAnim.Present(Time.deltaTime);
+            if (_opponentAnim != null) _opponentAnim.Present(Time.deltaTime);
             Rig()?.SetFight(pa, pb, _axis);
         }
 
@@ -163,6 +171,8 @@ namespace FFTS.Runtime
             var result = Sim.Result;
             var player = gm.Player;
             _playerView.Unbind();
+            if (_playerAnim != null) _playerAnim.Unbind();
+            if (_opponentAnim != null) _opponentAnim.Unbind();
             if (_opponentGo != null) Destroy(_opponentGo);
             var cc = player.GetComponent<CharacterController>();
             if (cc != null) cc.enabled = true;

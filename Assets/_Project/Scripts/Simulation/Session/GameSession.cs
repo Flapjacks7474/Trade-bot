@@ -47,6 +47,8 @@ namespace FFTS.Session
         public GarageState Garage = new GarageState();
         public LivingWorldState LivingWorld = new LivingWorldState();
         public RacingState Racing = new RacingState();
+        public StyleLoadoutState Styles = new StyleLoadoutState();
+        public FFTS.Characters.WardrobeState Wardrobe = new FFTS.Characters.WardrobeState();
         public int FightCounter;
     }
 
@@ -60,6 +62,7 @@ namespace FFTS.Session
         public RaceDatabase Races;
         public DistrictLayout Layout;
         public List<NpcProfile> NpcProfiles = new List<NpcProfile>();
+        public FFTS.Characters.AppearanceCatalog Appearance;
     }
 
     /// <summary>
@@ -84,6 +87,10 @@ namespace FFTS.Session
         public MissionManager Missions { get; }
         public GarageManager Garage { get; }
         public RaceManager Racing { get; }
+        /// <summary>Learned and equipped fighting styles; null when content has no combat data.</summary>
+        public StyleLoadout Styles { get; }
+        /// <summary>Owned clothes and the player's current look; null when content has no appearance catalog.</summary>
+        public FFTS.Characters.WardrobeManager Wardrobe { get; }
         /// <summary>NPC routines and travel; null when content has no layout or profiles.</summary>
         public LivingWorldManager LivingWorld { get; }
         private int _lastScheduledHour = -1;
@@ -106,6 +113,8 @@ namespace FFTS.Session
             var vehicles = Content.Vehicles ?? VehicleDatabase.FromJson(new string[0], new ValidationReport());
             Garage = new GarageManager(vehicles, Bank, Bus);
             Racing = new RaceManager(Content.Races ?? RaceDatabase.FromJson(new string[0], vehicles, new ValidationReport()), vehicles, Bank, Reputation, Social, Bus);
+            if (Content.Combat != null) Styles = new StyleLoadout(Content.Combat, Bank, Bus);
+            if (Content.Appearance != null) Wardrobe = new FFTS.Characters.WardrobeManager(Content.Appearance, Bank, Bus);
             Missions.Load(Content.Missions, report ?? new ValidationReport());
             Bus.Subscribe<StoryFlagChanged>(_ => Missions.RefreshAvailability());
             if (Content.Layout != null && Content.NpcProfiles.Count > 0)
@@ -293,7 +302,9 @@ namespace FFTS.Session
                 Player = Player, Position = Position, ClockMinutes = Clock.TotalMinutes, RngState = Random.State,
                 Bank = Bank.Capture(), Reputation = Reputation.Capture(), Social = Social.Capture(), Story = Story.Capture(),
                 Missions = m, Garage = Garage.Capture(), Racing = Racing.Capture(),
-                LivingWorld = LivingWorld?.Capture() ?? new LivingWorldState(), FightCounter = _fightCounter
+                LivingWorld = LivingWorld?.Capture() ?? new LivingWorldState(), FightCounter = _fightCounter,
+                Styles = Styles?.Capture() ?? new StyleLoadoutState(),
+                Wardrobe = Wardrobe?.Capture() ?? new FFTS.Characters.WardrobeState()
             };
         }
 
@@ -311,6 +322,8 @@ namespace FFTS.Session
             Missions.Restore(s.Missions);
             Garage.Restore(s.Garage);
             Racing.Restore(s.Racing);
+            Styles?.Restore(s.Styles);       // null in saves made before styles existed: starter style
+            Wardrobe?.Restore(s.Wardrobe);   // null in older saves: starter wardrobe and look
             if (LivingWorld != null)
             {
                 if (s.LivingWorld != null && s.LivingWorld.Npcs.Count > 0) LivingWorld.Restore(s.LivingWorld);
