@@ -7,9 +7,23 @@
 #include <string>
 #include <vector>
 
+// FFTSCORE_API is defined by Unreal Build Tool (dllexport/dllimport, the editor builds each module as a DLL);
+// the stand-alone test build leaves it empty.
+#if defined(_MSC_VER) && !defined(DLLEXPORT)   // UBT sets FFTSCORE_API=DLLEXPORT; these .cpp files skip engine headers
+#define DLLEXPORT __declspec(dllexport)
+#define DLLIMPORT __declspec(dllimport)
+#endif
+#ifndef FFTSCORE_API
+#define FFTSCORE_API
+#endif
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable : 4251 4275)  // std:: members of exported classes
+#endif
+
 namespace ffts {
 
-class Json {
+class FFTSCORE_API Json {
 public:
     enum class Type { Null, Bool, Number, String, Array, Object };
 
@@ -48,3 +62,7 @@ private:
 };
 
 } // namespace ffts
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif

@@ -4,6 +4,6 @@ set -euo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"
 core="$here/../Source/FFTSCore"
 out="${TMPDIR:-/tmp}/ffts_core_tests"
-"${CXX:-g++}" -std=c++17 -O2 -Wall -Wextra -Werror -fno-rtti -I"$core/Public" \
+"${CXX:-g++}" -std=${CXXSTD:-c++20} -O2 -Wall -Wextra -Werror -Wno-array-bounds -fno-rtti -I"$core/Public" \
   "$core/Private/FFTSJson.cpp" "$core/Private/FFTSCombat.cpp" "$here/test_core.cpp" -o "$out"
 "$out" "${1:-$here/../Content/FFTSData}"

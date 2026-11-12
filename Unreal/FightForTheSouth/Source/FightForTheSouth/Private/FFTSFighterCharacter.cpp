@@ -36,9 +36,9 @@ AFFTSFighterCharacter::AFFTSFighterCharacter()
 void AFFTSFighterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	if (USkeletalMesh* Mesh = LoadObject<USkeletalMesh>(nullptr, *SkeletalMeshPath))
+	if (USkeletalMesh* RigMesh = LoadObject<USkeletalMesh>(nullptr, *SkeletalMeshPath))
 	{
-		GetMesh()->SetSkeletalMesh(Mesh);
+		GetMesh()->SetSkeletalMesh(RigMesh);
 		GetMesh()->SetRelativeRotation(FRotator(0, MeshYawOffset, 0));
 		GetMesh()->SetAnimationMode(EAnimationMode::AnimationSingleNode);
 		bHasRig = true;

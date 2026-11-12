@@ -10,10 +10,24 @@
 #include <vector>
 #include "FFTSJson.h"
 
+// FFTSCORE_API is defined by Unreal Build Tool (dllexport/dllimport, the editor builds each module as a DLL);
+// the stand-alone test build leaves it empty.
+#if defined(_MSC_VER) && !defined(DLLEXPORT)   // UBT sets FFTSCORE_API=DLLEXPORT; these .cpp files skip engine headers
+#define DLLEXPORT __declspec(dllexport)
+#define DLLIMPORT __declspec(dllimport)
+#endif
+#ifndef FFTSCORE_API
+#define FFTSCORE_API
+#endif
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable : 4251 4275)  // std:: members of exported classes
+#endif
+
 namespace ffts {
 
 // ------------------------------------------------------------------------------------------------ utilities
-class Rng {  // SplitMix64, identical to FFTS.Core.DeterministicRandom
+class FFTSCORE_API Rng {  // SplitMix64, identical to FFTS.Core.DeterministicRandom
 public:
     explicit Rng(uint64_t seed = 1) : state(seed) {}
     uint64_t state;
@@ -23,7 +37,7 @@ public:
     bool chance(float p);
 };
 inline float clampf(float v, float a, float b) { return v < a ? a : (v > b ? b : v); }
-int roundAway(float v);
+FFTSCORE_API int roundAway(float v);
 
 // ------------------------------------------------------------------------------------------------ enums
 enum class State { Idle, Moving, Attacking, Combo, Finisher, Blocking, Countering, Grappling, Throwing, KnockedDown, GettingUp,
@@ -31,14 +45,14 @@ enum class State { Idle, Moving, Attacking, Combo, Finisher, Blocking, Counterin
 enum class Command { None, Light, Heavy, Kick, Grapple, Dodge, Counter, Finisher, Taunt };
 enum class MoveKind { Light, Heavy, Kick, Grapple, Throw, EnvironmentalThrow, Counter, Signature, Finisher, GroundAttack, Taunt, ClinchStrike };
 
-const char* toString(State s);
-const char* toString(Command c);
-const char* toString(MoveKind k);
-bool parseCommand(const std::string& s, Command& out);
-bool parseMoveKind(const std::string& s, MoveKind& out);
+FFTSCORE_API const char* toString(State s);
+FFTSCORE_API const char* toString(Command c);
+FFTSCORE_API const char* toString(MoveKind k);
+FFTSCORE_API bool parseCommand(const std::string& s, Command& out);
+FFTSCORE_API bool parseMoveKind(const std::string& s, MoveKind& out);
 
 // ------------------------------------------------------------------------------------------------ content
-struct StanceDef {
+struct FFTSCORE_API StanceDef {
     std::string name = "Neutral", defense = "Block", description, idleAnimation, guardAnimation;
     float walkSpeed = 1, strikeDamage = 1, kickDamage = 1, throwDamage = 1, blockChip = 1, guardDrain = 1;
     float dodgeDistance = 1, dodgeCost = 1, escapeRate = 1;
@@ -79,7 +93,7 @@ struct FighterDef {
 };
 
 // ------------------------------------------------------------------------------------------------ moveset
-class Moveset {
+class FFTSCORE_API Moveset {
 public:
     static const int MaxStyles = 3;
     // Builds the merged moveset. A hybrid (if given) goes first: its stance, slots and links take priority.
@@ -103,8 +117,11 @@ private:
 };
 
 // ------------------------------------------------------------------------------------------------ database
-class CombatDatabase {
+class FFTSCORE_API CombatDatabase {
 public:
+    CombatDatabase() = default;
+    CombatDatabase(const CombatDatabase&) = delete;             // owns its styles; exported classes must not
+    CombatDatabase& operator=(const CombatDatabase&) = delete;  // try to generate a copy of vector<unique_ptr>
     // Loads style files ({"Styles":[...]}) and fighter files ({"Fighters":[...]}); appends errors to `errors`.
     bool load(const std::vector<std::string>& styleJson, const std::vector<std::string>& fighterJson, std::vector<std::string>& errors);
     void validate(std::vector<std::string>& errors) const;
@@ -156,7 +173,7 @@ struct CombatEvent {
 
 struct FightResult { std::string fightId, winnerId, loserId, method; int durationTicks = 0; };
 
-class Fighter {
+class FFTSCORE_API Fighter {
 public:
     Fighter(const FighterDef& def, std::shared_ptr<Moveset> moves, float x);
     std::string id; const FighterDef* def; std::shared_ptr<Moveset> moves; FighterStats stats;
@@ -182,7 +199,7 @@ public:
     bool dodgeInvuln(const CombatConfig& c) const { return state == State::Dodging && stateTicks >= c.dodgeInvulnStart && stateTicks < c.dodgeInvulnEnd; }
 };
 
-class CombatSimulation {
+class FFTSCORE_API CombatSimulation {
 public:
     CombatSimulation(const CombatConfig& cfg, std::unique_ptr<Fighter> a, std::unique_ptr<Fighter> b, std::string fightId);
     CombatConfig cfg;
@@ -233,7 +250,7 @@ private:
     void emit(const char* type, const Fighter* actor, const Fighter* target, const std::string& moveId = "", float amount = 0, const std::string& detail = "");
 };
 
-class FighterAI {
+class FFTSCORE_API FighterAI {
 public:
     FighterAI(Fighter& self, const std::string& style, const std::string& difficulty, uint64_t seed);
     FighterInput think(CombatSimulation& sim);
@@ -251,7 +268,7 @@ private:
 enum class PostStatus { Posted, Duplicate, InsufficientFunds, Invalid };
 
 /// Minimal FINESS BANK: personal cash with idempotent payments (a key is never charged twice, including after a save).
-class Bank {
+class FFTSCORE_API Bank {
 public:
     explicit Bank(long long cashCents = 0) : cash(cashCents) {}
     long long cash;
@@ -262,7 +279,7 @@ public:
 
 enum class StyleResult { Ok, AlreadyLearned, UnknownStyle, ParentsNotLearned, InsufficientFunds, NotLearned, InvalidLoadout };
 
-class StyleLoadout {
+class FFTSCORE_API StyleLoadout {
 public:
     static constexpr const char* Starter = "style.street";
     StyleLoadout(const CombatDatabase& db, Bank* bank);
@@ -280,3 +297,7 @@ private:
 };
 
 } // namespace ffts
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
