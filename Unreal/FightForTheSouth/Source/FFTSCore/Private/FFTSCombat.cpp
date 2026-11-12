@@ -388,8 +388,8 @@ void CombatSimulation::clinch(Fighter& a, Fighter& d) {
         if (d.health <= 0) { set(a, State::Idle); defeat(d, a, "Knockout"); }
     } else if (cmd == Command::Heavy || cmd == Command::Grapple) {
         take(a);
-        bool near = cfg.arenaHalfWidth - std::fabs(d.x) <= cfg.wallThrowDistance;
-        const MoveDef* tm = cmd == Command::Grapple && near && a.moves->environmentalThrow ? a.moves->environmentalThrow : a.moves->clinchThrow;
+        bool nearWall = cfg.arenaHalfWidth - std::fabs(d.x) <= cfg.wallThrowDistance;
+        const MoveDef* tm = cmd == Command::Grapple && nearWall && a.moves->environmentalThrow ? a.moves->environmentalThrow : a.moves->clinchThrow;
         if (tm) startMove(a, tm, State::Throwing);
     }
 }
