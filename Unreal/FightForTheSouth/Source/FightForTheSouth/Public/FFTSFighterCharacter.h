@@ -5,6 +5,8 @@
 #include "FFTSFighterCharacter.generated.h"
 
 class UAnimSequence;
+class UMaterialInterface;
+class UMaterialInstanceDynamic;
 class UStaticMeshComponent;
 
 /**
@@ -23,7 +25,7 @@ public:
 	/** Shows a clip at an exact time (seconds). Missing clips fall back to the style's idle, then the street idle. */
 	void ShowClip(const FString& AnimationKey, float TimeSeconds, bool bLoop);
 
-	/** Tints the body so fighters read apart (applied to every material slot that has a BaseColor-like parameter). */
+	/** Tints the body so fighters read apart: the rig's slots get a tinted copy of the engine's basic shape material. */
 	void SetTint(const FLinearColor& Color);
 
 	/** Brief hit flash. */
@@ -54,6 +56,10 @@ private:
 	UPROPERTY() TMap<FString, TObjectPtr<UAnimSequence>> ClipCache;
 	TSet<FString> MissingClips;
 	FString CurrentKey;
+	void ApplyBodyColor(const FLinearColor& Color);
+	UPROPERTY() TObjectPtr<UMaterialInterface> TintBase;
+	UPROPERTY() TArray<TObjectPtr<UMaterialInstanceDynamic>> BodyMaterials;
+	FLinearColor TintColor = FLinearColor::White;
 	bool bHasRig = false;
 	float FlashTime = 0.f;
 };

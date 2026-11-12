@@ -65,7 +65,7 @@ void AFFTSGameMode::EnsureArena()
 	}
 	if (!bHasLight)
 	{
-		ADirectionalLight* Sun = W->SpawnActor<ADirectionalLight>(FVector(0, 0, 800), FRotator(-40.f, 35.f, 0), P);
+		ADirectionalLight* Sun = W->SpawnActor<ADirectionalLight>(FVector(0, 0, 800), FRotator(-35.f, -120.f, 0), P);   // key light from the camera side (camera looks along -Y)
 		if (UDirectionalLightComponent* SunLight = Cast<UDirectionalLightComponent>(Sun->GetLightComponent()))
 		{
 			SunLight->SetMobility(EComponentMobility::Movable);

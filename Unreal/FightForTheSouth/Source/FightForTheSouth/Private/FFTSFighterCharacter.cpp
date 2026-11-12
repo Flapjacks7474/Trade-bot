@@ -31,6 +31,8 @@ AFFTSFighterCharacter::AFFTSFighterCharacter()
 		FallbackBody->SetStaticMesh(Cyl.Object);
 		FallbackBody->SetRelativeScale3D(FVector(0.6f, 0.6f, 1.84f));
 	}
+	static ConstructorHelpers::FObjectFinder<UMaterialInterface> Basic(TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
+	if (Basic.Succeeded()) TintBase = Basic.Object;
 }
 
 void AFFTSFighterCharacter::BeginPlay()
@@ -88,25 +90,29 @@ void AFFTSFighterCharacter::ShowClip(const FString& Key, float TimeSeconds, bool
 
 void AFFTSFighterCharacter::SetTint(const FLinearColor& Color)
 {
-	auto TintComponent = [&](UMeshComponent* C)
+	TintColor = Color;
+	BodyMaterials.Reset();
+	UMeshComponent* Body = bHasRig ? static_cast<UMeshComponent*>(GetMesh()) : static_cast<UMeshComponent*>(FallbackBody);
+	if (!Body || !TintBase) return;
+	for (int32 i = 0; i < Body->GetNumMaterials(); ++i)
 	{
-		if (!C) return;
-		for (int32 i = 0; i < C->GetNumMaterials(); ++i)
-		{
-			UMaterialInstanceDynamic* MID = C->CreateAndSetMaterialInstanceDynamic(i);
-			if (!MID) continue;
-			MID->SetVectorParameterValue(TEXT("Color"), Color);
-			MID->SetVectorParameterValue(TEXT("BaseColor"), Color);
-			MID->SetVectorParameterValue(TEXT("Tint"), Color);
-		}
-	};
-	TintComponent(FallbackBody);
+		UMaterialInstanceDynamic* MID = UMaterialInstanceDynamic::Create(TintBase, this);
+		Body->SetMaterial(i, MID);
+		BodyMaterials.Add(MID);
+	}
+	ApplyBodyColor(Color);
+}
+
+void AFFTSFighterCharacter::ApplyBodyColor(const FLinearColor& Color)
+{
+	for (UMaterialInstanceDynamic* MID : BodyMaterials)
+		if (MID) MID->SetVectorParameterValue(TEXT("Color"), Color);
 }
 
 void AFFTSFighterCharacter::Flash()
 {
-	FlashTime = 0.12f;
-	GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Flash"), 1.f);
+	FlashTime = 0.1f;
+	ApplyBodyColor(FLinearColor(1.f, 0.95f, 0.85f) * 2.f);
 }
 
 void AFFTSFighterCharacter::Tick(float DeltaSeconds)
@@ -115,6 +121,6 @@ void AFFTSFighterCharacter::Tick(float DeltaSeconds)
 	if (FlashTime > 0.f)
 	{
 		FlashTime -= DeltaSeconds;
-		if (FlashTime <= 0.f) GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Flash"), 0.f);
+		if (FlashTime <= 0.f) ApplyBodyColor(TintColor);
 	}
 }

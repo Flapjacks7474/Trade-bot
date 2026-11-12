@@ -30,8 +30,8 @@ void AFFTSFightDirector::BeginPlay()
 {
 	Super::BeginPlay();
 	if (UFFTSGameSubsystem* G = Game()) G->UnlockAllStylesForDojo();
-	PlayerBody = SpawnFighter(FLinearColor(0.85f, 0.84f, 0.8f));
-	OpponentBody = SpawnFighter(FLinearColor(0.55f, 0.12f, 0.1f));
+	PlayerBody = SpawnFighter(FLinearColor(0.10f, 0.28f, 0.70f));   // player: blue
+	OpponentBody = SpawnFighter(FLinearColor(0.60f, 0.10f, 0.08f));   // opponent: red
 
 	FActorSpawnParameters P; P.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	FightCamera = GetWorld()->SpawnActor<ACameraActor>(FightOrigin + FVector(0, 520, 60), FRotator(-6, -90, 0), P);
