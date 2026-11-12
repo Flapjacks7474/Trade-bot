@@ -46,10 +46,10 @@ void AFFTSGameMode::EnsureArena()
 			Floor->SetMobility(EComponentMobility::Movable);
 			Floor->GetStaticMeshComponent()->SetStaticMesh(Plane);
 			Floor->SetActorScale3D(FVector(40, 40, 1));
-			if (UMaterialInterface* M = LoadObject<UMaterialInterface>(nullptr, TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial")))
+			if (UMaterialInterface* M = LoadObject<UMaterialInterface>(nullptr, TEXT("/Game/FFTS/Materials/M_FFTSTint.M_FFTSTint"), nullptr, LOAD_NoWarn | LOAD_Quiet))
 			{
 				UMaterialInstanceDynamic* MID = UMaterialInstanceDynamic::Create(M, Floor);
-				MID->SetVectorParameterValue(TEXT("Color"), FLinearColor(0.08f, 0.08f, 0.09f));
+				MID->SetVectorParameterValue(TEXT("Color"), FLinearColor(0.18f, 0.17f, 0.16f));
 				Floor->GetStaticMeshComponent()->SetMaterial(0, MID);
 			}
 			// Low walls at the arena ends (the simulation's walls are at +-6 m).

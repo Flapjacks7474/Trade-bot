@@ -31,8 +31,6 @@ AFFTSFighterCharacter::AFFTSFighterCharacter()
 		FallbackBody->SetStaticMesh(Cyl.Object);
 		FallbackBody->SetRelativeScale3D(FVector(0.6f, 0.6f, 1.84f));
 	}
-	static ConstructorHelpers::FObjectFinder<UMaterialInterface> Basic(TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
-	if (Basic.Succeeded()) TintBase = Basic.Object;
 }
 
 void AFFTSFighterCharacter::BeginPlay()
@@ -92,6 +90,9 @@ void AFFTSFighterCharacter::SetTint(const FLinearColor& Color)
 {
 	TintColor = Color;
 	BodyMaterials.Reset();
+	// M_FFTSTint (made by Content/Python/ffts_import_fight_rig.py) has a "Color" parameter; the engine fallback does not.
+	if (!TintBase) TintBase = LoadObject<UMaterialInterface>(nullptr, TEXT("/Game/FFTS/Materials/M_FFTSTint.M_FFTSTint"), nullptr, LOAD_NoWarn | LOAD_Quiet);
+	if (!TintBase) TintBase = LoadObject<UMaterialInterface>(nullptr, TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
 	UMeshComponent* Body = bHasRig ? static_cast<UMeshComponent*>(GetMesh()) : static_cast<UMeshComponent*>(FallbackBody);
 	if (!Body || !TintBase) return;
 	for (int32 i = 0; i < Body->GetNumMaterials(); ++i)

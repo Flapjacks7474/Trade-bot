@@ -18,6 +18,7 @@ FBX = next((p for p in FBX_CANDIDATES if os.path.exists(p)), FBX_CANDIDATES[0])
 CHAR_DIR = "/Game/FFTS/Characters"
 ANIM_DIR = "/Game/FFTS/Anim"
 MAP = "/Game/FFTS/Maps/Dojo"
+TINT = "/Game/FFTS/Materials/M_FFTSTint"
 report = []
 
 def log(msg):
@@ -85,6 +86,32 @@ def organise_clips():
     if jab:
         log("anim_street_jab length %.4f s (expected 17 frames = 0.2833 s)" % jab.get_play_length())
 
+def make_tint_material():
+    """M_FFTSTint: a lit material whose base colour is the vector parameter "Color" (fighters, floor)."""
+    mel = unreal.MaterialEditingLibrary
+    if assets.does_asset_exist(TINT):
+        mat = unreal.load_asset(TINT)
+        if not mat.get_editor_property("used_with_skeletal_mesh"):
+            mat.set_editor_property("used_with_skeletal_mesh", True)
+            mel.recompile_material(mat)
+            assets.save_asset(TINT)
+        log("material exists: " + TINT)
+        return
+    folder, name = TINT.rsplit("/", 1)
+    mat = tools.create_asset(name, folder, unreal.Material, unreal.MaterialFactoryNew())
+    mat.set_editor_property("used_with_skeletal_mesh", True)  # without it the fighters render with the default material
+    color = mel.create_material_expression(mat, unreal.MaterialExpressionVectorParameter, -300, 0)
+    color.set_editor_property("parameter_name", "Color")
+    color.set_editor_property("default_value", unreal.LinearColor(0.7, 0.7, 0.7, 1.0))
+    mel.connect_material_property(color, "", unreal.MaterialProperty.MP_BASE_COLOR)
+    rough = mel.create_material_expression(mat, unreal.MaterialExpressionScalarParameter, -300, 200)
+    rough.set_editor_property("parameter_name", "Roughness")
+    rough.set_editor_property("default_value", 0.6)
+    mel.connect_material_property(rough, "", unreal.MaterialProperty.MP_ROUGHNESS)
+    mel.recompile_material(mat)
+    assets.save_asset(TINT)
+    log("created material " + TINT)
+
 def make_map():
     les = unreal.get_editor_subsystem(unreal.LevelEditorSubsystem)
     if assets.does_asset_exist(MAP):
@@ -98,6 +125,7 @@ def make_map():
 def main():
     if import_rig():
         organise_clips()
+    make_tint_material()
     make_map()
     assets.save_directory("/Game/FFTS", only_if_is_dirty=True, recursive=True)
     out = os.path.join(PROJECT, "Saved", "ffts_import_report.txt")
