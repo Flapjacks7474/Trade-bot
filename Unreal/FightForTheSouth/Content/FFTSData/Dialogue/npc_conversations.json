@@ -1,0 +1,128 @@
+{
+  "Rules": [
+    {
+      "NpcId": "npc.grandma",
+      "MissionActive": "mission.ch1.home_again",
+      "DialogueId": "dialogue.grandma.welcome"
+    },
+    {
+      "NpcId": "npc.grandma",
+      "MissionActive": "mission.ch1.the_invitation",
+      "ObjectivesDone": [
+        "mission.ch1.the_invitation/meet_nia"
+      ],
+      "DialogueId": "dialogue.grandma.invitation"
+    },
+    {
+      "NpcId": "npc.grandma",
+      "Activity": "sleep",
+      "Bark": "Grandma is asleep in her chair. Better let her rest."
+    },
+    {
+      "NpcId": "npc.grandma",
+      "DialogueId": "dialogue.grandma.home"
+    },
+    {
+      "NpcId": "npc.lou",
+      "DialogueId": "dialogue.lou.barbershop"
+    },
+    {
+      "NpcId": "npc.dre",
+      "MissionActive": "mission.ch1.old_friends",
+      "ObjectivesDone": [
+        "mission.ch1.old_friends/meet_dre",
+        "mission.ch1.old_friends/go_gym"
+      ],
+      "ObjectivesNotDone": [
+        "mission.ch1.old_friends/win_spar"
+      ],
+      "FightId": "fighter.dre",
+      "Venue": "Sanctioned"
+    },
+    {
+      "NpcId": "npc.dre",
+      "MissionActive": "mission.ch1.old_friends",
+      "ObjectivesDone": [
+        "mission.ch1.old_friends/meet_dre"
+      ],
+      "ObjectivesNotDone": [
+        "mission.ch1.old_friends/win_spar"
+      ],
+      "Bark": "Dre: Gym's right there. Stop stallin'."
+    },
+    {
+      "NpcId": "npc.dre",
+      "DialogueId": "dialogue.dre.reunion"
+    },
+    {
+      "NpcId": "npc.rell",
+      "MissionActive": "mission.ch1.first_recording",
+      "ObjectivesNotDone": [
+        "mission.ch1.first_recording/win_rell"
+      ],
+      "Branch": "mission.ch1.first_recording:fight",
+      "FightId": "fighter.rell",
+      "Venue": "Street"
+    },
+    {
+      "NpcId": "npc.rell",
+      "MissionActive": "mission.ch1.first_recording",
+      "ObjectivesNotDone": [
+        "mission.ch1.first_recording/handle_rell"
+      ],
+      "DialogueId": "dialogue.rell.confrontation"
+    },
+    {
+      "NpcId": "npc.rell",
+      "Bark": "Rell: ..."
+    },
+    {
+      "NpcId": "npc.tone",
+      "DialogueId": "dialogue.tone.studio"
+    },
+    {
+      "NpcId": "npc.big_reece",
+      "MissionActive": "mission.ch1.prove_yourself",
+      "ObjectivesNotDone": [
+        "mission.ch1.prove_yourself/meet_reece"
+      ],
+      "DialogueId": "dialogue.reece.venue"
+    },
+    {
+      "NpcId": "npc.big_reece",
+      "Bark": "Big Reece: Brick's waiting on you."
+    },
+    {
+      "NpcId": "npc.brick",
+      "MissionActive": "mission.ch1.prove_yourself",
+      "ObjectivesDone": [
+        "mission.ch1.prove_yourself/meet_reece"
+      ],
+      "ObjectivesNotDone": [
+        "mission.ch1.prove_yourself/win_brick"
+      ],
+      "FightId": "fighter.brick",
+      "Venue": "Underground"
+    },
+    {
+      "NpcId": "npc.brick",
+      "Bark": "Brick: Talk to Reece if you want this."
+    },
+    {
+      "NpcId": "npc.nia",
+      "MissionActive": "mission.ch1.the_invitation",
+      "ObjectivesNotDone": [
+        "mission.ch1.the_invitation/meet_nia"
+      ],
+      "DialogueId": "dialogue.nia.invitation"
+    },
+    {
+      "NpcId": "npc.nia",
+      "Bark": "Nia is on a call. She holds up one finger."
+    },
+    {
+      "NpcId": "npc.marlo",
+      "DialogueId": "dialogue.marlo.intro"
+    }
+  ]
+}

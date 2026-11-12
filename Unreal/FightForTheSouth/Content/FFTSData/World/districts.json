@@ -1,0 +1,148 @@
+{
+  "Districts": [
+    {
+      "Id": "district.southside",
+      "DisplayName": "Southside",
+      "ControllingCrew": "crew.slaughterhouse",
+      "InVerticalSlice": true,
+      "Description": "Where you start. Porches, corner stores, the gym, the fights under the old cold-storage plant.",
+      "Features": [
+        "Grandmother's house",
+        "Apartment complexes",
+        "Corner stores",
+        "Barbershops",
+        "Clothing stores",
+        "Neighborhood studio",
+        "Community gym",
+        "Basketball courts",
+        "Underground fighting venue",
+        "Used car dealership",
+        "Automotive garage",
+        "Restaurants",
+        "Crew hangouts",
+        "Race starts"
+      ],
+      "Landmarks": [
+        "The Yard",
+        "Magnolia Courts",
+        "Cold Storage"
+      ]
+    },
+    {
+      "Id": "district.crown_center",
+      "DisplayName": "Crown Center",
+      "ControllingCrew": "crew.crown_syndicate",
+      "Description": "Downtown luxury and entertainment.",
+      "Features": [
+        "Luxury apartments",
+        "Executive offices",
+        "Luxury dealerships",
+        "High-end studios",
+        "Hotels",
+        "Rooftop lounges",
+        "Nightclubs"
+      ],
+      "Landmarks": [
+        "Crown Tower"
+      ]
+    },
+    {
+      "Id": "district.east_end",
+      "DisplayName": "East End",
+      "ControllingCrew": "crew.slime_circle",
+      "Description": "Industrial, independent, loud.",
+      "Features": [
+        "Warehouses",
+        "Garages",
+        "Custom shops",
+        "Underground music venues",
+        "Independent studios",
+        "Street racing"
+      ],
+      "Landmarks": [
+        "Slime House",
+        "East End Customs"
+      ]
+    },
+    {
+      "Id": "district.westside",
+      "DisplayName": "Westside",
+      "ControllingCrew": "crew.4pf_empire",
+      "Description": "Older neighborhoods and small business.",
+      "Features": [
+        "Community gyms",
+        "Barbershops",
+        "Restaurants",
+        "Clothing shops",
+        "Music venues"
+      ],
+      "Landmarks": [
+        "The Blueprint"
+      ]
+    },
+    {
+      "Id": "district.north_heights",
+      "DisplayName": "North Heights",
+      "ControllingCrew": "crew.tru_alliance",
+      "Description": "Luxury homes and private parties. Crown Syndicate influence in parts.",
+      "Features": [
+        "Luxury homes",
+        "Restaurants",
+        "Shopping",
+        "Private parties",
+        "Nightclubs"
+      ],
+      "Landmarks": [
+        "The Estate"
+      ]
+    },
+    {
+      "Id": "district.the_strip",
+      "DisplayName": "The Strip",
+      "ControllingCrew": null,
+      "Description": "Contested nightlife corridor.",
+      "Features": [
+        "Nightclubs",
+        "Hotels",
+        "Concert venues",
+        "Lounges",
+        "Car meets"
+      ],
+      "Landmarks": [
+        "The Overlook"
+      ]
+    },
+    {
+      "Id": "district.old_town",
+      "DisplayName": "Old Town",
+      "ControllingCrew": "crew.tru_alliance",
+      "Description": "Historic commercial district with hidden businesses.",
+      "Features": [
+        "Historic buildings",
+        "Independent stores",
+        "Offices",
+        "Hidden businesses"
+      ],
+      "Landmarks": [
+        "The Backroom"
+      ]
+    },
+    {
+      "Id": "district.county_line",
+      "DisplayName": "Outskirts / County Line",
+      "ControllingCrew": null,
+      "Description": "Rural roads, raceways, secrets.",
+      "Features": [
+        "County Line Motel",
+        "Raceways",
+        "Truck stops",
+        "Rural roads",
+        "Abandoned structures"
+      ],
+      "Landmarks": [
+        "County Line Motel",
+        "County Line Raceway"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,150 @@
+{
+  "Vehicles": [
+    {
+      "Id": "vehicle.magnolia_cruiser",
+      "DisplayName": "Magnolia Cruiser '86",
+      "Make": "Delmont",
+      "Class": "Muscle",
+      "Drivetrain": "RWD",
+      "MassKg": 1650,
+      "EnginePowerKw": 140,
+      "MaxSpeedKph": 175,
+      "Acceleration": 5.5,
+      "Braking": 8.5,
+      "SteeringResponse": 62,
+      "Grip": 0.95,
+      "Traction": 0.85,
+      "Durability": 60,
+      "PassengerCapacity": 4,
+      "BaseValueCents": 75000,
+      "Rarity": "Common",
+      "PrefabKey": "prefab.vehicle.magnolia_cruiser",
+      "EngineSound": "sfx.engine.muscle",
+      "UpgradeSlots": [
+        "Engine",
+        "Brakes",
+        "Tires",
+        "Nitrous",
+        "Exhaust"
+      ]
+    },
+    {
+      "Id": "vehicle.kudzu_rs",
+      "DisplayName": "Kudzu RS",
+      "Make": "Hoshiro",
+      "Class": "Tuner",
+      "Drivetrain": "FWD",
+      "MassKg": 1150,
+      "EnginePowerKw": 125,
+      "MaxSpeedKph": 190,
+      "Acceleration": 6.5,
+      "Braking": 10.5,
+      "SteeringResponse": 85,
+      "Grip": 1.15,
+      "Traction": 1.05,
+      "Durability": 40,
+      "PassengerCapacity": 4,
+      "BaseValueCents": 240000,
+      "Rarity": "Uncommon",
+      "PrefabKey": "prefab.vehicle.kudzu_rs",
+      "EngineSound": "sfx.engine.tuner",
+      "UpgradeSlots": [
+        "Engine",
+        "Brakes",
+        "Tires",
+        "Nitrous",
+        "Suspension",
+        "Exhaust"
+      ]
+    },
+    {
+      "Id": "vehicle.crestmore_eight",
+      "DisplayName": "Crestmore Eight",
+      "Make": "Crestmore",
+      "Class": "LuxurySedan",
+      "Drivetrain": "AWD",
+      "MassKg": 1950,
+      "EnginePowerKw": 260,
+      "MaxSpeedKph": 215,
+      "Acceleration": 6.8,
+      "Braking": 10.0,
+      "SteeringResponse": 60,
+      "Grip": 1.0,
+      "Traction": 1.1,
+      "Durability": 55,
+      "PassengerCapacity": 5,
+      "BaseValueCents": 950000,
+      "Rarity": "Rare",
+      "PrefabKey": "prefab.vehicle.crestmore_eight",
+      "EngineSound": "sfx.engine.luxurysedan",
+      "UpgradeSlots": [
+        "Engine",
+        "Brakes",
+        "Tires",
+        "Suspension"
+      ]
+    }
+  ],
+  "Upgrades": [
+    {
+      "Id": "upgrade.engine_stage1",
+      "DisplayName": "Engine Stage 1",
+      "Slot": "Engine",
+      "PriceCents": 90000,
+      "AccelerationBonus": 0.8,
+      "MaxSpeedBonusKph": 10
+    },
+    {
+      "Id": "upgrade.brakes_street",
+      "DisplayName": "Street Brakes",
+      "Slot": "Brakes",
+      "PriceCents": 25000,
+      "BrakingBonus": 1.5
+    },
+    {
+      "Id": "upgrade.tires_street",
+      "DisplayName": "Street Tires",
+      "Slot": "Tires",
+      "PriceCents": 30000,
+      "GripBonus": 0.08
+    },
+    {
+      "Id": "upgrade.nitrous_stage1",
+      "DisplayName": "Nitrous Kit",
+      "Slot": "Nitrous",
+      "PriceCents": 60000,
+      "NitrousCapacity": 4
+    }
+  ],
+  "Garages": [
+    {
+      "Id": "garage.grandma_driveway",
+      "DisplayName": "Grandma's Driveway",
+      "LocationId": "location.southside.grandma_house",
+      "BaseCapacity": 1,
+      "MaxCapacity": 2,
+      "StarterOwned": true,
+      "SlotPriceCents": 50000,
+      "SpawnX": -60,
+      "SpawnZ": 22,
+      "SpawnHeadingDeg": 90,
+      "ForSale": []
+    },
+    {
+      "Id": "garage.southside_motors",
+      "DisplayName": "Southside Motors",
+      "LocationId": "location.southside.used_cars",
+      "BaseCapacity": 2,
+      "MaxCapacity": 4,
+      "StarterOwned": false,
+      "SlotPriceCents": 150000,
+      "SpawnX": 130,
+      "SpawnZ": 22,
+      "SpawnHeadingDeg": -90,
+      "ForSale": [
+        "vehicle.magnolia_cruiser",
+        "vehicle.kudzu_rs"
+      ]
+    }
+  ]
+}

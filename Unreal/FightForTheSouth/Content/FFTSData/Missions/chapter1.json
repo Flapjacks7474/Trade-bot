@@ -1,0 +1,593 @@
+{
+  "Missions": [
+    {
+      "Id": "mission.ch1.home_again",
+      "Title": "Home Again",
+      "Chapter": 1,
+      "Order": 1,
+      "Category": "Main",
+      "GiverNpc": "npc.grandma",
+      "LocationId": "location.southside.grandma_house",
+      "Cause": "After years away, you're back in Southside with nothing but a duffel bag and Grandma's address.",
+      "Purpose": "Re-establish home base and the family relationship the whole story is built on.",
+      "Summary": "Walk up to Grandma's house on Magnolia Avenue and let her see you.",
+      "Prerequisites": {
+        "MissionsCompleted": [],
+        "MinChapter": 1,
+        "FlagsAtLeast": {},
+        "FlagsAbsent": []
+      },
+      "Objectives": [
+        {
+          "Id": "arrive_home",
+          "Text": "Go to Grandma's house",
+          "Trigger": "location.southside.grandma_house",
+          "Optional": false,
+          "Checkpoint": true
+        },
+        {
+          "Id": "talk_grandma",
+          "Text": "Talk to Grandma",
+          "Trigger": "dialogue.grandma.welcome.done",
+          "Optional": false,
+          "Checkpoint": false
+        },
+        {
+          "Id": "look_photo",
+          "Text": "Look at the photo on the mantel",
+          "Trigger": "interact.grandma_house.photo",
+          "Optional": true,
+          "Checkpoint": false
+        }
+      ],
+      "Rewards": [
+        {
+          "Type": "Money",
+          "AmountCents": 20000,
+          "Memo": "Grandma presses $200 into your hand"
+        },
+        {
+          "Type": "Relationship",
+          "Target": "npc.grandma",
+          "Relationship": {
+            "Trust": 10,
+            "Affection": 10
+          }
+        },
+        {
+          "Type": "Flag",
+          "Target": "ch1.home",
+          "Value": 1
+        }
+      ],
+      "Recovery": "RestartMission",
+      "Unlocks": [
+        "mission.ch1.southside_stories"
+      ]
+    },
+    {
+      "Id": "mission.ch1.southside_stories",
+      "Title": "Southside Stories",
+      "Chapter": 1,
+      "Order": 2,
+      "Category": "Main",
+      "GiverNpc": "npc.grandma",
+      "LocationId": "location.southside.barbershop",
+      "Cause": "Grandma says the neighborhood changed while you were gone. Everybody at Lou's chair knows how.",
+      "Purpose": "Teach the district layout and seed the five-crew power structure through gossip.",
+      "Summary": "Get reacquainted: the barbershop, the corner store, and Tone's studio.",
+      "Prerequisites": {
+        "MissionsCompleted": [
+          "mission.ch1.home_again"
+        ],
+        "MinChapter": 1,
+        "FlagsAtLeast": {},
+        "FlagsAbsent": []
+      },
+      "Objectives": [
+        {
+          "Id": "barbershop",
+          "Text": "Catch up at Lou's barbershop",
+          "Trigger": "dialogue.lou.gossip_heard",
+          "Optional": false,
+          "Checkpoint": false
+        },
+        {
+          "Id": "corner_store",
+          "Text": "Stop by the corner store",
+          "Trigger": "location.southside.corner_store",
+          "Optional": false,
+          "Checkpoint": false
+        },
+        {
+          "Id": "studio",
+          "Text": "Find Tone's studio",
+          "Trigger": "location.southside.tone_studio",
+          "Optional": false,
+          "Checkpoint": false
+        }
+      ],
+      "Rewards": [
+        {
+          "Type": "Contact",
+          "Target": "npc.lou"
+        },
+        {
+          "Type": "Reputation",
+          "FaceCard": {
+            "Respect": 2
+          }
+        },
+        {
+          "Type": "Flag",
+          "Target": "ch1.heard_five_crews",
+          "Value": 1
+        }
+      ],
+      "Recovery": "RestartFromCheckpoint",
+      "Unlocks": [
+        "mission.ch1.old_friends"
+      ]
+    },
+    {
+      "Id": "mission.ch1.old_friends",
+      "Title": "Old Friends",
+      "Chapter": 1,
+      "Order": 3,
+      "Category": "Main",
+      "GiverNpc": "npc.dre",
+      "LocationId": "location.southside.community_gym",
+      "Cause": "Dre heard you were back and wants to see if you still got hands.",
+      "Purpose": "The first real hand-to-hand combat tutorial, framed as friendly sparring.",
+      "Summary": "Meet Dre at the courts, then spar at the community gym. Block, combo, grapple — then win.",
+      "Prerequisites": {
+        "MissionsCompleted": [
+          "mission.ch1.southside_stories"
+        ],
+        "MinChapter": 1,
+        "FlagsAtLeast": {},
+        "FlagsAbsent": []
+      },
+      "Objectives": [
+        {
+          "Id": "meet_dre",
+          "Text": "Meet Dre at the basketball courts",
+          "Trigger": "dialogue.dre.spar_agreed",
+          "Optional": false,
+          "Checkpoint": true
+        },
+        {
+          "Id": "go_gym",
+          "Text": "Head to the community gym",
+          "Trigger": "location.southside.community_gym",
+          "Optional": false,
+          "Checkpoint": true
+        },
+        {
+          "Id": "tutorial_block",
+          "Text": "Block one of Dre's attacks (hold Block)",
+          "Trigger": "combat.tutorial.blocked",
+          "Optional": true,
+          "Checkpoint": false
+        },
+        {
+          "Id": "tutorial_combo",
+          "Text": "Land a three-hit combo (Light, Light, Heavy)",
+          "Trigger": "combat.tutorial.combo",
+          "Optional": true,
+          "Checkpoint": false
+        },
+        {
+          "Id": "tutorial_grapple",
+          "Text": "Grab Dre and throw him (Grapple, then Heavy)",
+          "Trigger": "combat.tutorial.thrown",
+          "Optional": true,
+          "Checkpoint": false
+        },
+        {
+          "Id": "win_spar",
+          "Text": "Win the sparring match",
+          "Trigger": "fight.won.fighter.dre",
+          "Optional": false,
+          "Checkpoint": false
+        }
+      ],
+      "FailureConditions": [
+        "fight.lost.fighter.dre"
+      ],
+      "Rewards": [
+        {
+          "Type": "Money",
+          "AmountCents": 10000,
+          "Memo": "Dre pays up on a side bet"
+        },
+        {
+          "Type": "Relationship",
+          "Target": "npc.dre",
+          "Relationship": {
+            "Friendship": 15,
+            "Respect": 5
+          }
+        },
+        {
+          "Type": "Flag",
+          "Target": "ch1.tutorial_complete",
+          "Value": 1
+        }
+      ],
+      "Recovery": "RestartFromCheckpoint",
+      "Unlocks": [
+        "mission.ch1.first_recording"
+      ]
+    },
+    {
+      "Id": "mission.ch1.first_recording",
+      "Title": "First Recording",
+      "Chapter": 1,
+      "Order": 4,
+      "Category": "Main",
+      "GiverNpc": "npc.tone",
+      "LocationId": "location.southside.tone_studio",
+      "Cause": "Tone has one open booth slot this week. Rell has been treating it like his.",
+      "Purpose": "Introduce the music career, the rival, and the talk / stand ground / fight choice.",
+      "Summary": "Get to Tone's studio, deal with Rell however you choose, and lay down your first demo.",
+      "Prerequisites": {
+        "MissionsCompleted": [
+          "mission.ch1.old_friends"
+        ],
+        "MinChapter": 1,
+        "FlagsAtLeast": {},
+        "FlagsAbsent": []
+      },
+      "Objectives": [
+        {
+          "Id": "go_studio",
+          "Text": "Go to Tone's studio",
+          "Trigger": "location.southside.tone_studio",
+          "Optional": false,
+          "Checkpoint": true
+        },
+        {
+          "Id": "handle_rell",
+          "Text": "Deal with Rell",
+          "Trigger": "dialogue.rell.confrontation.done",
+          "Optional": false,
+          "Checkpoint": true
+        },
+        {
+          "Id": "win_rell",
+          "Text": "Beat Rell",
+          "Trigger": "fight.won.fighter.rell",
+          "Optional": false,
+          "Checkpoint": false,
+          "Branch": "fight"
+        },
+        {
+          "Id": "record_demo",
+          "Text": "Record your first demo with Tone",
+          "Trigger": "dialogue.tone.demo_recorded",
+          "Optional": false,
+          "Checkpoint": false
+        }
+      ],
+      "Branches": [
+        {
+          "Id": "talk",
+          "Text": "Talk it down",
+          "Approach": "Talk",
+          "Effects": [
+            {
+              "Type": "Relationship",
+              "Target": "npc.rell",
+              "Relationship": {
+                "Respect": 2,
+                "Rivalry": 5
+              }
+            },
+            {
+              "Type": "Reputation",
+              "PublicImage": {
+                "Professionalism": 3
+              }
+            },
+            {
+              "Type": "Flag",
+              "Target": "ch1.rell_confronted",
+              "Value": 1
+            },
+            {
+              "Type": "Flag",
+              "Target": "ch1.rell_talked",
+              "Value": 1
+            }
+          ]
+        },
+        {
+          "Id": "stand_ground",
+          "Text": "Stand your ground",
+          "Approach": "StandGround",
+          "Effects": [
+            {
+              "Type": "Relationship",
+              "Target": "npc.rell",
+              "Relationship": {
+                "Respect": 10,
+                "Rivalry": 10
+              }
+            },
+            {
+              "Type": "Reputation",
+              "FaceCard": {
+                "Respect": 3
+              }
+            },
+            {
+              "Type": "Flag",
+              "Target": "ch1.rell_confronted",
+              "Value": 1
+            },
+            {
+              "Type": "Flag",
+              "Target": "ch1.rell_stood",
+              "Value": 1
+            }
+          ]
+        },
+        {
+          "Id": "fight",
+          "Text": "Take it outside",
+          "Approach": "Fight",
+          "Effects": [
+            {
+              "Type": "Relationship",
+              "Target": "npc.rell",
+              "Relationship": {
+                "Resentment": 15,
+                "Rivalry": 20
+              }
+            },
+            {
+              "Type": "Reputation",
+              "FaceCard": {
+                "Respect": 5,
+                "Fear": 3
+              },
+              "PublicImage": {
+                "Professionalism": -3
+              }
+            },
+            {
+              "Type": "Flag",
+              "Target": "ch1.rell_confronted",
+              "Value": 1
+            },
+            {
+              "Type": "Flag",
+              "Target": "ch1.rell_fought",
+              "Value": 1
+            }
+          ]
+        }
+      ],
+      "BranchRequired": true,
+      "FailureConditions": [
+        "fight.lost.fighter.rell"
+      ],
+      "Rewards": [
+        {
+          "Type": "Relationship",
+          "Target": "npc.tone",
+          "Relationship": {
+            "Respect": 10,
+            "Trust": 5
+          }
+        },
+        {
+          "Type": "Contact",
+          "Target": "npc.tone"
+        },
+        {
+          "Type": "Flag",
+          "Target": "music.first_demo",
+          "Value": 1
+        },
+        {
+          "Type": "Item",
+          "Target": "item.song.first_demo",
+          "Value": 1
+        }
+      ],
+      "Recovery": "RestartFromCheckpoint",
+      "Unlocks": [
+        "mission.ch1.prove_yourself"
+      ]
+    },
+    {
+      "Id": "mission.ch1.prove_yourself",
+      "Title": "Prove Yourself",
+      "Chapter": 1,
+      "Order": 5,
+      "Category": "Main",
+      "GiverNpc": "npc.big_reece",
+      "LocationId": "location.southside.underground_venue",
+      "Cause": "Word of the studio got around. Big Reece runs the fights under the old cold-storage plant and wants to see you in his ring.",
+      "Purpose": "First underground fight against a distinct opponent (a grappler) with a real purse.",
+      "Summary": "Get to the underground venue, sign up with Big Reece, and beat Brick Hollis.",
+      "Prerequisites": {
+        "MissionsCompleted": [
+          "mission.ch1.first_recording"
+        ],
+        "MinChapter": 1,
+        "FlagsAtLeast": {},
+        "FlagsAbsent": []
+      },
+      "Objectives": [
+        {
+          "Id": "go_venue",
+          "Text": "Find the underground venue",
+          "Trigger": "location.southside.underground_venue",
+          "Optional": false,
+          "Checkpoint": true
+        },
+        {
+          "Id": "meet_reece",
+          "Text": "Sign up with Big Reece",
+          "Trigger": "dialogue.reece.signed_up",
+          "Optional": false,
+          "Checkpoint": true
+        },
+        {
+          "Id": "win_brick",
+          "Text": "Beat Darnell \"Brick\" Hollis",
+          "Trigger": "fight.won.fighter.brick",
+          "Optional": false,
+          "Checkpoint": false
+        }
+      ],
+      "FailureConditions": [
+        "fight.lost.fighter.brick"
+      ],
+      "Rewards": [
+        {
+          "Type": "Money",
+          "AmountCents": 50000,
+          "Memo": "Fight purse"
+        },
+        {
+          "Type": "Reputation",
+          "FaceCard": {
+            "Respect": 10,
+            "Fear": 5,
+            "Notoriety": 3
+          }
+        },
+        {
+          "Type": "Contact",
+          "Target": "npc.big_reece"
+        },
+        {
+          "Type": "Flag",
+          "Target": "ch1.beat_brick",
+          "Value": 1
+        }
+      ],
+      "Recovery": "RestartFromCheckpoint",
+      "Unlocks": [
+        "mission.ch1.the_invitation"
+      ]
+    },
+    {
+      "Id": "mission.ch1.the_invitation",
+      "Title": "The Invitation",
+      "Chapter": 1,
+      "Order": 6,
+      "Category": "Main",
+      "GiverNpc": "npc.nia",
+      "LocationId": "location.southside.corner_store",
+      "Cause": "A promoter named Nia saw the demo and the fight on the same night. That doesn't happen.",
+      "Purpose": "Close Chapter 1 and open the door to the downtown showcase where the five leaders appear.",
+      "Summary": "Meet Nia, take the showcase invitation, and tell Grandma.",
+      "Prerequisites": {
+        "MissionsCompleted": [
+          "mission.ch1.prove_yourself"
+        ],
+        "MinChapter": 1,
+        "FlagsAtLeast": {},
+        "FlagsAbsent": []
+      },
+      "Objectives": [
+        {
+          "Id": "meet_nia",
+          "Text": "Meet Nia outside the corner store",
+          "Trigger": "dialogue.nia.invitation_accepted",
+          "Optional": false,
+          "Checkpoint": false
+        },
+        {
+          "Id": "tell_grandma",
+          "Text": "Tell Grandma about the showcase",
+          "Trigger": "dialogue.grandma.invitation_told",
+          "Optional": false,
+          "Checkpoint": false
+        }
+      ],
+      "Rewards": [
+        {
+          "Type": "Contact",
+          "Target": "npc.nia"
+        },
+        {
+          "Type": "Item",
+          "Target": "item.showcase_invitation",
+          "Value": 1
+        },
+        {
+          "Type": "Flag",
+          "Target": "story.ch2.showcase_invited",
+          "Value": 1
+        }
+      ],
+      "AdvanceToChapter": 2,
+      "Recovery": "RestartFromCheckpoint",
+      "Unlocks": []
+    },
+    {
+      "Id": "mission.side.grandmas_errand",
+      "Title": "Grandma's Errand",
+      "Chapter": 1,
+      "Order": 10,
+      "Category": "Side",
+      "GiverNpc": "npc.grandma",
+      "LocationId": "location.southside.corner_store",
+      "Cause": "Grandma's prescription is ready at the corner store and her knees aren't.",
+      "Purpose": "Optional kindness that Grandma remembers — it changes her lines in The Invitation.",
+      "Summary": "Pick up Grandma's prescription (you cover the $15 copay) and bring it home.",
+      "Prerequisites": {
+        "MissionsCompleted": [
+          "mission.ch1.home_again"
+        ],
+        "MinChapter": 1,
+        "FlagsAtLeast": {},
+        "FlagsAbsent": []
+      },
+      "Objectives": [
+        {
+          "Id": "pickup",
+          "Text": "Pick up the prescription at the corner store",
+          "Trigger": "interact.corner_store.prescription",
+          "Optional": false,
+          "Checkpoint": false
+        },
+        {
+          "Id": "deliver",
+          "Text": "Bring it to Grandma",
+          "Trigger": "interact.grandma_house.deliver",
+          "Optional": false,
+          "Checkpoint": false
+        }
+      ],
+      "Rewards": [
+        {
+          "Type": "Money",
+          "AmountCents": -1500,
+          "Memo": "Prescription copay"
+        },
+        {
+          "Type": "Relationship",
+          "Target": "npc.grandma",
+          "Relationship": {
+            "Trust": 8,
+            "Affection": 5
+          }
+        },
+        {
+          "Type": "Flag",
+          "Target": "side.grandmas_errand.done",
+          "Value": 1
+        }
+      ],
+      "Recovery": "RestartMission",
+      "Unlocks": []
+    }
+  ]
+}

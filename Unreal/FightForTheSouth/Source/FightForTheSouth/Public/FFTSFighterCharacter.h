@@ -1,0 +1,59 @@
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/Character.h"
+#include "FFTSFighterCharacter.generated.h"
+
+class UAnimSequence;
+class UStaticMeshComponent;
+
+/**
+ * A fighter's body. The fight director positions it and tells it which clip to show at which time; clips are found by
+ * the move's AnimationKey ("anim.boxing.jab" -> /Game/FFTS/Anim/anim_boxing_jab), authored at 60 fps with the hit on
+ * frame Startup, so on-screen impacts line up with simulation ticks.
+ */
+UCLASS()
+class FIGHTFORTHESOUTH_API AFFTSFighterCharacter : public ACharacter
+{
+	GENERATED_BODY()
+
+public:
+	AFFTSFighterCharacter();
+
+	/** Shows a clip at an exact time (seconds). Missing clips fall back to the style's idle, then the street idle. */
+	void ShowClip(const FString& AnimationKey, float TimeSeconds, bool bLoop);
+
+	/** Tints the body so fighters read apart (applied to every material slot that has a BaseColor-like parameter). */
+	void SetTint(const FLinearColor& Color);
+
+	/** Brief hit flash. */
+	void Flash();
+
+	UPROPERTY(EditAnywhere, Category = "FFTS")
+	FString SkeletalMeshPath = TEXT("/Game/FFTS/Characters/FFTS_FightRig.FFTS_FightRig");
+
+	UPROPERTY(EditAnywhere, Category = "FFTS")
+	FString AnimFolder = TEXT("/Game/FFTS/Anim");
+
+	/** Yaw that makes the imported mesh face +X (Blender exports face -Y). */
+	UPROPERTY(EditAnywhere, Category = "FFTS")
+	float MeshYawOffset = -90.f;
+
+	UPROPERTY(VisibleAnywhere, Category = "FFTS")
+	TObjectPtr<UStaticMeshComponent> FallbackBody;
+
+	FString CurrentClip() const { return CurrentKey; }
+	bool HasRig() const { return bHasRig; }
+
+protected:
+	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaSeconds) override;
+
+private:
+	UAnimSequence* FindClip(const FString& Key);
+	UPROPERTY() TMap<FString, TObjectPtr<UAnimSequence>> ClipCache;
+	TSet<FString> MissingClips;
+	FString CurrentKey;
+	bool bHasRig = false;
+	float FlashTime = 0.f;
+};

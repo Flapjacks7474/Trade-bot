@@ -1,0 +1,92 @@
+{
+  "Fighters": [
+    {
+      "Id": "fighter.player",
+      "DisplayName": "Player",
+      "Archetype": "Scrapper",
+      "Styles": [
+        "style.street"
+      ],
+      "Stats": {
+        "Strength": 45,
+        "Speed": 50,
+        "Stamina": 50,
+        "Durability": 45,
+        "Technique": 45,
+        "Aggression": 50,
+        "Confidence": 50,
+        "Composure": 50
+      },
+      "AiStyle": "Aggressive",
+      "AiDifficulty": "Normal",
+      "Bio": "Unknown kid from Southside. Basic hands, big heart.",
+      "PlaceholderModel": "placeholder.capsule.player"
+    },
+    {
+      "Id": "fighter.dre",
+      "DisplayName": "Dre",
+      "Archetype": "Showman",
+      "Styles": [
+        "style.street"
+      ],
+      "Stats": {
+        "Strength": 40,
+        "Speed": 55,
+        "Stamina": 45,
+        "Durability": 40,
+        "Technique": 40,
+        "Aggression": 40,
+        "Confidence": 70,
+        "Composure": 50
+      },
+      "AiStyle": "Showman",
+      "AiDifficulty": "Easy",
+      "Bio": "Best friend. Talks more than he swings. Sparring partner for the tutorial.",
+      "PlaceholderModel": "placeholder.capsule.dre"
+    },
+    {
+      "Id": "fighter.rell",
+      "DisplayName": "Rell",
+      "Archetype": "Technician",
+      "Styles": [
+        "style.street"
+      ],
+      "Stats": {
+        "Strength": 45,
+        "Speed": 62,
+        "Stamina": 55,
+        "Durability": 45,
+        "Technique": 65,
+        "Aggression": 45,
+        "Confidence": 80,
+        "Composure": 65
+      },
+      "AiStyle": "Technical",
+      "AiDifficulty": "Normal",
+      "Bio": "Original rival. Patient, precise, punishes mistakes and remembers every one.",
+      "PlaceholderModel": "placeholder.capsule.rell"
+    },
+    {
+      "Id": "fighter.brick",
+      "DisplayName": "Darnell \"Brick\" Hollis",
+      "Archetype": "Grappler",
+      "Styles": [
+        "style.street"
+      ],
+      "Stats": {
+        "Strength": 70,
+        "Speed": 35,
+        "Stamina": 60,
+        "Durability": 70,
+        "Technique": 40,
+        "Aggression": 70,
+        "Confidence": 60,
+        "Composure": 45
+      },
+      "AiStyle": "Wrestler",
+      "AiDifficulty": "Normal",
+      "Bio": "Underground venue regular. Wants you against the wall.",
+      "PlaceholderModel": "placeholder.capsule.brick"
+    }
+  ]
+}

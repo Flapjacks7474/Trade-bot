@@ -1,0 +1,1997 @@
+{
+  "Brands": [
+    {
+      "Id": "brand.third_coast",
+      "DisplayName": "Third Coast Supply",
+      "Tagline": "Basics built for Gulf heat."
+    },
+    {
+      "Id": "brand.magnolia_mob",
+      "DisplayName": "Magnolia Mob",
+      "Tagline": "Southside graphics, hand-drawn."
+    },
+    {
+      "Id": "brand.pecan_athletic",
+      "DisplayName": "Pecan Athletic",
+      "Tagline": "Court shoes and runners since 1984."
+    },
+    {
+      "Id": "brand.bayou_thread",
+      "DisplayName": "Bayou Thread Co.",
+      "Tagline": "Workwear that outlasts the job."
+    },
+    {
+      "Id": "brand.gulf_gold",
+      "DisplayName": "Gulf Gold",
+      "Tagline": "Chains, links and pieces with weight."
+    },
+    {
+      "Id": "brand.slab_city",
+      "DisplayName": "SLAB City Headwear",
+      "Tagline": "Caps and knits, slow and low."
+    },
+    {
+      "Id": "brand.scrap_gym",
+      "DisplayName": "Scrap Gym Fightwear",
+      "Tagline": "Gear from the gym on Pecan Street."
+    }
+  ],
+  "SkinTones": [
+    {
+      "Id": "skin.01",
+      "DisplayName": "Deep Ebony",
+      "Hex": "#3b2219"
+    },
+    {
+      "Id": "skin.02",
+      "DisplayName": "Espresso",
+      "Hex": "#4a2c20"
+    },
+    {
+      "Id": "skin.03",
+      "DisplayName": "Mahogany",
+      "Hex": "#5c3726"
+    },
+    {
+      "Id": "skin.04",
+      "DisplayName": "Chestnut",
+      "Hex": "#6e432c"
+    },
+    {
+      "Id": "skin.05",
+      "DisplayName": "Caramel",
+      "Hex": "#8a5a3b"
+    },
+    {
+      "Id": "skin.06",
+      "DisplayName": "Bronze",
+      "Hex": "#9d6b45"
+    },
+    {
+      "Id": "skin.07",
+      "DisplayName": "Honey",
+      "Hex": "#b9855a"
+    },
+    {
+      "Id": "skin.08",
+      "DisplayName": "Sand",
+      "Hex": "#cfa07a"
+    },
+    {
+      "Id": "skin.09",
+      "DisplayName": "Beige",
+      "Hex": "#dcb796"
+    },
+    {
+      "Id": "skin.10",
+      "DisplayName": "Fair",
+      "Hex": "#ecd0b8"
+    }
+  ],
+  "HairColors": [
+    {
+      "Id": "haircol.black",
+      "DisplayName": "Jet Black",
+      "Hex": "#121010"
+    },
+    {
+      "Id": "haircol.dark_brown",
+      "DisplayName": "Dark Brown",
+      "Hex": "#2c1d15"
+    },
+    {
+      "Id": "haircol.brown",
+      "DisplayName": "Brown",
+      "Hex": "#4a3020"
+    },
+    {
+      "Id": "haircol.auburn",
+      "DisplayName": "Auburn",
+      "Hex": "#6b2d1a"
+    },
+    {
+      "Id": "haircol.blonde_tips",
+      "DisplayName": "Blonde Tips",
+      "Hex": "#c9a55c"
+    },
+    {
+      "Id": "haircol.platinum",
+      "DisplayName": "Platinum",
+      "Hex": "#e3dccb"
+    },
+    {
+      "Id": "haircol.grey",
+      "DisplayName": "Salt and Pepper",
+      "Hex": "#8b8782"
+    },
+    {
+      "Id": "haircol.red_dye",
+      "DisplayName": "Cherry Dye",
+      "Hex": "#8e1b22"
+    },
+    {
+      "Id": "haircol.teal_dye",
+      "DisplayName": "Teal Dye",
+      "Hex": "#1d6f6c"
+    }
+  ],
+  "EyeColors": [
+    {
+      "Id": "eye.dark_brown",
+      "DisplayName": "Dark Brown",
+      "Hex": "#2a170e"
+    },
+    {
+      "Id": "eye.brown",
+      "DisplayName": "Brown",
+      "Hex": "#4b2a16"
+    },
+    {
+      "Id": "eye.hazel",
+      "DisplayName": "Hazel",
+      "Hex": "#6b5a2e"
+    },
+    {
+      "Id": "eye.green",
+      "DisplayName": "Green",
+      "Hex": "#3d5c3a"
+    },
+    {
+      "Id": "eye.grey",
+      "DisplayName": "Grey",
+      "Hex": "#6c7378"
+    },
+    {
+      "Id": "eye.blue",
+      "DisplayName": "Blue",
+      "Hex": "#3d5f86"
+    }
+  ],
+  "FabricColors": [
+    {
+      "Id": "fab.black",
+      "DisplayName": "Black",
+      "Hex": "#141414"
+    },
+    {
+      "Id": "fab.white",
+      "DisplayName": "White",
+      "Hex": "#efefea"
+    },
+    {
+      "Id": "fab.heather",
+      "DisplayName": "Heather Grey",
+      "Hex": "#8d8f93"
+    },
+    {
+      "Id": "fab.olive",
+      "DisplayName": "Olive",
+      "Hex": "#4b5032"
+    },
+    {
+      "Id": "fab.khaki",
+      "DisplayName": "Khaki",
+      "Hex": "#a8976a"
+    },
+    {
+      "Id": "fab.navy",
+      "DisplayName": "Navy",
+      "Hex": "#1d2a44"
+    },
+    {
+      "Id": "fab.burgundy",
+      "DisplayName": "Burgundy",
+      "Hex": "#5a1a24"
+    },
+    {
+      "Id": "fab.mustard",
+      "DisplayName": "Mustard",
+      "Hex": "#c49a2c"
+    },
+    {
+      "Id": "fab.royal",
+      "DisplayName": "Royal Blue",
+      "Hex": "#2346a0"
+    },
+    {
+      "Id": "fab.red",
+      "DisplayName": "Red",
+      "Hex": "#a41e22"
+    },
+    {
+      "Id": "fab.cream",
+      "DisplayName": "Cream",
+      "Hex": "#e8dcc1"
+    },
+    {
+      "Id": "fab.camo",
+      "DisplayName": "Bayou Camo",
+      "Hex": "#5d5a3c"
+    },
+    {
+      "Id": "fab.denim",
+      "DisplayName": "Denim",
+      "Hex": "#3c5679"
+    },
+    {
+      "Id": "fab.pink",
+      "DisplayName": "Dusty Pink",
+      "Hex": "#c98d95"
+    },
+    {
+      "Id": "fab.purple",
+      "DisplayName": "Purple",
+      "Hex": "#4d2a6b"
+    },
+    {
+      "Id": "fab.gold",
+      "DisplayName": "Gold",
+      "Hex": "#d4a73a"
+    },
+    {
+      "Id": "fab.silver",
+      "DisplayName": "Silver",
+      "Hex": "#bfc3c7"
+    },
+    {
+      "Id": "fab.orange",
+      "DisplayName": "Burnt Orange",
+      "Hex": "#b5541c"
+    },
+    {
+      "Id": "fab.tan",
+      "DisplayName": "Wheat",
+      "Hex": "#c79a5b"
+    }
+  ],
+  "FaceSliders": [
+    {
+      "Id": "face.jaw_width",
+      "DisplayName": "Jaw Width",
+      "BlendShape": "FFTS_jaw_width"
+    },
+    {
+      "Id": "face.chin_length",
+      "DisplayName": "Chin Length",
+      "BlendShape": "FFTS_chin_length"
+    },
+    {
+      "Id": "face.cheekbones",
+      "DisplayName": "Cheekbones",
+      "BlendShape": "FFTS_cheekbones"
+    },
+    {
+      "Id": "face.brow_height",
+      "DisplayName": "Brow Height",
+      "BlendShape": "FFTS_brow_height"
+    },
+    {
+      "Id": "face.brow_depth",
+      "DisplayName": "Brow Depth",
+      "BlendShape": "FFTS_brow_depth"
+    },
+    {
+      "Id": "face.nose_width",
+      "DisplayName": "Nose Width",
+      "BlendShape": "FFTS_nose_width"
+    },
+    {
+      "Id": "face.nose_length",
+      "DisplayName": "Nose Length",
+      "BlendShape": "FFTS_nose_length"
+    },
+    {
+      "Id": "face.nose_bridge",
+      "DisplayName": "Nose Bridge",
+      "BlendShape": "FFTS_nose_bridge"
+    },
+    {
+      "Id": "face.lip_fullness",
+      "DisplayName": "Lip Fullness",
+      "BlendShape": "FFTS_lip_fullness"
+    },
+    {
+      "Id": "face.mouth_width",
+      "DisplayName": "Mouth Width",
+      "BlendShape": "FFTS_mouth_width"
+    },
+    {
+      "Id": "face.eye_spacing",
+      "DisplayName": "Eye Spacing",
+      "BlendShape": "FFTS_eye_spacing"
+    },
+    {
+      "Id": "face.eye_size",
+      "DisplayName": "Eye Size",
+      "BlendShape": "FFTS_eye_size"
+    },
+    {
+      "Id": "face.ear_size",
+      "DisplayName": "Ear Size",
+      "BlendShape": "FFTS_ear_size"
+    },
+    {
+      "Id": "face.face_width",
+      "DisplayName": "Face Width",
+      "BlendShape": "FFTS_face_width"
+    },
+    {
+      "Id": "face.forehead",
+      "DisplayName": "Forehead Height",
+      "BlendShape": "FFTS_forehead"
+    }
+  ],
+  "FacePresets": [
+    {
+      "Id": "facepreset.square",
+      "DisplayName": "Square Jaw",
+      "MeshKey": "face.square",
+      "Shape": {
+        "face.jaw_width": 0.6,
+        "face.chin_length": 0.1,
+        "face.brow_depth": 0.3
+      }
+    },
+    {
+      "Id": "facepreset.oval",
+      "DisplayName": "Oval",
+      "MeshKey": "face.oval",
+      "Shape": {
+        "face.face_width": -0.2,
+        "face.chin_length": 0.2
+      }
+    },
+    {
+      "Id": "facepreset.round",
+      "DisplayName": "Round",
+      "MeshKey": "face.round",
+      "Shape": {
+        "face.face_width": 0.4,
+        "face.cheekbones": -0.2,
+        "face.jaw_width": 0.1
+      }
+    },
+    {
+      "Id": "facepreset.angular",
+      "DisplayName": "Angular",
+      "MeshKey": "face.angular",
+      "Shape": {
+        "face.cheekbones": 0.6,
+        "face.jaw_width": 0.3,
+        "face.face_width": -0.3
+      }
+    },
+    {
+      "Id": "facepreset.heart",
+      "DisplayName": "Heart",
+      "MeshKey": "face.heart",
+      "Shape": {
+        "face.forehead": 0.3,
+        "face.chin_length": -0.2,
+        "face.jaw_width": -0.4
+      }
+    },
+    {
+      "Id": "facepreset.long",
+      "DisplayName": "Long",
+      "MeshKey": "face.long",
+      "Shape": {
+        "face.chin_length": 0.5,
+        "face.forehead": 0.3,
+        "face.face_width": -0.4
+      }
+    },
+    {
+      "Id": "facepreset.broad",
+      "DisplayName": "Broad",
+      "MeshKey": "face.broad",
+      "Shape": {
+        "face.face_width": 0.6,
+        "face.nose_width": 0.4,
+        "face.jaw_width": 0.5
+      }
+    },
+    {
+      "Id": "facepreset.youthful",
+      "DisplayName": "Youthful",
+      "MeshKey": "face.youthful",
+      "Shape": {
+        "face.eye_size": 0.3,
+        "face.cheekbones": -0.1,
+        "face.brow_depth": -0.3
+      }
+    }
+  ],
+  "HairStyles": [
+    {
+      "Id": "hair.bald",
+      "DisplayName": "Clean Shaved Head",
+      "MeshKey": "hair.bald",
+      "Length": "Bald",
+      "FitsUnder": []
+    },
+    {
+      "Id": "hair.buzz",
+      "DisplayName": "Buzz Cut",
+      "MeshKey": "hair.buzz",
+      "Length": "Short",
+      "FitsUnder": [
+        "Beanie",
+        "Cap",
+        "Durag",
+        "Hood",
+        "Hat"
+      ]
+    },
+    {
+      "Id": "hair.low_taper_fade",
+      "DisplayName": "Low Taper Fade",
+      "MeshKey": "hair.low_taper_fade",
+      "Length": "Short",
+      "FitsUnder": [
+        "Beanie",
+        "Cap",
+        "Durag",
+        "Hood",
+        "Hat"
+      ]
+    },
+    {
+      "Id": "hair.waves",
+      "DisplayName": "360 Waves",
+      "MeshKey": "hair.waves",
+      "Length": "Short",
+      "FitsUnder": [
+        "Beanie",
+        "Cap",
+        "Durag",
+        "Hood",
+        "Hat"
+      ]
+    },
+    {
+      "Id": "hair.high_top",
+      "DisplayName": "High-Top Fade",
+      "MeshKey": "hair.high_top",
+      "Length": "Medium",
+      "FitsUnder": [
+        "Hood"
+      ]
+    },
+    {
+      "Id": "hair.twists",
+      "DisplayName": "Two-Strand Twists",
+      "MeshKey": "hair.twists",
+      "Length": "Medium",
+      "FitsUnder": [
+        "Beanie",
+        "Hood"
+      ]
+    },
+    {
+      "Id": "hair.short_dreads",
+      "DisplayName": "Short Dreads",
+      "MeshKey": "hair.short_dreads",
+      "Length": "Medium",
+      "FitsUnder": [
+        "Beanie",
+        "Hood",
+        "Cap"
+      ]
+    },
+    {
+      "Id": "hair.shoulder_dreads",
+      "DisplayName": "Shoulder Dreads",
+      "MeshKey": "hair.shoulder_dreads",
+      "Length": "Long",
+      "FitsUnder": [
+        "Beanie",
+        "Hood"
+      ]
+    },
+    {
+      "Id": "hair.long_locs",
+      "DisplayName": "Long Locs (tied)",
+      "MeshKey": "hair.long_locs",
+      "Length": "Long",
+      "FitsUnder": [
+        "Beanie",
+        "Hood"
+      ]
+    },
+    {
+      "Id": "hair.cornrows",
+      "DisplayName": "Cornrows",
+      "MeshKey": "hair.cornrows",
+      "Length": "Short",
+      "FitsUnder": [
+        "Beanie",
+        "Cap",
+        "Durag",
+        "Hood",
+        "Hat"
+      ]
+    },
+    {
+      "Id": "hair.afro",
+      "DisplayName": "Afro",
+      "MeshKey": "hair.afro",
+      "Length": "Medium",
+      "FitsUnder": []
+    },
+    {
+      "Id": "hair.braids_pony",
+      "DisplayName": "Box Braids Ponytail",
+      "MeshKey": "hair.braids_pony",
+      "Length": "Long",
+      "FitsUnder": [
+        "Cap",
+        "Hood"
+      ]
+    },
+    {
+      "Id": "hair.curly_top",
+      "DisplayName": "Curly Top Fade",
+      "MeshKey": "hair.curly_top",
+      "Length": "Medium",
+      "FitsUnder": [
+        "Beanie",
+        "Hood",
+        "Cap",
+        "Hat"
+      ]
+    },
+    {
+      "Id": "hair.slick_back",
+      "DisplayName": "Slicked Back",
+      "MeshKey": "hair.slick_back",
+      "Length": "Medium",
+      "FitsUnder": [
+        "Cap",
+        "Hat",
+        "Hood"
+      ]
+    },
+    {
+      "Id": "hair.grey_short",
+      "DisplayName": "Short and Neat",
+      "MeshKey": "hair.grey_short",
+      "Length": "Short",
+      "FitsUnder": [
+        "Beanie",
+        "Cap",
+        "Hood",
+        "Hat"
+      ]
+    },
+    {
+      "Id": "hair.bun_wrap",
+      "DisplayName": "Wrapped Bun",
+      "MeshKey": "hair.bun_wrap",
+      "Length": "Long",
+      "FitsUnder": [
+        "Hood"
+      ]
+    }
+  ],
+  "FacialHair": [
+    {
+      "Id": "facial.clean",
+      "DisplayName": "Clean Shaven",
+      "MeshKey": "facial.clean"
+    },
+    {
+      "Id": "facial.stubble",
+      "DisplayName": "Stubble",
+      "MeshKey": "facial.stubble"
+    },
+    {
+      "Id": "facial.goatee",
+      "DisplayName": "Goatee",
+      "MeshKey": "facial.goatee"
+    },
+    {
+      "Id": "facial.chin_strap",
+      "DisplayName": "Chin Strap",
+      "MeshKey": "facial.chin_strap"
+    },
+    {
+      "Id": "facial.full_beard",
+      "DisplayName": "Full Beard",
+      "MeshKey": "facial.full_beard"
+    },
+    {
+      "Id": "facial.short_beard",
+      "DisplayName": "Short Boxed Beard",
+      "MeshKey": "facial.short_beard"
+    },
+    {
+      "Id": "facial.mustache",
+      "DisplayName": "Mustache",
+      "MeshKey": "facial.mustache"
+    }
+  ],
+  "Stores": [
+    {
+      "Id": "store.southside_thrift",
+      "DisplayName": "Southside Thrift & Tees",
+      "DistrictId": "district.southside",
+      "IsBarber": false,
+      "BarberPriceCents": 0
+    },
+    {
+      "Id": "store.magnolia_flagship",
+      "DisplayName": "Magnolia Mob Flagship",
+      "DistrictId": "district.southside",
+      "IsBarber": false,
+      "BarberPriceCents": 0
+    },
+    {
+      "Id": "store.pecan_kicks",
+      "DisplayName": "Pecan Kicks",
+      "DistrictId": "district.southside",
+      "IsBarber": false,
+      "BarberPriceCents": 0
+    },
+    {
+      "Id": "store.gulf_gold",
+      "DisplayName": "Gulf Gold Jewelers",
+      "DistrictId": "district.southside",
+      "IsBarber": false,
+      "BarberPriceCents": 0
+    },
+    {
+      "Id": "store.scrap_gym",
+      "DisplayName": "Scrap Gym Pro Shop",
+      "DistrictId": "district.southside",
+      "IsBarber": false,
+      "BarberPriceCents": 0
+    },
+    {
+      "Id": "store.fade_kings",
+      "DisplayName": "Fade Kings Barbershop",
+      "DistrictId": "district.southside",
+      "IsBarber": true,
+      "BarberPriceCents": 1500
+    }
+  ],
+  "Clothing": [
+    {
+      "Id": "cloth.knit_beanie",
+      "DisplayName": "Ribbed Knit Beanie",
+      "Slot": "Head",
+      "MeshKey": "cloth.knit_beanie",
+      "BrandId": "brand.slab_city",
+      "StoreId": "store.magnolia_flagship",
+      "PriceCents": 1800,
+      "Colorways": [
+        "fab.black",
+        "fab.olive",
+        "fab.mustard",
+        "fab.burgundy",
+        "fab.cream"
+      ],
+      "Tags": [
+        "streetwear",
+        "basic"
+      ],
+      "StarterOwned": true,
+      "HeadwearType": "Beanie",
+      "Description": null
+    },
+    {
+      "Id": "cloth.snapback",
+      "DisplayName": "SLAB Snapback",
+      "Slot": "Head",
+      "MeshKey": "cloth.snapback",
+      "BrandId": "brand.slab_city",
+      "StoreId": "store.magnolia_flagship",
+      "PriceCents": 2800,
+      "Colorways": [
+        "fab.black",
+        "fab.navy",
+        "fab.red",
+        "fab.olive"
+      ],
+      "Tags": [
+        "streetwear"
+      ],
+      "StarterOwned": false,
+      "HeadwearType": "Cap",
+      "Description": null
+    },
+    {
+      "Id": "cloth.fitted_cap",
+      "DisplayName": "Third Coast Fitted",
+      "Slot": "Head",
+      "MeshKey": "cloth.fitted_cap",
+      "BrandId": "brand.third_coast",
+      "StoreId": "store.southside_thrift",
+      "PriceCents": 2400,
+      "Colorways": [
+        "fab.navy",
+        "fab.black",
+        "fab.royal"
+      ],
+      "Tags": [
+        "basic"
+      ],
+      "StarterOwned": false,
+      "HeadwearType": "Cap",
+      "Description": null
+    },
+    {
+      "Id": "cloth.durag",
+      "DisplayName": "Silky Durag",
+      "Slot": "Head",
+      "MeshKey": "cloth.durag",
+      "BrandId": "brand.third_coast",
+      "StoreId": "store.southside_thrift",
+      "PriceCents": 900,
+      "Colorways": [
+        "fab.black",
+        "fab.burgundy",
+        "fab.royal",
+        "fab.white",
+        "fab.purple"
+      ],
+      "Tags": [
+        "streetwear",
+        "basic"
+      ],
+      "StarterOwned": false,
+      "HeadwearType": "Durag",
+      "Description": null
+    },
+    {
+      "Id": "cloth.bucket_hat",
+      "DisplayName": "Canvas Bucket Hat",
+      "Slot": "Head",
+      "MeshKey": "cloth.bucket_hat",
+      "BrandId": "brand.bayou_thread",
+      "StoreId": "store.southside_thrift",
+      "PriceCents": 2200,
+      "Colorways": [
+        "fab.khaki",
+        "fab.camo",
+        "fab.black"
+      ],
+      "Tags": [
+        "streetwear"
+      ],
+      "StarterOwned": false,
+      "HeadwearType": "Hat",
+      "Description": null
+    },
+    {
+      "Id": "cloth.ribbed_tank",
+      "DisplayName": "Ribbed Tank Top",
+      "Slot": "Top",
+      "MeshKey": "cloth.ribbed_tank",
+      "BrandId": "brand.third_coast",
+      "StoreId": "store.southside_thrift",
+      "PriceCents": 800,
+      "Colorways": [
+        "fab.white",
+        "fab.black",
+        "fab.heather"
+      ],
+      "Tags": [
+        "basic",
+        "gym"
+      ],
+      "StarterOwned": true,
+      "Description": null
+    },
+    {
+      "Id": "cloth.plain_tee",
+      "DisplayName": "Heavyweight Tee",
+      "Slot": "Top",
+      "MeshKey": "cloth.plain_tee",
+      "BrandId": "brand.third_coast",
+      "StoreId": "store.southside_thrift",
+      "PriceCents": 1200,
+      "Colorways": [
+        "fab.white",
+        "fab.black",
+        "fab.heather",
+        "fab.olive",
+        "fab.cream"
+      ],
+      "Tags": [
+        "basic"
+      ],
+      "StarterOwned": true,
+      "Description": null
+    },
+    {
+      "Id": "cloth.graphic_tee",
+      "DisplayName": "Magnolia Mob \"Southside Bloom\" Tee",
+      "Slot": "Top",
+      "MeshKey": "cloth.graphic_tee",
+      "BrandId": "brand.magnolia_mob",
+      "StoreId": "store.magnolia_flagship",
+      "PriceCents": 3500,
+      "Colorways": [
+        "fab.black",
+        "fab.white",
+        "fab.cream"
+      ],
+      "Tags": [
+        "streetwear"
+      ],
+      "StarterOwned": true,
+      "Description": "Hand-drawn magnolia over a Southside street sign. Original artwork; no third-party logos."
+    },
+    {
+      "Id": "cloth.thermal",
+      "DisplayName": "Waffle Thermal",
+      "Slot": "Top",
+      "MeshKey": "cloth.thermal",
+      "BrandId": "brand.bayou_thread",
+      "StoreId": "store.southside_thrift",
+      "PriceCents": 2600,
+      "Colorways": [
+        "fab.cream",
+        "fab.heather",
+        "fab.burgundy"
+      ],
+      "Tags": [
+        "basic",
+        "workwear"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.jersey",
+      "DisplayName": "Southside Skeeters #32 Jersey",
+      "Slot": "Top",
+      "MeshKey": "cloth.jersey",
+      "BrandId": "brand.pecan_athletic",
+      "StoreId": "store.pecan_kicks",
+      "PriceCents": 6500,
+      "Colorways": [
+        "fab.royal",
+        "fab.red",
+        "fab.white"
+      ],
+      "Tags": [
+        "streetwear",
+        "sport"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.rashguard",
+      "DisplayName": "Scrap Gym Rashguard",
+      "Slot": "Top",
+      "MeshKey": "cloth.rashguard",
+      "BrandId": "brand.scrap_gym",
+      "StoreId": "store.scrap_gym",
+      "PriceCents": 4500,
+      "Colorways": [
+        "fab.black",
+        "fab.red",
+        "fab.royal"
+      ],
+      "Tags": [
+        "gym"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.polo",
+      "DisplayName": "Pique Polo",
+      "Slot": "Top",
+      "MeshKey": "cloth.polo",
+      "BrandId": "brand.third_coast",
+      "StoreId": "store.southside_thrift",
+      "PriceCents": 2800,
+      "Colorways": [
+        "fab.navy",
+        "fab.white",
+        "fab.mustard"
+      ],
+      "Tags": [
+        "formal",
+        "basic"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.button_down",
+      "DisplayName": "Sunday Button-Down",
+      "Slot": "Top",
+      "MeshKey": "cloth.button_down",
+      "BrandId": "brand.third_coast",
+      "StoreId": "store.southside_thrift",
+      "PriceCents": 3200,
+      "Colorways": [
+        "fab.white",
+        "fab.pink",
+        "fab.royal"
+      ],
+      "Tags": [
+        "formal"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.pullover_hoodie",
+      "DisplayName": "Magnolia Mob Pullover Hoodie",
+      "Slot": "Outerwear",
+      "MeshKey": "cloth.pullover_hoodie",
+      "BrandId": "brand.magnolia_mob",
+      "StoreId": "store.magnolia_flagship",
+      "PriceCents": 6800,
+      "Colorways": [
+        "fab.black",
+        "fab.olive",
+        "fab.heather",
+        "fab.mustard"
+      ],
+      "Tags": [
+        "streetwear"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.zip_hoodie",
+      "DisplayName": "Zip Hoodie",
+      "Slot": "Outerwear",
+      "MeshKey": "cloth.zip_hoodie",
+      "BrandId": "brand.third_coast",
+      "StoreId": "store.southside_thrift",
+      "PriceCents": 4200,
+      "Colorways": [
+        "fab.heather",
+        "fab.navy",
+        "fab.black"
+      ],
+      "Tags": [
+        "basic"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.puffer",
+      "DisplayName": "Gulf Puffer Jacket",
+      "Slot": "Outerwear",
+      "MeshKey": "cloth.puffer",
+      "BrandId": "brand.third_coast",
+      "StoreId": "store.magnolia_flagship",
+      "PriceCents": 14500,
+      "Colorways": [
+        "fab.black",
+        "fab.orange",
+        "fab.olive"
+      ],
+      "Tags": [
+        "streetwear"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.denim_jacket",
+      "DisplayName": "Trucker Denim Jacket",
+      "Slot": "Outerwear",
+      "MeshKey": "cloth.denim_jacket",
+      "BrandId": "brand.bayou_thread",
+      "StoreId": "store.southside_thrift",
+      "PriceCents": 7800,
+      "Colorways": [
+        "fab.denim",
+        "fab.black"
+      ],
+      "Tags": [
+        "streetwear",
+        "workwear"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.varsity",
+      "DisplayName": "Southside Varsity Jacket",
+      "Slot": "Outerwear",
+      "MeshKey": "cloth.varsity",
+      "BrandId": "brand.magnolia_mob",
+      "StoreId": "store.magnolia_flagship",
+      "PriceCents": 16500,
+      "Colorways": [
+        "fab.burgundy",
+        "fab.navy",
+        "fab.black"
+      ],
+      "Tags": [
+        "streetwear"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.flannel",
+      "DisplayName": "Heavy Flannel Overshirt",
+      "Slot": "Outerwear",
+      "MeshKey": "cloth.flannel",
+      "BrandId": "brand.bayou_thread",
+      "StoreId": "store.southside_thrift",
+      "PriceCents": 4800,
+      "Colorways": [
+        "fab.red",
+        "fab.navy",
+        "fab.olive"
+      ],
+      "Tags": [
+        "workwear"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.windbreaker",
+      "DisplayName": "Track Windbreaker",
+      "Slot": "Outerwear",
+      "MeshKey": "cloth.windbreaker",
+      "BrandId": "brand.pecan_athletic",
+      "StoreId": "store.pecan_kicks",
+      "PriceCents": 5800,
+      "Colorways": [
+        "fab.purple",
+        "fab.royal",
+        "fab.black"
+      ],
+      "Tags": [
+        "sport"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.leather_jacket",
+      "DisplayName": "Moto Leather Jacket",
+      "Slot": "Outerwear",
+      "MeshKey": "cloth.leather_jacket",
+      "BrandId": "brand.bayou_thread",
+      "StoreId": "store.magnolia_flagship",
+      "PriceCents": 24000,
+      "Colorways": [
+        "fab.black",
+        "fab.tan"
+      ],
+      "Tags": [
+        "formal",
+        "streetwear"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.cargo_pants",
+      "DisplayName": "Bayou Ripstop Cargo Pants",
+      "Slot": "Bottoms",
+      "MeshKey": "cloth.cargo_pants",
+      "BrandId": "brand.bayou_thread",
+      "StoreId": "store.southside_thrift",
+      "PriceCents": 5400,
+      "Colorways": [
+        "fab.olive",
+        "fab.khaki",
+        "fab.black",
+        "fab.camo"
+      ],
+      "Tags": [
+        "streetwear",
+        "workwear"
+      ],
+      "StarterOwned": true,
+      "Description": null
+    },
+    {
+      "Id": "cloth.joggers",
+      "DisplayName": "Fleece Joggers",
+      "Slot": "Bottoms",
+      "MeshKey": "cloth.joggers",
+      "BrandId": "brand.third_coast",
+      "StoreId": "store.southside_thrift",
+      "PriceCents": 3200,
+      "Colorways": [
+        "fab.heather",
+        "fab.black",
+        "fab.navy"
+      ],
+      "Tags": [
+        "basic",
+        "gym"
+      ],
+      "StarterOwned": true,
+      "Description": null
+    },
+    {
+      "Id": "cloth.slim_jeans",
+      "DisplayName": "Slim Denim",
+      "Slot": "Bottoms",
+      "MeshKey": "cloth.slim_jeans",
+      "BrandId": "brand.bayou_thread",
+      "StoreId": "store.southside_thrift",
+      "PriceCents": 4800,
+      "Colorways": [
+        "fab.denim",
+        "fab.black"
+      ],
+      "Tags": [
+        "basic",
+        "streetwear"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.carpenter",
+      "DisplayName": "Double-Knee Carpenter Pants",
+      "Slot": "Bottoms",
+      "MeshKey": "cloth.carpenter",
+      "BrandId": "brand.bayou_thread",
+      "StoreId": "store.southside_thrift",
+      "PriceCents": 5800,
+      "Colorways": [
+        "fab.tan",
+        "fab.black",
+        "fab.cream"
+      ],
+      "Tags": [
+        "workwear"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.ball_shorts",
+      "DisplayName": "Mesh Ball Shorts",
+      "Slot": "Bottoms",
+      "MeshKey": "cloth.ball_shorts",
+      "BrandId": "brand.pecan_athletic",
+      "StoreId": "store.pecan_kicks",
+      "PriceCents": 2800,
+      "Colorways": [
+        "fab.royal",
+        "fab.black",
+        "fab.red",
+        "fab.white"
+      ],
+      "Tags": [
+        "sport",
+        "gym"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.fight_shorts",
+      "DisplayName": "Scrap Gym Fight Shorts",
+      "Slot": "Bottoms",
+      "MeshKey": "cloth.fight_shorts",
+      "BrandId": "brand.scrap_gym",
+      "StoreId": "store.scrap_gym",
+      "PriceCents": 4200,
+      "Colorways": [
+        "fab.black",
+        "fab.red",
+        "fab.gold",
+        "fab.royal"
+      ],
+      "Tags": [
+        "gym"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.slacks",
+      "DisplayName": "Pleated Slacks",
+      "Slot": "Bottoms",
+      "MeshKey": "cloth.slacks",
+      "BrandId": "brand.third_coast",
+      "StoreId": "store.southside_thrift",
+      "PriceCents": 4500,
+      "Colorways": [
+        "fab.black",
+        "fab.navy",
+        "fab.khaki"
+      ],
+      "Tags": [
+        "formal"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.court_hightop",
+      "DisplayName": "Pecan \"Court 84\" High-Top",
+      "Slot": "Shoes",
+      "MeshKey": "cloth.court_hightop",
+      "BrandId": "brand.pecan_athletic",
+      "StoreId": "store.pecan_kicks",
+      "PriceCents": 11000,
+      "Colorways": [
+        "fab.white",
+        "fab.black",
+        "fab.red",
+        "fab.royal"
+      ],
+      "Tags": [
+        "streetwear",
+        "sport"
+      ],
+      "StarterOwned": true,
+      "Description": "Original Pecan Athletic design: perforated toe box, pecan-leaf ankle patch. No real-brand marks."
+    },
+    {
+      "Id": "cloth.runner",
+      "DisplayName": "Pecan Gulf Runner",
+      "Slot": "Shoes",
+      "MeshKey": "cloth.runner",
+      "BrandId": "brand.pecan_athletic",
+      "StoreId": "store.pecan_kicks",
+      "PriceCents": 8500,
+      "Colorways": [
+        "fab.heather",
+        "fab.black",
+        "fab.orange"
+      ],
+      "Tags": [
+        "sport",
+        "basic"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.work_boots",
+      "DisplayName": "Bayou Work Boots",
+      "Slot": "Shoes",
+      "MeshKey": "cloth.work_boots",
+      "BrandId": "brand.bayou_thread",
+      "StoreId": "store.southside_thrift",
+      "PriceCents": 9500,
+      "Colorways": [
+        "fab.tan",
+        "fab.black"
+      ],
+      "Tags": [
+        "workwear"
+      ],
+      "StarterOwned": true,
+      "Description": null
+    },
+    {
+      "Id": "cloth.slides",
+      "DisplayName": "Pool Slides",
+      "Slot": "Shoes",
+      "MeshKey": "cloth.slides",
+      "BrandId": "brand.third_coast",
+      "StoreId": "store.southside_thrift",
+      "PriceCents": 1500,
+      "Colorways": [
+        "fab.black",
+        "fab.white"
+      ],
+      "Tags": [
+        "basic"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.skate_low",
+      "DisplayName": "Canvas Skate Low",
+      "Slot": "Shoes",
+      "MeshKey": "cloth.skate_low",
+      "BrandId": "brand.third_coast",
+      "StoreId": "store.southside_thrift",
+      "PriceCents": 4500,
+      "Colorways": [
+        "fab.black",
+        "fab.navy",
+        "fab.cream"
+      ],
+      "Tags": [
+        "streetwear",
+        "basic"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.fight_shoes",
+      "DisplayName": "Scrap Gym Ring Shoes",
+      "Slot": "Shoes",
+      "MeshKey": "cloth.fight_shoes",
+      "BrandId": "brand.scrap_gym",
+      "StoreId": "store.scrap_gym",
+      "PriceCents": 9800,
+      "Colorways": [
+        "fab.black",
+        "fab.red",
+        "fab.white"
+      ],
+      "Tags": [
+        "gym"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.dress_shoes",
+      "DisplayName": "Sunday Loafers",
+      "Slot": "Shoes",
+      "MeshKey": "cloth.dress_shoes",
+      "BrandId": "brand.third_coast",
+      "StoreId": "store.southside_thrift",
+      "PriceCents": 7200,
+      "Colorways": [
+        "fab.black",
+        "fab.tan"
+      ],
+      "Tags": [
+        "formal"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.layered_chains",
+      "DisplayName": "Layered Chains (Cuban + Rope)",
+      "Slot": "Neck",
+      "MeshKey": "cloth.layered_chains",
+      "BrandId": "brand.gulf_gold",
+      "StoreId": "store.gulf_gold",
+      "PriceCents": 18000,
+      "Colorways": [
+        "fab.gold",
+        "fab.silver"
+      ],
+      "Tags": [
+        "streetwear"
+      ],
+      "StarterOwned": true,
+      "Description": null
+    },
+    {
+      "Id": "cloth.cuban_link",
+      "DisplayName": "Cuban Link",
+      "Slot": "Neck",
+      "MeshKey": "cloth.cuban_link",
+      "BrandId": "brand.gulf_gold",
+      "StoreId": "store.gulf_gold",
+      "PriceCents": 25000,
+      "Colorways": [
+        "fab.gold",
+        "fab.silver"
+      ],
+      "Tags": [
+        "streetwear"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.rope_chain",
+      "DisplayName": "Rope Chain",
+      "Slot": "Neck",
+      "MeshKey": "cloth.rope_chain",
+      "BrandId": "brand.gulf_gold",
+      "StoreId": "store.gulf_gold",
+      "PriceCents": 12000,
+      "Colorways": [
+        "fab.gold",
+        "fab.silver"
+      ],
+      "Tags": [
+        "streetwear",
+        "basic"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.magnolia_pendant",
+      "DisplayName": "Magnolia Pendant",
+      "Slot": "Neck",
+      "MeshKey": "cloth.magnolia_pendant",
+      "BrandId": "brand.gulf_gold",
+      "StoreId": "store.gulf_gold",
+      "PriceCents": 32000,
+      "Colorways": [
+        "fab.gold",
+        "fab.silver"
+      ],
+      "Tags": [
+        "streetwear"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.gold_watch",
+      "DisplayName": "Gulf Gold Watch",
+      "Slot": "Wrist",
+      "MeshKey": "cloth.gold_watch",
+      "BrandId": "brand.gulf_gold",
+      "StoreId": "store.gulf_gold",
+      "PriceCents": 45000,
+      "Colorways": [
+        "fab.gold",
+        "fab.silver"
+      ],
+      "Tags": [
+        "formal",
+        "streetwear"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.rubber_bands",
+      "DisplayName": "Rubber Wristbands",
+      "Slot": "Wrist",
+      "MeshKey": "cloth.rubber_bands",
+      "BrandId": "brand.third_coast",
+      "StoreId": "store.southside_thrift",
+      "PriceCents": 500,
+      "Colorways": [
+        "fab.black",
+        "fab.red",
+        "fab.royal"
+      ],
+      "Tags": [
+        "basic"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.hand_wraps",
+      "DisplayName": "Hand Wraps",
+      "Slot": "Wrist",
+      "MeshKey": "cloth.hand_wraps",
+      "BrandId": "brand.scrap_gym",
+      "StoreId": "store.scrap_gym",
+      "PriceCents": 1200,
+      "Colorways": [
+        "fab.white",
+        "fab.black",
+        "fab.red"
+      ],
+      "Tags": [
+        "gym"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.square_shades",
+      "DisplayName": "Square Shades",
+      "Slot": "Eyewear",
+      "MeshKey": "cloth.square_shades",
+      "BrandId": "brand.third_coast",
+      "StoreId": "store.magnolia_flagship",
+      "PriceCents": 2200,
+      "Colorways": [
+        "fab.black",
+        "fab.tan"
+      ],
+      "Tags": [
+        "streetwear"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.round_shades",
+      "DisplayName": "Round Wire Shades",
+      "Slot": "Eyewear",
+      "MeshKey": "cloth.round_shades",
+      "BrandId": "brand.gulf_gold",
+      "StoreId": "store.gulf_gold",
+      "PriceCents": 5200,
+      "Colorways": [
+        "fab.gold",
+        "fab.silver"
+      ],
+      "Tags": [
+        "streetwear",
+        "formal"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    },
+    {
+      "Id": "cloth.clear_frames",
+      "DisplayName": "Clear Frames",
+      "Slot": "Eyewear",
+      "MeshKey": "cloth.clear_frames",
+      "BrandId": "brand.third_coast",
+      "StoreId": "store.southside_thrift",
+      "PriceCents": 3000,
+      "Colorways": [
+        "fab.black",
+        "fab.cream"
+      ],
+      "Tags": [
+        "formal",
+        "basic"
+      ],
+      "StarterOwned": false,
+      "Description": null
+    }
+  ],
+  "Looks": {
+    "look.player.default": {
+      "Body": {
+        "HeightCm": 185,
+        "Weight": 0.45,
+        "Muscle": 0.8,
+        "ShoulderWidth": 0.75,
+        "HipWidth": 0.45,
+        "ArmLength": 0.5,
+        "LegLength": 0.5
+      },
+      "SkinTone": "skin.04",
+      "FacePreset": "facepreset.square",
+      "Face": {
+        "face.cheekbones": 0.3
+      },
+      "EyeColor": "eye.dark_brown",
+      "Hair": "hair.shoulder_dreads",
+      "HairColor": "haircol.black",
+      "FacialHair": "facial.goatee",
+      "Outfit": {
+        "Head": {
+          "ItemId": "cloth.knit_beanie",
+          "Colorway": "fab.black"
+        },
+        "Top": {
+          "ItemId": "cloth.graphic_tee",
+          "Colorway": "fab.black"
+        },
+        "Bottoms": {
+          "ItemId": "cloth.cargo_pants",
+          "Colorway": "fab.olive"
+        },
+        "Shoes": {
+          "ItemId": "cloth.court_hightop",
+          "Colorway": "fab.white"
+        },
+        "Neck": {
+          "ItemId": "cloth.layered_chains",
+          "Colorway": "fab.gold"
+        }
+      }
+    },
+    "look.dre": {
+      "Body": {
+        "HeightCm": 176,
+        "Weight": 0.35,
+        "Muscle": 0.45,
+        "ShoulderWidth": 0.5,
+        "HipWidth": 0.5,
+        "ArmLength": 0.5,
+        "LegLength": 0.5
+      },
+      "SkinTone": "skin.06",
+      "FacePreset": "facepreset.youthful",
+      "Face": {},
+      "EyeColor": "eye.hazel",
+      "Hair": "hair.high_top",
+      "HairColor": "haircol.blonde_tips",
+      "FacialHair": null,
+      "Outfit": {
+        "Top": {
+          "ItemId": "cloth.jersey",
+          "Colorway": "fab.royal"
+        },
+        "Bottoms": {
+          "ItemId": "cloth.ball_shorts",
+          "Colorway": "fab.royal"
+        },
+        "Shoes": {
+          "ItemId": "cloth.court_hightop",
+          "Colorway": "fab.royal"
+        },
+        "Wrist": {
+          "ItemId": "cloth.rubber_bands",
+          "Colorway": "fab.royal"
+        }
+      }
+    },
+    "look.rell": {
+      "Body": {
+        "HeightCm": 181,
+        "Weight": 0.3,
+        "Muscle": 0.65,
+        "ShoulderWidth": 0.55,
+        "HipWidth": 0.5,
+        "ArmLength": 0.5,
+        "LegLength": 0.5
+      },
+      "SkinTone": "skin.02",
+      "FacePreset": "facepreset.angular",
+      "Face": {},
+      "EyeColor": "eye.dark_brown",
+      "Hair": "hair.waves",
+      "HairColor": "haircol.black",
+      "FacialHair": "facial.short_beard",
+      "Outfit": {
+        "Head": {
+          "ItemId": "cloth.durag",
+          "Colorway": "fab.black"
+        },
+        "Top": {
+          "ItemId": "cloth.plain_tee",
+          "Colorway": "fab.white"
+        },
+        "Bottoms": {
+          "ItemId": "cloth.slim_jeans",
+          "Colorway": "fab.black"
+        },
+        "Shoes": {
+          "ItemId": "cloth.skate_low",
+          "Colorway": "fab.black"
+        },
+        "Neck": {
+          "ItemId": "cloth.rope_chain",
+          "Colorway": "fab.silver"
+        }
+      }
+    },
+    "look.brick": {
+      "Body": {
+        "HeightCm": 196,
+        "Weight": 0.85,
+        "Muscle": 0.75,
+        "ShoulderWidth": 0.95,
+        "HipWidth": 0.7,
+        "ArmLength": 0.5,
+        "LegLength": 0.5
+      },
+      "SkinTone": "skin.03",
+      "FacePreset": "facepreset.broad",
+      "Face": {},
+      "EyeColor": "eye.brown",
+      "Hair": "hair.bald",
+      "HairColor": "haircol.black",
+      "FacialHair": "facial.full_beard",
+      "Outfit": {
+        "Top": {
+          "ItemId": "cloth.thermal",
+          "Colorway": "fab.heather"
+        },
+        "Outerwear": {
+          "ItemId": "cloth.flannel",
+          "Colorway": "fab.red"
+        },
+        "Bottoms": {
+          "ItemId": "cloth.carpenter",
+          "Colorway": "fab.tan"
+        },
+        "Shoes": {
+          "ItemId": "cloth.work_boots",
+          "Colorway": "fab.tan"
+        }
+      }
+    },
+    "look.grandma": {
+      "Body": {
+        "HeightCm": 160,
+        "Weight": 0.55,
+        "Muscle": 0.15,
+        "ShoulderWidth": 0.35,
+        "HipWidth": 0.6,
+        "ArmLength": 0.5,
+        "LegLength": 0.5
+      },
+      "SkinTone": "skin.05",
+      "FacePreset": "facepreset.round",
+      "Face": {},
+      "EyeColor": "eye.brown",
+      "Hair": "hair.bun_wrap",
+      "HairColor": "haircol.grey",
+      "FacialHair": null,
+      "Outfit": {
+        "Top": {
+          "ItemId": "cloth.button_down",
+          "Colorway": "fab.pink"
+        },
+        "Bottoms": {
+          "ItemId": "cloth.slacks",
+          "Colorway": "fab.navy"
+        },
+        "Shoes": {
+          "ItemId": "cloth.dress_shoes",
+          "Colorway": "fab.black"
+        },
+        "Eyewear": {
+          "ItemId": "cloth.clear_frames",
+          "Colorway": "fab.cream"
+        }
+      }
+    },
+    "look.lou": {
+      "Body": {
+        "HeightCm": 172,
+        "Weight": 0.7,
+        "Muscle": 0.3,
+        "ShoulderWidth": 0.5,
+        "HipWidth": 0.5,
+        "ArmLength": 0.5,
+        "LegLength": 0.5
+      },
+      "SkinTone": "skin.08",
+      "FacePreset": "facepreset.long",
+      "Face": {},
+      "EyeColor": "eye.green",
+      "Hair": "hair.grey_short",
+      "HairColor": "haircol.grey",
+      "FacialHair": "facial.mustache",
+      "Outfit": {
+        "Head": {
+          "ItemId": "cloth.fitted_cap",
+          "Colorway": "fab.navy"
+        },
+        "Top": {
+          "ItemId": "cloth.polo",
+          "Colorway": "fab.navy"
+        },
+        "Bottoms": {
+          "ItemId": "cloth.carpenter",
+          "Colorway": "fab.black"
+        },
+        "Shoes": {
+          "ItemId": "cloth.work_boots",
+          "Colorway": "fab.black"
+        }
+      }
+    },
+    "look.tone": {
+      "Body": {
+        "HeightCm": 183,
+        "Weight": 0.4,
+        "Muscle": 0.5,
+        "ShoulderWidth": 0.5,
+        "HipWidth": 0.5,
+        "ArmLength": 0.5,
+        "LegLength": 0.5
+      },
+      "SkinTone": "skin.01",
+      "FacePreset": "facepreset.oval",
+      "Face": {},
+      "EyeColor": "eye.dark_brown",
+      "Hair": "hair.cornrows",
+      "HairColor": "haircol.black",
+      "FacialHair": "facial.chin_strap",
+      "Outfit": {
+        "Top": {
+          "ItemId": "cloth.plain_tee",
+          "Colorway": "fab.black"
+        },
+        "Outerwear": {
+          "ItemId": "cloth.puffer",
+          "Colorway": "fab.orange"
+        },
+        "Bottoms": {
+          "ItemId": "cloth.joggers",
+          "Colorway": "fab.black"
+        },
+        "Shoes": {
+          "ItemId": "cloth.runner",
+          "Colorway": "fab.black"
+        },
+        "Neck": {
+          "ItemId": "cloth.cuban_link",
+          "Colorway": "fab.gold"
+        }
+      }
+    },
+    "look.big_reece": {
+      "Body": {
+        "HeightCm": 190,
+        "Weight": 0.95,
+        "Muscle": 0.4,
+        "ShoulderWidth": 0.8,
+        "HipWidth": 0.8,
+        "ArmLength": 0.5,
+        "LegLength": 0.5
+      },
+      "SkinTone": "skin.04",
+      "FacePreset": "facepreset.round",
+      "Face": {},
+      "EyeColor": "eye.brown",
+      "Hair": "hair.twists",
+      "HairColor": "haircol.dark_brown",
+      "FacialHair": "facial.full_beard",
+      "Outfit": {
+        "Top": {
+          "ItemId": "cloth.graphic_tee",
+          "Colorway": "fab.white"
+        },
+        "Outerwear": {
+          "ItemId": "cloth.varsity",
+          "Colorway": "fab.burgundy"
+        },
+        "Bottoms": {
+          "ItemId": "cloth.slim_jeans",
+          "Colorway": "fab.denim"
+        },
+        "Shoes": {
+          "ItemId": "cloth.court_hightop",
+          "Colorway": "fab.black"
+        },
+        "Neck": {
+          "ItemId": "cloth.magnolia_pendant",
+          "Colorway": "fab.gold"
+        },
+        "Wrist": {
+          "ItemId": "cloth.gold_watch",
+          "Colorway": "fab.gold"
+        }
+      }
+    },
+    "look.nia": {
+      "Body": {
+        "HeightCm": 168,
+        "Weight": 0.3,
+        "Muscle": 0.45,
+        "ShoulderWidth": 0.4,
+        "HipWidth": 0.6,
+        "ArmLength": 0.5,
+        "LegLength": 0.5
+      },
+      "SkinTone": "skin.07",
+      "FacePreset": "facepreset.heart",
+      "Face": {},
+      "EyeColor": "eye.brown",
+      "Hair": "hair.braids_pony",
+      "HairColor": "haircol.auburn",
+      "FacialHair": null,
+      "Outfit": {
+        "Head": {
+          "ItemId": "cloth.snapback",
+          "Colorway": "fab.black"
+        },
+        "Top": {
+          "ItemId": "cloth.ribbed_tank",
+          "Colorway": "fab.white"
+        },
+        "Outerwear": {
+          "ItemId": "cloth.windbreaker",
+          "Colorway": "fab.purple"
+        },
+        "Bottoms": {
+          "ItemId": "cloth.cargo_pants",
+          "Colorway": "fab.black"
+        },
+        "Shoes": {
+          "ItemId": "cloth.runner",
+          "Colorway": "fab.orange"
+        },
+        "Eyewear": {
+          "ItemId": "cloth.square_shades",
+          "Colorway": "fab.black"
+        }
+      }
+    },
+    "look.marlo": {
+      "Body": {
+        "HeightCm": 179,
+        "Weight": 0.5,
+        "Muscle": 0.55,
+        "ShoulderWidth": 0.5,
+        "HipWidth": 0.5,
+        "ArmLength": 0.5,
+        "LegLength": 0.5
+      },
+      "SkinTone": "skin.09",
+      "FacePreset": "facepreset.angular",
+      "Face": {},
+      "EyeColor": "eye.grey",
+      "Hair": "hair.slick_back",
+      "HairColor": "haircol.brown",
+      "FacialHair": "facial.stubble",
+      "Outfit": {
+        "Top": {
+          "ItemId": "cloth.button_down",
+          "Colorway": "fab.white"
+        },
+        "Outerwear": {
+          "ItemId": "cloth.leather_jacket",
+          "Colorway": "fab.black"
+        },
+        "Bottoms": {
+          "ItemId": "cloth.slacks",
+          "Colorway": "fab.black"
+        },
+        "Shoes": {
+          "ItemId": "cloth.dress_shoes",
+          "Colorway": "fab.black"
+        },
+        "Wrist": {
+          "ItemId": "cloth.gold_watch",
+          "Colorway": "fab.silver"
+        },
+        "Eyewear": {
+          "ItemId": "cloth.round_shades",
+          "Colorway": "fab.gold"
+        }
+      }
+    },
+    "look.deuce": {
+      "Body": {
+        "HeightCm": 174,
+        "Weight": 0.25,
+        "Muscle": 0.55,
+        "ShoulderWidth": 0.5,
+        "HipWidth": 0.5,
+        "ArmLength": 0.5,
+        "LegLength": 0.5
+      },
+      "SkinTone": "skin.05",
+      "FacePreset": "facepreset.oval",
+      "Face": {},
+      "EyeColor": "eye.hazel",
+      "Hair": "hair.curly_top",
+      "HairColor": "haircol.teal_dye",
+      "FacialHair": null,
+      "Outfit": {
+        "Head": {
+          "ItemId": "cloth.bucket_hat",
+          "Colorway": "fab.camo"
+        },
+        "Top": {
+          "ItemId": "cloth.plain_tee",
+          "Colorway": "fab.olive"
+        },
+        "Outerwear": {
+          "ItemId": "cloth.denim_jacket",
+          "Colorway": "fab.denim"
+        },
+        "Bottoms": {
+          "ItemId": "cloth.carpenter",
+          "Colorway": "fab.cream"
+        },
+        "Shoes": {
+          "ItemId": "cloth.skate_low",
+          "Colorway": "fab.cream"
+        }
+      }
+    }
+  }
+}
