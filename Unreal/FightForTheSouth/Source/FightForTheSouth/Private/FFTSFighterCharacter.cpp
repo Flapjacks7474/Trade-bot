@@ -8,6 +8,7 @@
 #include "Engine/StaticMesh.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
+#include "Misc/Paths.h"
 #include "UObject/ConstructorHelpers.h"
 
 AFFTSFighterCharacter::AFFTSFighterCharacter()
@@ -33,12 +34,29 @@ AFFTSFighterCharacter::AFFTSFighterCharacter()
 	}
 }
 
+static USkeletalMesh* LoadMesh(const FString& Path)
+{
+	const FString Name = FPaths::GetBaseFilename(Path);
+	const FString Full = Path.Contains(TEXT(".")) ? Path : Path + TEXT(".") + Name;
+	return LoadObject<USkeletalMesh>(nullptr, *Full, nullptr, LOAD_NoWarn | LOAD_Quiet);
+}
+
 void AFFTSFighterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	if (USkeletalMesh* RigMesh = LoadObject<USkeletalMesh>(nullptr, *SkeletalMeshPath))
+	USkeletalMesh* Body = nullptr;
+	if (bPreferManny)
 	{
-		GetMesh()->SetSkeletalMesh(RigMesh);
+		// Manny only when the retargeted clips are there too (the street idle is the last-resort fallback clip).
+		const bool bClips = LoadObject<UAnimSequence>(nullptr, *(MannyAnimFolder + TEXT("/anim_street_stance_idle.anim_street_stance_idle")), nullptr, LOAD_NoWarn | LOAD_Quiet) != nullptr;
+		for (const FString& P : MannyMeshPaths)
+			if (bClips && (Body = LoadMesh(P)) != nullptr) break;
+		if (Body) { bIsManny = true; AnimFolder = MannyAnimFolder; }
+	}
+	if (!Body) Body = LoadMesh(SkeletalMeshPath);
+	if (Body)
+	{
+		GetMesh()->SetSkeletalMesh(Body);
 		GetMesh()->SetRelativeRotation(FRotator(0, MeshYawOffset, 0));
 		GetMesh()->SetAnimationMode(EAnimationMode::AnimationSingleNode);
 		bHasRig = true;
@@ -94,10 +112,23 @@ void AFFTSFighterCharacter::SetTint(const FLinearColor& Color)
 	if (!TintBase) TintBase = LoadObject<UMaterialInterface>(nullptr, TEXT("/Game/FFTS/Materials/M_FFTSTint.M_FFTSTint"), nullptr, LOAD_NoWarn | LOAD_Quiet);
 	if (!TintBase) TintBase = LoadObject<UMaterialInterface>(nullptr, TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
 	UMeshComponent* Body = bHasRig ? static_cast<UMeshComponent*>(GetMesh()) : static_cast<UMeshComponent*>(FallbackBody);
-	if (!Body || !TintBase) return;
+	if (!Body) return;
 	for (int32 i = 0; i < Body->GetNumMaterials(); ++i)
 	{
-		UMaterialInstanceDynamic* MID = UMaterialInstanceDynamic::Create(TintBase, this);
+		// Manny keeps its own materials when they expose a tint; anything else gets the flat FFTS tint material.
+		UMaterialInterface* Parent = nullptr;
+		if (bIsManny)
+		{
+			UMaterialInterface* Own = Body->GetMaterial(i);
+			FLinearColor Unused;
+			if (Own && (Own->GetVectorParameterValue(FHashedMaterialParameterInfo(TEXT("Tint")), Unused)
+				|| Own->GetVectorParameterValue(FHashedMaterialParameterInfo(TEXT("BaseColor")), Unused)
+				|| Own->GetVectorParameterValue(FHashedMaterialParameterInfo(TEXT("Color")), Unused)))
+				Parent = Own;
+		}
+		if (!Parent) Parent = TintBase;
+		if (!Parent) continue;
+		UMaterialInstanceDynamic* MID = UMaterialInstanceDynamic::Create(Parent, this);
 		Body->SetMaterial(i, MID);
 		BodyMaterials.Add(MID);
 	}
@@ -107,7 +138,12 @@ void AFFTSFighterCharacter::SetTint(const FLinearColor& Color)
 void AFFTSFighterCharacter::ApplyBodyColor(const FLinearColor& Color)
 {
 	for (UMaterialInstanceDynamic* MID : BodyMaterials)
-		if (MID) MID->SetVectorParameterValue(TEXT("Color"), Color);
+		if (MID)
+		{
+			MID->SetVectorParameterValue(TEXT("Color"), Color);
+			MID->SetVectorParameterValue(TEXT("Tint"), Color);
+			MID->SetVectorParameterValue(TEXT("BaseColor"), Color);
+		}
 }
 
 void AFFTSFighterCharacter::Flash()

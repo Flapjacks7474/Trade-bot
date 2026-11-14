@@ -21,3 +21,14 @@ The main build going forward. The Unity project (`Assets/`) and the browser vers
 ## Status (2026-11-11)
 - FFTSCore: **13/13 tests pass** with g++ 13 and clang (warnings as errors). Balance round robin matches the JS port within ±0.03.
 - Unreal module: written against UE 5.x APIs; **not yet compiled** — the PC had no Visual Studio. Expect a first round of compile fixes.
+
+## Manny (realistic body)
+
+After `ffts_import_fight_rig.py`, run `Content/Python/ffts_retarget_manny.py` (console: `py "<path>"`). It copies the UE5
+Mannequin from the Game Animation Sample project on the PC (`Documents/Unreal Projects/GameAnimationSample`), builds
+`IK_FightRig`, `IK_FFTS_Manny` and `RTG_FightRig_to_Manny` in `/Game/FFTS/Retarget`, and retargets all clips into
+`/Game/FFTS/AnimManny`. `AFFTSFighterCharacter` uses Manny automatically when those clips exist (`bPreferManny`).
+
+Known limit: the Blender rig stores bone translations in metres under a 100x armature scale, so the retargeter keeps
+rotations only (pelvis translation, IK and root-motion ops are off). Hip height changes in crouches/kicks are lost until
+the rig is re-exported at 1.0 scale in centimetres. `ffts_retarget_inspect.py` dumps the chain mapping and bone poses.

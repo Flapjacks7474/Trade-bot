@@ -37,6 +37,21 @@ public:
 	UPROPERTY(EditAnywhere, Category = "FFTS")
 	FString AnimFolder = TEXT("/Game/FFTS/Anim");
 
+	/** Unreal's Manny, used instead of the fight rig once Content/Python/ffts_retarget_manny.py has retargeted the clips. */
+	UPROPERTY(EditAnywhere, Category = "FFTS")
+	bool bPreferManny = true;
+
+	UPROPERTY(EditAnywhere, Category = "FFTS")
+	TArray<FString> MannyMeshPaths = {
+		TEXT("/Game/Characters/UE5_Mannequins/Meshes/SKM_Manny"),
+		TEXT("/Game/Characters/Mannequins/Meshes/SKM_Manny"),
+		TEXT("/Game/Characters/Mannequins/Meshes/SKM_Manny_Simple"),
+		TEXT("/Game/Characters/UEFN_Mannequin/Meshes/SKM_Manny"),
+		TEXT("/Game/Characters/UEFN_Mannequin/Meshes/SKM_UEFN_Mannequin") };
+
+	UPROPERTY(EditAnywhere, Category = "FFTS")
+	FString MannyAnimFolder = TEXT("/Game/FFTS/AnimManny");
+
 	/** Yaw that makes the imported mesh face +X (Blender exports face -Y). */
 	UPROPERTY(EditAnywhere, Category = "FFTS")
 	float MeshYawOffset = -90.f;
@@ -46,6 +61,7 @@ public:
 
 	FString CurrentClip() const { return CurrentKey; }
 	bool HasRig() const { return bHasRig; }
+	bool IsManny() const { return bIsManny; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -61,5 +77,6 @@ private:
 	UPROPERTY() TArray<TObjectPtr<UMaterialInstanceDynamic>> BodyMaterials;
 	FLinearColor TintColor = FLinearColor::White;
 	bool bHasRig = false;
+	bool bIsManny = false;
 	float FlashTime = 0.f;
 };
