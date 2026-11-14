@@ -29,6 +29,10 @@ Mannequin from the Game Animation Sample project on the PC (`Documents/Unreal Pr
 `IK_FightRig`, `IK_FFTS_Manny` and `RTG_FightRig_to_Manny` in `/Game/FFTS/Retarget`, and retargets all clips into
 `/Game/FFTS/AnimManny`. `AFFTSFighterCharacter` uses Manny automatically when those clips exist (`bPreferManny`).
 
-Known limit: the Blender rig stores bone translations in metres under a 100x armature scale, so the retargeter keeps
-rotations only (pelvis translation, IK and root-motion ops are off). Hip height changes in crouches/kicks are lost until
-the rig is re-exported at 1.0 scale in centimetres. `ffts_retarget_inspect.py` dumps the chain mapping and bone poses.
+Full-scale rebuild (one console command): `Content/Python/ffts_rebuild_cm.py` runs Blender headless on
+`blend/10_fight_rig.blend` with `Tools/Blender/ffts_export_unreal.py` (copied to `FightForTheSouth_Art/tools/` on the PC),
+which switches the scene to centimetres, applies the x100 scale to the armature and body, multiplies every location key by
+100 and writes `export/FFTS_FightRig_UE.fbx`. It then deletes and rebuilds `/Game/FFTS/Characters`, `Anim`, `Retarget`
+and `AnimManny`. With the rig in centimetres the retargeter keeps all its ops (pelvis height, IK, root motion); with the
+old metre-scaled export `ffts_retarget_manny.py` falls back to rotations only. `ffts_retarget_inspect.py` dumps the chain
+mapping and bone poses.

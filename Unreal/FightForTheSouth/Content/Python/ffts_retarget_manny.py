@@ -118,6 +118,17 @@ def _call(rc, name, *args):
     except Exception as e:
         return "error: %s" % e
 
+def source_in_metres():
+    """True for the old export (bone translations in metres under a 100x armature scale)."""
+    anim = unreal.load_asset(SRC_ANIM + "/anim_street_stance_idle") or unreal.load_asset(SRC_ANIM + "/anim_street_jab")
+    try:
+        z = abs(unreal.AnimationLibrary.get_bone_pose_for_frame(anim, "Hips", 0, False).translation.z)
+    except Exception as e:
+        log("hips height check failed: %s" % e)
+        return True
+    log("source Hips height %.3f" % z)
+    return z < 10.0
+
 def tame_translation_ops(rc):
     """The Blender rig stores bone translations in metres under a 100x armature scale, which the pelvis-motion, IK and
     root-motion ops turn into an 80 m pelvis offset. Keep rotations only: pelvis rotation, FK chains, curves."""
@@ -181,7 +192,12 @@ def make_retargeter(src_rig, tgt_rig, src_mesh, tgt_mesh):
     log("chains still unmapped on Manny: %s" % unmapped)
     for side in (T,):
         log("auto_align_all_bones: %s" % _call(rc, "auto_align_all_bones", side))
-    tame_translation_ops(rc)
+    if source_in_metres():
+        tame_translation_ops(rc)
+    else:
+        for i in range(rc.get_num_retarget_ops()):
+            _call(rc, "set_retarget_op_enabled", i, True)
+        log("source rig is in centimetres: all retarget ops on (pelvis height, IK, root motion)")
     assets.save_asset(RIG_DIR + "/RTG_FightRig_to_Manny")
     return rtg
 

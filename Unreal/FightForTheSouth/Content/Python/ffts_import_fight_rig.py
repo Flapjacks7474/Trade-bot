@@ -12,7 +12,10 @@ import unreal
 PROJECT = unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir())
 # The Blender export: <Project>/Import/FFTS_FightRig.fbx, or the art workspace's export folder when the project sits
 # in Documents\FightForTheSouth_Art\Unreal\FightForTheSouth (the setup on the owner's PC).
-FBX_CANDIDATES = [os.path.join(PROJECT, "Import", "FFTS_FightRig.fbx"),
+# FFTS_FightRig_UE.fbx (Tools/Blender/ffts_export_unreal.py, centimetres at scale 1) is preferred over the shared export.
+FBX_CANDIDATES = [os.path.join(PROJECT, "Import", "FFTS_FightRig_UE.fbx"),
+                  os.path.normpath(os.path.join(PROJECT, "..", "..", "export", "FFTS_FightRig_UE.fbx")),
+                  os.path.join(PROJECT, "Import", "FFTS_FightRig.fbx"),
                   os.path.normpath(os.path.join(PROJECT, "..", "..", "export", "FFTS_FightRig.fbx"))]
 FBX = next((p for p in FBX_CANDIDATES if os.path.exists(p)), FBX_CANDIDATES[0])
 CHAR_DIR = "/Game/FFTS/Characters"
@@ -29,6 +32,7 @@ assets = unreal.EditorAssetLibrary
 tools = unreal.AssetToolsHelpers.get_asset_tools()
 
 def import_rig():
+    log("FBX: " + FBX)
     if not os.path.exists(FBX):
         log("MISSING " + FBX)
         return False
