@@ -4,6 +4,7 @@
 #include "Engine/World.h"
 #include "FFTSFighterCharacter.h"
 #include "FFTSGameSubsystem.h"
+#include "FFTSPlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -136,9 +137,16 @@ void AFFTSFightDirector::StepOnce()
 
 void AFFTSFightDirector::HandleEvents()
 {
+	AFFTSPlayerController* PC = Cast<AFFTSPlayerController>(UGameplayStatics::GetPlayerController(this, 0));
+	auto Rumble = [PC](float Intensity, float Duration, bool bHeavy) { if (PC) PC->Rumble(Intensity, Duration, bHeavy); };
 	for (const CombatEvent& E : Simulation->events)
 	{
 		const bool ByPlayer = E.actor == Simulation->A->id;
+		// Controller feedback: getting hit is heavy, landing a hit is a light buzz.
+		if (E.type == "Hit") Rumble(ByPlayer ? 0.35f : 0.75f, ByPlayer ? 0.10f : 0.22f, !ByPlayer);
+		else if (E.type == "Blocked") Rumble(0.25f, 0.08f, false);
+		else if (E.type == "GuardBreak" || E.type == "Thrown") Rumble(0.9f, 0.3f, true);
+		else if (E.type == "Defeated") Rumble(1.f, 0.5f, true);
 		const FString Who = ByPlayer ? TEXT("You") : OpponentName();
 		const FString Move = UFFTSGameSubsystem::FromStd(E.moveId);
 		auto MoveName = [&]() -> FString

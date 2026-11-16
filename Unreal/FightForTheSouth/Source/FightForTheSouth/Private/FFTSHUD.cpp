@@ -4,6 +4,7 @@
 #include "Engine/Engine.h"
 #include "EngineUtils.h"
 #include "FFTSFightDirector.h"
+#include "FFTSPlayerController.h"
 
 void AFFTSHUD::Bar(float X, float Y, float W, float H, float Fraction, const FLinearColor& Color, bool bRightToLeft)
 {
@@ -30,6 +31,8 @@ void AFFTSHUD::DrawHUD()
 	for (TActorIterator<AFFTSFightDirector> It(GetWorld()); It; ++It) { D = *It; break; }
 	const float W = Canvas->SizeX, H = Canvas->SizeY;
 	if (!D) { Text(TEXT("No fight director in this level."), 40, 40, FLinearColor::Red); return; }
+	const AFFTSPlayerController* FPC = Cast<AFFTSPlayerController>(GetOwningPlayerController());
+	const bool bPad = FPC && FPC->UsingGamepad();
 	const FString Status = D->ContentStatus();
 	if (!Status.IsEmpty()) Text(Status, 40, H - 80, FLinearColor::Red, 1.2f);
 	const ffts::CombatSimulation* Sim = D->Sim();
@@ -59,9 +62,11 @@ void AFFTSHUD::DrawHUD()
 		const bool Won = Sim->result.winnerId == A.id;
 		const FString Banner = Sim->result.method == "Draw" ? TEXT("DRAW") : (Won ? TEXT("YOU WIN") : TEXT("YOU LOSE"));
 		Text(Banner, W * 0.5f - 90, H * 0.35f, Won ? FLinearColor(1.f, 0.85f, 0.2f) : FLinearColor(0.9f, 0.2f, 0.2f), 3.f);
-		Text(TEXT("R rematch    N next opponent"), W * 0.5f - 130, H * 0.35f + 70, FLinearColor::White, 1.1f);
+		Text(bPad ? TEXT("Menu rematch    View next opponent") : TEXT("R rematch    N next opponent"), W * 0.5f - 130, H * 0.35f + 70, FLinearColor::White, 1.1f);
 	}
 	if (!D->HasRig()) Text(TEXT("Fight rig not imported yet: run Content/Python/ffts_import_fight_rig.py (Tools > Execute Python Script)"), 40, H - 56, FLinearColor(1.f, 0.6f, 0.2f));
-	Text(TEXT("A/D move  Shift block  J light  K heavy  L kick  U grab  Space dodge  I counter  O finisher  T taunt   |   Tab/Q your styles  V opp style  N next  R restart"),
+	Text(bPad
+		? TEXT("Stick/D-pad move  LT block  X light  Y heavy  B kick  RB grab  A dodge  LB counter  RT finisher  D-up taunt   |   R3/L3 your styles  D-down opp style  View next  Menu restart")
+		: TEXT("A/D move  Shift block  J light  K heavy  L kick  U grab  Space dodge  I counter  O finisher  T taunt   |   Tab/Q your styles  V opp style  N next  R restart"),
 		40, H - 30, FLinearColor(0.75f, 0.75f, 0.75f), 0.85f);
 }
