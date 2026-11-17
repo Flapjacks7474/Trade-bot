@@ -178,9 +178,9 @@ int main(int argc, char** argv) {
         Bank bank(100000); StyleLoadout lo(db(), &bank);
         CHECK(lo.learn("hybrid.southside_hands") == StyleResult::ParentsNotLearned, "parents first");
         CHECK(lo.learn("style.boxing") == StyleResult::Ok, "learn");
-        long long after = bank.cash;
-        CHECK(lo.learn("style.boxing") == StyleResult::AlreadyLearned && bank.cash == after, "no double charge");
-        CHECK(bank.pay("style.learn.style.boxing", 25000) == PostStatus::Duplicate, "key used");
+        long long after = bank.balance("cash");
+        CHECK(lo.learn("style.boxing") == StyleResult::AlreadyLearned && bank.balance("cash") == after, "no double charge");
+        CHECK(bank.pay("style.learn.style.boxing", 25000, "again") == PostResult::Duplicate, "key used");
         CHECK(lo.equip("style.street", "style.boxing") == StyleResult::Ok && !lo.activeHybrid(), "equip");
         CHECK(lo.learn("hybrid.southside_hands") == StyleResult::Ok && lo.activeHybrid()->id == "hybrid.southside_hands", "hybrid on");
         CHECK(lo.buildMoveset()->finisher->id == "southside_hands.last_call", "hybrid finisher");

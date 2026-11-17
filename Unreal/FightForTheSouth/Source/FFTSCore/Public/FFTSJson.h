@@ -1,5 +1,5 @@
 // FIGHT FOR THE SOUTH - FFTSCore
-// Minimal JSON reader used by the portable simulation core. No exceptions, no RTTI, no engine types, so the same
+// Minimal JSON reader/writer used by the portable simulation core. No exceptions, no RTTI, no engine types, so the same
 // code compiles in the Unreal module and in the stand-alone test harness (Unreal/FightForTheSouth/CoreTests).
 #pragma once
 #include <map>
@@ -50,6 +50,16 @@ public:
     std::string strOr(const std::string& fallback) const { return type_ == Type::String ? string_ : fallback; }
     const std::vector<Json>& items() const;               // empty unless an array
     const std::vector<std::pair<std::string, Json>>& members() const; // insertion order; empty unless an object
+
+    // ---- building (used for save games); dump() writes compact JSON that parse() reads back.
+    static Json makeObject();
+    static Json makeArray();
+    static Json makeNumber(double v);
+    static Json makeString(const std::string& v);
+    static Json makeBool(bool v);
+    Json& set(const std::string& key, Json value);   // makes this an object if it is null; replaces an existing key
+    Json& push(Json value);                          // makes this an array if it is null
+    std::string dump() const;
 
 private:
     friend class JsonParser;

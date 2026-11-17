@@ -1,4 +1,6 @@
 #include "FFTSJson.h"
+#include <cmath>
+#include <cstdio>
 #include <cstdlib>
 
 namespace ffts {
@@ -139,5 +141,69 @@ size_t Json::size() const { return type_ == Type::Array ? array_.size() : type_ 
 const std::string& Json::str() const { return type_ == Type::String ? string_ : emptyString(); }
 const std::vector<Json>& Json::items() const { return type_ == Type::Array ? array_ : emptyArray(); }
 const std::vector<std::pair<std::string, Json>>& Json::members() const { return type_ == Type::Object ? object_ : emptyObject(); }
+
+Json Json::makeObject() { Json j; j.type_ = Type::Object; return j; }
+Json Json::makeArray() { Json j; j.type_ = Type::Array; return j; }
+Json Json::makeNumber(double v) { Json j; j.type_ = Type::Number; j.number_ = v; return j; }
+Json Json::makeString(const std::string& v) { Json j; j.type_ = Type::String; j.string_ = v; return j; }
+Json Json::makeBool(bool v) { Json j; j.type_ = Type::Bool; j.bool_ = v; return j; }
+
+Json& Json::set(const std::string& key, Json value) {
+    if (type_ == Type::Null) type_ = Type::Object;
+    if (type_ != Type::Object) return *this;
+    for (auto& kv : object_) if (kv.first == key) { kv.second = std::move(value); return *this; }
+    object_.emplace_back(key, std::move(value));
+    return *this;
+}
+
+Json& Json::push(Json value) {
+    if (type_ == Type::Null) type_ = Type::Array;
+    if (type_ == Type::Array) array_.push_back(std::move(value));
+    return *this;
+}
+
+namespace {
+void dumpString(std::string& o, const std::string& s) {
+    o += '"';
+    for (unsigned char c : s) {
+        switch (c) {
+            case '"': o += "\\\""; break; case '\\': o += "\\\\"; break; case '\n': o += "\\n"; break;
+            case '\r': o += "\\r"; break; case '\t': o += "\\t"; break; case '\b': o += "\\b"; break; case '\f': o += "\\f"; break;
+            default:
+                if (c < 0x20) { char b[8]; std::snprintf(b, sizeof b, "\\u%04x", c); o += b; }
+                else o += static_cast<char>(c);
+        }
+    }
+    o += '"';
+}
+}
+
+static void dumpValue(std::string& o, const Json& j) {
+    switch (j.type()) {
+        case Json::Type::Null: o += "null"; break;
+        case Json::Type::Bool: o += j.boolean() ? "true" : "false"; break;
+        case Json::Type::Number: {
+            const double v = j.num();
+            char b[40];
+            if (!std::isfinite(v)) o += "0";
+            else if (std::fabs(v) < 9.0e15 && v == std::floor(v)) { std::snprintf(b, sizeof b, "%.0f", v); o += b; }
+            else { std::snprintf(b, sizeof b, "%.17g", v); o += b; }
+            break;
+        }
+        case Json::Type::String: dumpString(o, j.str()); break;
+        case Json::Type::Array: {
+            o += '['; bool first = true;
+            for (const Json& v : j.items()) { if (!first) o += ','; first = false; dumpValue(o, v); }
+            o += ']'; break;
+        }
+        case Json::Type::Object: {
+            o += '{'; bool first = true;
+            for (const auto& kv : j.members()) { if (!first) o += ','; first = false; dumpString(o, kv.first); o += ':'; dumpValue(o, kv.second); }
+            o += '}'; break;
+        }
+    }
+}
+
+std::string Json::dump() const { std::string o; dumpValue(o, *this); return o; }
 
 } // namespace ffts

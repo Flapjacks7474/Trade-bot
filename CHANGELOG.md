@@ -2,6 +2,15 @@
 
 All notable changes. Dates are UTC.
 
+## 2026-11-17 — Unreal story layer
+- FFTSCore: one FINESS BANK (`FFTSBank`, merged the duplicate combat bank), story/missions/relationships (`FFTSStory`),
+  living world (`FFTSWorld`), game session + dialogue + JSON saves (`FFTSSession`), JSON writer.
+- CoreTests: session suite (Chapter 1 playthrough, saves, NPC travel, reveal guard, bank); `run.sh asan`.
+- Unreal: `UFFTSGameSubsystem` owns the session; Blueprint calls for triggers, clock, money, tracked mission, toasts, save slots.
+- Xbox controller pass (D-pad, Dojo controls on pad, rumble, device-aware HUD legend). Not compiled on the PC yet.
+- `Documentation/UNREAL_COMPLETION_PLAN.md`: requirements + recommendations with status.
+
+
 ## [0.5.0-styles-characters] — 2026-11-11
 
 ### Added

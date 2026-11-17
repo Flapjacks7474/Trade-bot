@@ -36,3 +36,15 @@ which switches the scene to centimetres, applies the x100 scale to the armature 
 and `AnimManny`. With the rig in centimetres the retargeter keeps all its ops (pelvis height, IK, root motion); with the
 old metre-scaled export `ffts_retarget_manny.py` falls back to rotations only. `ffts_retarget_inspect.py` dumps the chain
 mapping and bone poses.
+
+## Story session (FFTSCore)
+
+`FFTSBank`, `FFTSStory` (reputation, relationships, story flags with the Chapter 7 reveal guard, missions), `FFTSWorld`
+(road graph, NPC schedules and travel) and `FFTSSession` (`ffts::Game`: clock, triggers, rewards, talk rules, fight
+consequences, dialogue runner, JSON save/load) are line-for-line ports of `WebPrototype/src/sim/story.js`, `world.js` and
+`session.js`. Vehicles and racing are not ported yet. `UFFTSGameSubsystem` owns one `ffts::Game` (its bank also pays for
+style training) and exposes Blueprint calls: `Trigger`, `TickWorld`, `GetClockText`, `GetMoneyText`, `GetTrackedMission`,
+`TakeToasts`, `SaveToSlot` / `LoadFromSlot` (`Saved/SaveGames/<slot>.json`, written atomically).
+Simulation X/Z map to Unreal X/Y (sim metres = Unreal cm / 100).
+
+Tests: `CoreTests/run.sh` (combat 13 + session 10, including a full Chapter 1 playthrough and a byte-identical save round trip).

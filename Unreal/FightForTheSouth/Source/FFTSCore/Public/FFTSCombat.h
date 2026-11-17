@@ -8,6 +8,7 @@
 #include <set>
 #include <string>
 #include <vector>
+#include "FFTSBank.h"
 #include "FFTSJson.h"
 
 // FFTSCORE_API is defined by Unreal Build Tool (dllexport/dllimport, the editor builds each module as a DLL);
@@ -265,18 +266,6 @@ private:
 };
 
 // ------------------------------------------------------------------------------------------------ progression
-enum class PostStatus { Posted, Duplicate, InsufficientFunds, Invalid };
-
-/// Minimal FINESS BANK: personal cash with idempotent payments (a key is never charged twice, including after a save).
-class FFTSCORE_API Bank {
-public:
-    explicit Bank(long long cashCents = 0) : cash(cashCents) {}
-    long long cash;
-    std::set<std::string> keys;
-    PostStatus pay(const std::string& key, long long cents);
-    PostStatus receive(const std::string& key, long long cents);
-};
-
 enum class StyleResult { Ok, AlreadyLearned, UnknownStyle, ParentsNotLearned, InsufficientFunds, NotLearned, InvalidLoadout };
 
 class FFTSCORE_API StyleLoadout {

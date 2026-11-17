@@ -693,18 +693,6 @@ FighterInput FighterAI::think(CombatSimulation& sim) {
 }
 
 // ================================================================================================ progression
-PostStatus Bank::pay(const std::string& key, long long cents) {
-    if (key.empty() || cents <= 0) return PostStatus::Invalid;
-    if (keys.count(key)) return PostStatus::Duplicate;
-    if (cash < cents) return PostStatus::InsufficientFunds;
-    cash -= cents; keys.insert(key); return PostStatus::Posted;
-}
-PostStatus Bank::receive(const std::string& key, long long cents) {
-    if (key.empty() || cents <= 0) return PostStatus::Invalid;
-    if (keys.count(key)) return PostStatus::Duplicate;
-    cash += cents; keys.insert(key); return PostStatus::Posted;
-}
-
 StyleLoadout::StyleLoadout(const CombatDatabase& db, Bank* bank) : db_(db), bank_(bank) { reset(); }
 void StyleLoadout::reset() { learned.clear(); equipped.clear(); if (db_.style(Starter)) { learned.push_back(Starter); equipped.push_back(Starter); } }
 bool StyleLoadout::knows(const std::string& id) const { return std::find(learned.begin(), learned.end(), id) != learned.end(); }
@@ -724,8 +712,8 @@ StyleResult StyleLoadout::learn(const std::string& id) {
     StyleResult r = canLearn(id); if (r != StyleResult::Ok) return r;
     const StyleDef* s = db_.style(id);
     if (s->unlockCostCents > 0) {
-        PostStatus st = bank_ ? bank_->pay("style.learn." + id, s->unlockCostCents) : PostStatus::InsufficientFunds;
-        if (st != PostStatus::Posted && st != PostStatus::Duplicate) return StyleResult::InsufficientFunds;
+        const PostResult st = bank_ ? bank_->pay("style.learn." + id, s->unlockCostCents, "Training: " + s->displayName) : PostResult::InsufficientFunds;
+        if (st != PostResult::Posted && st != PostResult::Duplicate) return StyleResult::InsufficientFunds;
     }
     learned.push_back(id); return StyleResult::Ok;
 }

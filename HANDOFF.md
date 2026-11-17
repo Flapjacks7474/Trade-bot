@@ -1,5 +1,11 @@
 # Handoff — FIGHT FOR THE SOUTH
 
+> **2026-11-17: Unreal 5.8 is now the main build** (`Unreal/FightForTheSouth`). Read `Documentation/UNREAL_COMPLETION_PLAN.md`
+> first: it lists every requirement and recommendation with its status. The Unity notes below are kept as reference.
+> Core rules live in engine-free C++ (`Source/FFTSCore`) and are tested with `Unreal/FightForTheSouth/CoreTests/run.sh`
+> (combat + story/session, also `run.sh asan`). Pipeline scripts: `Unreal/README.md`.
+> Not yet compiled on the PC: the Xbox controller pass and the story session in `UFFTSGameSubsystem`.
+
 You are taking over an in-progress Unity 6.3 LTS open-world action RPG. Read this file first, then
 `Documentation/PROJECT_STATUS.md`. The original full design brief is condensed in `Documentation/MasterGameDesignDocument.md`
 and the per-system specs in `Documentation/`.
